@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# grove - git worktree manager
+# https://github.com/amazonite/grove
+
+set -euo pipefail
+
+GROVE_VERSION="0.1.1"
+GROVE_ROOT="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+GROVE_WORKTREE_BASE="${GROVE_WORKTREE_BASE:-$HOME/code/sdd/worktrees}"
+
+# ---------- Mode detection ----------
+# Default: fzf mode. Use --plain explicitly for machine-readable output.
+GROVE_PLAIN="${GROVE_PLAIN:-false}"
+
+# ---------- Parse global flags ----------
+grove_help() {
+    cat >&2 <<'EOF'
+grove - git worktree manager
+
+USAGE
+    grove [--plain|--fzf] <command> [args]
+
+COMMANDS
+    list, ls      List worktrees with rich status
+    add,  new     Create a new worktree
+    switch, cd    Switch to a worktree
+    remove, rm    Remove a worktree (with safety checks)
+    help          Show this help
+    version       Show version
+
+GLOBAL FLAGS
+    --plain       Machine-readable output (for AI/script use)
+    --fzf         Interactive fzf mode (default)
+
+PLAIN MODE EXAMPLES (AI/script use)
+    grove --plain list
+    grove --plain add <branch> [--create]
+    grove --plain switch <branch>
+    grove --plain remove <branch> [--force]
+
+ENVIRONMENT
+    GROVE_WORKTREE_BASE    Base directory for worktrees
+                           (default: ~/code/sdd/worktrees)
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --plain)   GROVE_PLAIN=true;  shift ;;
+        --fzf)     GROVE_PLAIN=false; shift ;;
+        -h|--help) grove_help; exit 0 ;;
+        -v|--version) echo "grove $GROVE_VERSION"; exit 0 ;;
+        *) break ;;
+    esac
+done
+
+export GROVE_PLAIN GROVE_WORKTREE_BASE
+
+# ---------- Source libraries ----------
+source "$GROVE_ROOT/lib/common.sh"
+
+# ---------- Dispatch ----------
+cmd="${1:-list}"
+shift || true
+
+case "$cmd" in
+    list|ls)       source "$GROVE_ROOT/lib/list.sh";   grove_list "$@" ;;
+    add|new)       source "$GROVE_ROOT/lib/add.sh";    grove_add "$@" ;;
+    switch|cd)     source "$GROVE_ROOT/lib/switch.sh"; grove_switch "$@" ;;
+    remove|rm)     source "$GROVE_ROOT/lib/remove.sh"; grove_remove "$@" ;;
+    help)          grove_help ;;
+    version)       echo "grove $GROVE_VERSION" ;;
+    *)             echo "grove: unknown command '$cmd'" >&2; grove_help; exit 1 ;;
+esac
