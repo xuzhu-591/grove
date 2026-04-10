@@ -1,0 +1,37 @@
+shell/grove.zsh
+  f6865936f6ba44a5 1-79
+install.sh
+  f6865936f6ba44a5 1-53
+lib/switch.sh
+  f6865936f6ba44a5 60
+lib/add.sh
+  f6865936f6ba44a5 53,58
+lib/remove.sh
+  f6865936f6ba44a5 128
+bin/grove
+  f6865936f6ba44a5 7,12,32-33
+lib/common.sh
+  f6865936f6ba44a5 1-153
+lib/list.sh
+  f6865936f6ba44a5 1-74
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "1a4ff2bdb4d8a2c6e01fe9f4ebee67061723231d",
+  "prompts": {
+    "f6865936f6ba44a5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "996cfc8d-050c-4406-ae3e-c99e5165d77f",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu",
+      "messages": [],
+      "total_additions": 367,
+      "total_deletions": 13,
+      "accepted_lines": 367,
+      "overriden_lines": 0
+    }
+  }
+}
