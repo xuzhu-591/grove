@@ -19,7 +19,7 @@ Every command supports two modes:
 ## Install
 
 ```bash
-git clone https://github.com/AmazoniteC/grove.git
+git clone https://github.com/xuzhu-591/grove.git
 cd grove
 bash install.sh
 source ~/.zshrc
