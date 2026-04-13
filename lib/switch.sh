@@ -45,12 +45,17 @@ _grove_switch_fzf() {
         return 1
     fi
 
-    # Build display lines: branch -> dir
+    # Build display lines: branch (padded) + dir
+    local max_branch=0
+    for i in "${!_grove_wt_branches[@]}"; do
+        (( ${#_grove_wt_branches[$i]} > max_branch )) && max_branch=${#_grove_wt_branches[$i]}
+    done
+
     local lines=()
     for i in "${!_grove_wt_dirs[@]}"; do
         local short_dir
         short_dir=$(grove_short_path "${_grove_wt_dirs[$i]}")
-        lines+=("${_grove_wt_branches[$i]}  ${short_dir}")
+        lines+=("$(printf "%-${max_branch}s  %s" "${_grove_wt_branches[$i]}" "$short_dir")")
     done
 
     local selected
