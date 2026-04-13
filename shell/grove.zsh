@@ -3,9 +3,9 @@
 # Source this file in .zshrc to enable `grove` as a shell function
 # that can change the working directory.
 #
-# Usage: source ~/code/grove/shell/grove.zsh
+# Usage: source /path/to/grove/shell/grove.zsh
 
-GROVE_ROOT="${GROVE_ROOT:-$HOME/code/grove}"
+GROVE_ROOT="${GROVE_ROOT:-$(cd "$(dirname "${(%):-%x}")/.." && pwd)}"
 
 grove() {
     local grove_exec="${GROVE_ROOT}/bin/grove"

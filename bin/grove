@@ -6,7 +6,7 @@ set -euo pipefail
 
 GROVE_VERSION="0.1.1"
 GROVE_ROOT="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
-GROVE_WORKTREE_BASE="${GROVE_WORKTREE_BASE:-$HOME/code/sdd/worktrees}"
+GROVE_WORKTREE_BASE="${GROVE_WORKTREE_BASE:-$HOME/.grove/worktrees}"
 
 # ---------- Mode detection ----------
 # Default: fzf mode. Use --plain explicitly for machine-readable output.
@@ -40,7 +40,7 @@ PLAIN MODE EXAMPLES (AI/script use)
 
 ENVIRONMENT
     GROVE_WORKTREE_BASE    Base directory for worktrees
-                           (default: ~/code/sdd/worktrees)
+                           (default: ~/.grove/worktrees)
 EOF
 }
 
