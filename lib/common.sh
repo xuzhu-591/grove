@@ -38,7 +38,7 @@ grove_worktree_path() {
     local project_name
     project_name=$(grove_project_name) || return 1
     local safe_branch="${branch//\//-}"
-    echo "${GROVE_WORKTREE_BASE}/${project_name}-${safe_branch}"
+    echo "${GROVE_WORKTREE_BASE}/${project_name}/${safe_branch}"
 }
 
 # ---------- Rich status (B1) ----------
