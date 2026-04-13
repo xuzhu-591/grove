@@ -52,7 +52,7 @@ _grove_list_pretty() {
     done
 
     # Cap max widths
-    (( max_dir > 50 )) && max_dir=50
+    (( max_dir > 70 )) && max_dir=70
 
     # Header
     printf "${BOLD}  %-${max_branch}s  %-${max_dir}s  %-7s  %s${RESET}\n" \
@@ -65,7 +65,10 @@ _grove_list_pretty() {
 
         local display_dir="${dirs[$i]}"
         if (( ${#display_dir} > max_dir )); then
-            display_dir="...${display_dir: -$((max_dir - 3))}"
+            # Keep leading ~/ and trailing part, ellipsis in middle
+            local head="~/" tail_len=$(( max_dir - 5 ))
+            local tail="${display_dir: -$tail_len}"
+            display_dir="${head}.../${tail}"
         fi
 
         printf "${is_main} ${CYAN}%-${max_branch}s${RESET}  %-${max_dir}s  ${DIM}%s${RESET}  %s\n" \
