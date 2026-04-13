@@ -1,0 +1,25 @@
+bin/grove
+  f6865936f6ba44a5 9,43
+shell/grove.zsh
+  f6865936f6ba44a5 6,8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "658ba61a3538d8a801600af858d117f458747a77",
+  "prompts": {
+    "f6865936f6ba44a5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "996cfc8d-050c-4406-ae3e-c99e5165d77f",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu",
+      "messages": [],
+      "total_additions": 4,
+      "total_deletions": 4,
+      "accepted_lines": 4,
+      "overriden_lines": 0
+    }
+  }
+}
