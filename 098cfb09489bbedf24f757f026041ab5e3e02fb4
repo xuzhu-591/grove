@@ -1,0 +1,23 @@
+lib/common.sh
+  f6865936f6ba44a5 41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "098cfb09489bbedf24f757f026041ab5e3e02fb4",
+  "prompts": {
+    "f6865936f6ba44a5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "996cfc8d-050c-4406-ae3e-c99e5165d77f",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
