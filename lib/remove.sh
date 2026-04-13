@@ -116,7 +116,8 @@ _grove_remove_fzf() {
     local lines=()
     for i in "${!_grove_wt_dirs[@]}"; do
         [[ $i -eq 0 ]] && continue
-        local short_dir="${_grove_wt_dirs[$i]/#$HOME/~}"
+        local short_dir
+        short_dir=$(grove_short_path "${_grove_wt_dirs[$i]}")
         lines+=("${_grove_wt_branches[$i]}  ${short_dir}")
     done
 

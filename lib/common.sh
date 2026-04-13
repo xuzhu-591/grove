@@ -13,6 +13,10 @@ fi
 # ---------- Logging (always to stderr) ----------
 grove_info()  { echo -e "${GREEN}${1}${RESET}" >&2; }
 grove_warn()  { echo -e "${YELLOW}${1}${RESET}" >&2; }
+
+# ---------- Path helpers ----------
+# Replace $HOME prefix with ~ (works in both bash and zsh)
+grove_short_path() { echo "$1" | sed "s|^$HOME|~|"; }
 grove_error() { echo -e "${RED}${1}${RESET}" >&2; }
 
 # ---------- Git helpers ----------

@@ -35,8 +35,9 @@ _grove_list_pretty() {
         local branch="${_grove_wt_branches[$i]}"
         local commit="${_grove_wt_commits[$i]}"
 
-        # Shorten home dir
-        local short_dir="${dir/#$HOME/~}"
+        # Replace $HOME with ~
+        local short_dir
+        short_dir=$(grove_short_path "$dir")
 
         read -r staged modified untracked ahead behind <<< "$(grove_worktree_status "$dir")"
         local status_str
@@ -52,26 +53,27 @@ _grove_list_pretty() {
     done
 
     # Cap max widths
-    (( max_dir > 70 )) && max_dir=70
+    (( max_dir > 80 )) && max_dir=80
 
-    # Header
+    # Header: leading 2 spaces to align with rows (marker + space)
     printf "${BOLD}  %-${max_branch}s  %-${max_dir}s  %-7s  %s${RESET}\n" \
         "BRANCH" "DIR" "COMMIT" "STATUS"
 
     # Rows
     for i in "${!branches[@]}"; do
-        local is_main=""
-        [[ $i -eq 0 ]] && is_main="${DIM}*${RESET}" || is_main=" "
+        # Print marker separately to avoid ANSI codes skewing printf width
+        if [[ $i -eq 0 ]]; then
+            printf "${DIM}*${RESET} "
+        else
+            printf "  "
+        fi
 
         local display_dir="${dirs[$i]}"
         if (( ${#display_dir} > max_dir )); then
-            # Keep leading ~/ and trailing part, ellipsis in middle
-            local head="~/" tail_len=$(( max_dir - 5 ))
-            local tail="${display_dir: -$tail_len}"
-            display_dir="${head}.../${tail}"
+            display_dir="${display_dir:0:$((max_dir - 3))}..."
         fi
 
-        printf "${is_main} ${CYAN}%-${max_branch}s${RESET}  %-${max_dir}s  ${DIM}%s${RESET}  %s\n" \
+        printf "${CYAN}%-${max_branch}s${RESET}  %-${max_dir}s  ${DIM}%s${RESET}  %s\n" \
             "${branches[$i]}" "$display_dir" "${commits[$i]}" "${statuses[$i]}"
     done
 }
