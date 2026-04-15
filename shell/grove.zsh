@@ -77,3 +77,33 @@ _grove() {
     fi
 }
 compdef _grove grove
+
+# Short aliases
+alias wls='grove ls'
+alias wnw='grove new'
+alias wcd='grove cd'
+alias wrm='grove rm'
+
+# Tab completion for short aliases
+_wnw() {
+    local -a branches
+    branches=($(git branch --format='%(refname:short)' 2>/dev/null))
+    _values 'branch' $branches
+}
+compdef _wnw wnw
+
+_wcd() {
+    local -a branches
+    branches=($(git worktree list --porcelain 2>/dev/null | \
+        grep '^branch ' | sed 's|^branch refs/heads/||'))
+    _values 'branch' $branches
+}
+compdef _wcd wcd
+
+_wrm() {
+    local -a branches
+    branches=($(git worktree list --porcelain 2>/dev/null | \
+        grep '^branch ' | sed 's|^branch refs/heads/||'))
+    _values 'branch' $branches
+}
+compdef _wrm wrm
