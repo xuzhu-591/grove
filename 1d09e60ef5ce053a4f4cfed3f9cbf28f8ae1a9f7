@@ -1,0 +1,23 @@
+shell/grove.zsh
+  8721847e4622fd27 80-109
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "1d09e60ef5ce053a4f4cfed3f9cbf28f8ae1a9f7",
+  "prompts": {
+    "8721847e4622fd27": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c2ed1757-9621-4f72-8aec-07947b6c8ae6",
+        "model": "claude-sonnet-4.6"
+      },
+      "human_author": "Xu Zhu",
+      "messages": [],
+      "total_additions": 30,
+      "total_deletions": 0,
+      "accepted_lines": 30,
+      "overriden_lines": 0
+    }
+  }
+}
