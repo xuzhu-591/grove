@@ -69,9 +69,12 @@ _grove() {
                 _values 'branch' $branches
                 ;;
             add|new)
-                local -a branches
+                local -a branches flags
                 branches=($(git branch --format='%(refname:short)' 2>/dev/null))
+                branches+=($(git branch -r --format='%(refname:short)' 2>/dev/null | grep -v '/HEAD$'))
+                flags=('--create' '--remote')
                 _values 'branch' $branches
+                _values 'flags' $flags
                 ;;
         esac
     fi
@@ -88,6 +91,7 @@ alias wrm='grove rm'
 _wnw() {
     local -a branches
     branches=($(git branch --format='%(refname:short)' 2>/dev/null))
+    branches+=($(git branch -r --format='%(refname:short)' 2>/dev/null | grep -v '/HEAD$'))
     _values 'branch' $branches
 }
 compdef _wnw wnw
