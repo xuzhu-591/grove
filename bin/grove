@@ -34,7 +34,7 @@ GLOBAL FLAGS
 
 PLAIN MODE EXAMPLES (AI/script use)
     grove --plain list
-    grove --plain add <branch> [--create]
+    grove --plain add <branch> [--create] [--remote]
     grove --plain switch <branch>
     grove --plain remove <branch> [--force]
 
