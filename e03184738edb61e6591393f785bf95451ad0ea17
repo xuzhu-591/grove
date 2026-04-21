@@ -1,0 +1,44 @@
+lib/add.sh
+  94d824ab7dfe1eb1 14,16,20,28,32-34,58,65-83,108-124
+shell/grove.zsh
+  94d824ab7dfe1eb1 72,74-75,77,94
+bin/grove
+  94d824ab7dfe1eb1 37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.6",
+  "base_commit_sha": "e03184738edb61e6591393f785bf95451ad0ea17",
+  "prompts": {
+    "94d824ab7dfe1eb1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6f142b70-2e6a-40dc-9882-d9356c724f8d",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu",
+      "messages": [],
+      "total_additions": 54,
+      "total_deletions": 6,
+      "accepted_lines": 54,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "bin/grove": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "shell/grove.zsh": {
+          "additions": 5,
+          "deletions": 1,
+          "accepted_lines": 5
+        },
+        "lib/add.sh": {
+          "additions": 48,
+          "deletions": 4,
+          "accepted_lines": 48
+        }
+      }
+    }
+  }
+}
