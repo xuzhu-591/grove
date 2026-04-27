@@ -13,11 +13,10 @@ grove_cache() {
 
 # ---------- Core logic ----------
 
-# Read .groverc from a worktree dir, output one dir name per line
-_grove_read_groverc() {
-    local dir="$1"
-    local rc_file="$dir/.groverc"
-    [[ -f "$rc_file" ]] || return 1
+# Parse a single .groverc file, output one dir name per line
+_grove_parse_rc_file() {
+    local rc_file="$1"
+    [[ -f "$rc_file" ]] || return 0
     while IFS= read -r line || [[ -n "$line" ]]; do
         line="${line%%#*}"
         line="${line#"${line%%[![:space:]]*}"}"
@@ -25,6 +24,12 @@ _grove_read_groverc() {
         [[ -z "$line" ]] && continue
         echo "$line"
     done < "$rc_file"
+}
+
+# Read ~/.groverc (global) + <worktree>/.groverc (project), merged and deduped
+_grove_read_groverc() {
+    local dir="$1"
+    { _grove_parse_rc_file "$HOME/.groverc"; _grove_parse_rc_file "$dir/.groverc"; } | awk '!seen[$0]++'
 }
 
 # Symlink cache dirs from source to target worktree
@@ -78,7 +83,7 @@ _grove_cache_status() {
     done < <(_grove_read_groverc "$main_dir")
 
     if [[ ${#dirs[@]} -eq 0 ]]; then
-        grove_warn "No .groverc found in main worktree ($(grove_short_path "$main_dir"))"
+        grove_warn "No .groverc found (checked ~/.groverc and project root)"
         return 0
     fi
 

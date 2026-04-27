@@ -41,13 +41,17 @@ PLAIN MODE EXAMPLES (AI/script use)
     grove --plain cache [--status] [--unlink]
 
 CACHE
-    Create a .groverc file in your project root to list directories
-    that should be symlinked from the main worktree into new ones:
+    List directories to symlink from the main worktree into new ones.
+    Reads from both ~/.groverc (global) and <project>/.groverc (project),
+    merged with duplicates removed.
 
-        # .groverc
+        # ~/.groverc (shared across all projects)
         node_modules
-        .next
         .cache
+
+        # <project>/.groverc (project-specific)
+        .next
+        dist
 
 ENVIRONMENT
     GROVE_WORKTREE_BASE    Base directory for worktrees
