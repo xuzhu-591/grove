@@ -1,0 +1,17 @@
+# Directories to symlink from the main worktree into new worktrees.
+# One path per line, relative to project root.
+# Lines starting with # are comments.
+#
+# When you run `grove add`, these directories are automatically
+# symlinked from the main worktree, so new worktrees start with
+# warm build caches instead of cold ones.
+#
+# Use `grove cache --status` to check symlink state.
+# Use `grove cache --unlink` to remove symlinks.
+# Use `grove add --no-cache` to skip symlinking for one worktree.
+
+node_modules
+# .next
+# .cache
+# dist
+# target

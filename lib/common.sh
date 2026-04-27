@@ -97,6 +97,11 @@ grove_format_status() {
     echo -e "${parts[*]}"
 }
 
+# ---------- Main worktree ----------
+grove_main_worktree_dir() {
+    git worktree list | head -1 | awk '{print $1}'
+}
+
 # ---------- CD directive ----------
 grove_emit_cd() {
     local dir="$1"

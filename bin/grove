@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-GROVE_VERSION="0.1.1"
+GROVE_VERSION="0.2.0"
 GROVE_ROOT="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
 GROVE_WORKTREE_BASE="${GROVE_WORKTREE_BASE:-$HOME/.grove/worktrees}"
 
@@ -25,6 +25,7 @@ COMMANDS
     add,  new     Create a new worktree
     switch, cd    Switch to a worktree
     remove, rm    Remove a worktree (with safety checks)
+    cache         Manage build cache symlinks
     help          Show this help
     version       Show version
 
@@ -34,9 +35,19 @@ GLOBAL FLAGS
 
 PLAIN MODE EXAMPLES (AI/script use)
     grove --plain list
-    grove --plain add <branch> [--create] [--remote]
+    grove --plain add <branch> [--create] [--remote] [--no-cache]
     grove --plain switch <branch>
     grove --plain remove <branch> [--force]
+    grove --plain cache [--status] [--unlink]
+
+CACHE
+    Create a .groverc file in your project root to list directories
+    that should be symlinked from the main worktree into new ones:
+
+        # .groverc
+        node_modules
+        .next
+        .cache
 
 ENVIRONMENT
     GROVE_WORKTREE_BASE    Base directory for worktrees
@@ -68,6 +79,7 @@ case "$cmd" in
     add|new)       source "$GROVE_ROOT/lib/add.sh";    grove_add "$@" ;;
     switch|cd)     source "$GROVE_ROOT/lib/switch.sh"; grove_switch "$@" ;;
     remove|rm)     source "$GROVE_ROOT/lib/remove.sh"; grove_remove "$@" ;;
+    cache)         source "$GROVE_ROOT/lib/cache.sh";  grove_cache "$@" ;;
     help)          grove_help ;;
     version)       echo "grove $GROVE_VERSION" ;;
     *)             echo "grove: unknown command '$cmd'" >&2; grove_help; exit 1 ;;
