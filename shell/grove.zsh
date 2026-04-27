@@ -51,6 +51,7 @@ _grove() {
         'add:Create a new worktree'
         'switch:Switch to a worktree'
         'remove:Remove a worktree'
+        'cache:Manage build cache symlinks'
         'help:Show help'
         'version:Show version'
     )
@@ -72,9 +73,13 @@ _grove() {
                 local -a branches flags
                 branches=($(git branch --format='%(refname:short)' 2>/dev/null))
                 branches+=($(git branch -r --format='%(refname:short)' 2>/dev/null | grep -v '/HEAD$'))
-                flags=('--create' '--remote')
+                flags=('--create' '--remote' '--no-cache')
                 _values 'branch' $branches
                 _values 'flags' $flags
+                ;;
+            cache)
+                local -a cache_flags=('--status' '--unlink')
+                _values 'flags' $cache_flags
                 ;;
         esac
     fi

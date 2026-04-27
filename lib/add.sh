@@ -11,13 +11,27 @@ grove_add() {
     fi
 }
 
-# Plain mode: grove add --plain <branch> [--create] [--remote]
+# Post-creation: link cache dirs from main worktree
+_grove_post_add() {
+    local wt_dir="$1"
+    if [[ "$_grove_no_cache" == true ]]; then
+        return 0
+    fi
+    source "$GROVE_ROOT/lib/cache.sh"
+    local main_dir
+    main_dir=$(grove_main_worktree_dir)
+    grove_link_cache "$main_dir" "$wt_dir"
+}
+
+# Plain mode: grove add --plain <branch> [--create] [--remote] [--no-cache]
 _grove_add_plain() {
     local branch="" create=false remote=false
+    _grove_no_cache=false
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --create|-c) create=true; shift ;;
             --remote|-r) remote=true; shift ;;
+            --no-cache)  _grove_no_cache=true; shift ;;
             -*) grove_error "grove add: unknown option '$1'"; return 1 ;;
             *)  branch="$1"; shift ;;
         esac
@@ -25,7 +39,7 @@ _grove_add_plain() {
 
     if [[ -z "$branch" ]]; then
         grove_error "grove add: branch name required"
-        grove_error "usage: grove add --plain <branch> [--create] [--remote]"
+        grove_error "usage: grove add --plain <branch> [--create] [--remote] [--no-cache]"
         return 1
     fi
 
@@ -49,11 +63,14 @@ _grove_add_plain() {
         }
     fi
 
+    _grove_post_add "$wt_dir"
     grove_emit_cd "$wt_dir"
 }
 
 # FZF mode: interactive branch selection/creation
 _grove_add_fzf() {
+    _grove_no_cache=false
+
     local action
     action=$(printf '%s\n' "existing branch" "new branch" "remote branch" | \
         fzf --height=10% --reverse --border --prompt="Action > ") || return 0
@@ -79,6 +96,7 @@ _grove_add_fzf() {
             return 1
         }
         grove_info "Created: $wt_dir (tracking $branch)"
+        _grove_post_add "$wt_dir"
         grove_emit_cd "$wt_dir"
         return
     else
@@ -103,6 +121,7 @@ _grove_add_fzf() {
     fi
 
     grove_info "Created: $wt_dir"
+    _grove_post_add "$wt_dir"
     grove_emit_cd "$wt_dir"
 }
 
@@ -122,5 +141,6 @@ _grove_add_from_remote() {
         return 1
     }
     grove_info "Created: $wt_dir (tracking $remote_branch)"
+    _grove_post_add "$wt_dir"
     grove_emit_cd "$wt_dir"
 }
