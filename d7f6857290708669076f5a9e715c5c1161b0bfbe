@@ -1,0 +1,37 @@
+lib/cache.sh
+  f49a5e2d4f4c6b78 16-19,29-32,86
+bin/grove
+  f49a5e2d4f4c6b78 44-46,48,52-54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.6",
+  "base_commit_sha": "d7f6857290708669076f5a9e715c5c1161b0bfbe",
+  "prompts": {
+    "f49a5e2d4f4c6b78": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "46a97eba-48e3-4d86-8e16-635a7bb0953c",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu",
+      "messages": [],
+      "total_additions": 19,
+      "total_deletions": 10,
+      "accepted_lines": 19,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "bin/grove": {
+          "additions": 8,
+          "deletions": 4,
+          "accepted_lines": 8
+        },
+        "lib/cache.sh": {
+          "additions": 11,
+          "deletions": 6,
+          "accepted_lines": 11
+        }
+      }
+    }
+  }
+}
