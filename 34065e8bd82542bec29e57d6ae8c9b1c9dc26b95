@@ -1,0 +1,57 @@
+lib/add.sh
+  8d9ad6482f526366 94-105,143-149,152-164
+tests/add.acceptance.test.sh
+  8d9ad6482f526366 1-276
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "34065e8bd82542bec29e57d6ae8c9b1c9dc26b95",
+  "prompts": {
+    "8d9ad6482f526366": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d1a58068-8b75-46ce-a269-a9d606e2fb6d",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 316,
+      "total_deletions": 19,
+      "accepted_lines": 308,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "lib/add.sh": {
+          "additions": 33,
+          "deletions": 12,
+          "accepted_lines": 32
+        },
+        "tests/add.acceptance.test.sh": {
+          "additions": 283,
+          "deletions": 7,
+          "accepted_lines": 276
+        }
+      }
+    },
+    "f49a5e2d4f4c6b78": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "46a97eba-48e3-4d86-8e16-635a7bb0953c",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 1,
+      "accepted_lines": 2,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".groverc": {
+          "additions": 3,
+          "deletions": 1,
+          "accepted_lines": 2
+        }
+      }
+    }
+  }
+}
