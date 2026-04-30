@@ -1,0 +1,29 @@
+.autopilot/patterns.md
+  8d9ad6482f526366 1-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "a99005f8edd774465a7335c3f605f811847fbaad",
+  "prompts": {
+    "8d9ad6482f526366": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d1a58068-8b75-46ce-a269-a9d606e2fb6d",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 19,
+      "total_deletions": 0,
+      "accepted_lines": 19,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".autopilot/patterns.md": {
+          "additions": 19,
+          "accepted_lines": 19
+        }
+      }
+    }
+  }
+}
