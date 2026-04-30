@@ -91,11 +91,18 @@ _grove_add_fzf() {
         local local_branch="${branch#*/}"
         local wt_dir
         wt_dir=$(grove_worktree_path "$local_branch") || return 1
-        git worktree add --track -b "$local_branch" "$wt_dir" "$branch" >&2 || {
-            grove_error "grove add: failed"
-            return 1
-        }
-        grove_info "Created: $wt_dir (tracking $branch)"
+        if git show-ref --verify --quiet "refs/heads/$local_branch"; then
+            grove_info "Using existing local branch '$local_branch'"
+            git worktree add "$wt_dir" "$local_branch" >&2 || {
+                grove_error "grove add: failed"
+                return 1
+            }
+        else
+            git worktree add --track -b "$local_branch" "$wt_dir" "$branch" >&2 || {
+                grove_error "grove add: failed"
+                return 1
+            }
+        fi
         _grove_post_add "$wt_dir"
         grove_emit_cd "$wt_dir"
         return
@@ -133,14 +140,28 @@ _grove_add_from_remote() {
         grove_error "grove add: fetch failed"
         return 1
     }
-    local local_branch="${remote_branch#*/}"
+    local local_branch
+    local remote_prefix="${remote_branch%%/*}"
+    if git remote | grep -qFx "$remote_prefix"; then
+        local_branch="${remote_branch#*/}"
+    else
+        local_branch="$remote_branch"
+    fi
     local wt_dir
     wt_dir=$(grove_worktree_path "$local_branch") || return 1
-    git worktree add --track -b "$local_branch" "$wt_dir" "$remote_branch" 2>&1 || {
-        grove_error "grove add: failed to create worktree from remote branch"
-        return 1
-    }
-    grove_info "Created: $wt_dir (tracking $remote_branch)"
+    if git show-ref --verify --quiet "refs/heads/$local_branch"; then
+        grove_info "Using existing local branch '$local_branch'"
+        git worktree add "$wt_dir" "$local_branch" 2>&1 || {
+            grove_error "grove add: failed to create worktree from remote branch"
+            return 1
+        }
+    else
+        git worktree add --track -b "$local_branch" "$wt_dir" "$remote_branch" 2>&1 || {
+            grove_error "grove add: failed to create worktree from remote branch"
+            return 1
+        }
+    fi
+    grove_info "Created: $wt_dir"
     _grove_post_add "$wt_dir"
     grove_emit_cd "$wt_dir"
 }
