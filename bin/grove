@@ -43,15 +43,17 @@ PLAIN MODE EXAMPLES (AI/script use)
 CACHE
     List directories to symlink from the main worktree into new ones.
     Reads from both ~/.groverc (global) and <project>/.groverc (project),
-    merged with duplicates removed.
+    preserving rule order so later rules override earlier ones.
+    Supports a gitignore-like subset matched against repo-relative
+    directory paths: literal paths, `*`, `?`, and `!pattern`.
 
         # ~/.groverc (shared across all projects)
         node_modules
-        .cache
+        .cache/*
 
         # <project>/.groverc (project-specific)
-        .next
-        dist
+        packages/*/node_modules
+        !.cache/private
 
 ENVIRONMENT
     GROVE_WORKTREE_BASE    Base directory for worktrees

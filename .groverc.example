@@ -1,8 +1,9 @@
 # Directories to symlink from the main worktree into new worktrees.
-# One path per line, relative to project root.
+# Rules are matched against repo-relative directory paths.
+# Supports a gitignore-like subset: literal paths, `*`, `?`, and `!pattern`.
 # Lines starting with # are comments.
 #
-# When you run `grove add`, these directories are automatically
+# When you run `grove add`, matching directories are automatically
 # symlinked from the main worktree, so new worktrees start with
 # warm build caches instead of cold ones.
 #
@@ -12,6 +13,7 @@
 
 node_modules
 # .next
-# .cache
+# .cache/*
+# packages/*/node_modules
+# !.cache/private
 # dist
-# target
