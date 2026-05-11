@@ -1,0 +1,62 @@
+README.md
+  f2b198df855d254a 66-77
+lib/cache.sh
+  f2b198df855d254a 29,32-33,36-149,159,170,196,198-203,206,211-261,265,267-269,271,286
+bin/grove
+  f2b198df855d254a 46-48,52,55-56
+.groverc.example
+  f2b198df855d254a 2-3,6,16-18
+tests/add.acceptance.test.sh
+  f2b198df855d254a 20,30-32,63-65,260-362,377-379
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "27e67982dce65dc6cc6cc2647f7f2d15095b4449",
+  "prompts": {
+    "f2b198df855d254a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cdb365ad-4903-48dd-84d6-7f0d8e57e232",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 372,
+      "total_deletions": 73,
+      "accepted_lines": 327,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".groverc.example": {
+          "additions": 6,
+          "deletions": 4,
+          "accepted_lines": 6
+        },
+        ".autopilot/active.session.cdb365ad-4903-48dd-84d6-7f0d8e57e232": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "tests/add.acceptance.test.sh": {
+          "additions": 116,
+          "deletions": 2,
+          "accepted_lines": 116
+        },
+        "lib/cache.sh": {
+          "additions": 231,
+          "deletions": 62,
+          "accepted_lines": 186
+        },
+        "README.md": {
+          "additions": 12,
+          "accepted_lines": 12
+        },
+        "bin/grove": {
+          "additions": 6,
+          "deletions": 4,
+          "accepted_lines": 6
+        }
+      }
+    }
+  }
+}
