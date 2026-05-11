@@ -17,6 +17,7 @@ set -uo pipefail
 
 GROVE_BIN="$(cd "$(dirname "$0")/.." && pwd)/bin/grove"
 TMPDIR_ROOT=""
+TEST_HOME=""
 PASS_COUNT=0
 FAIL_COUNT=0
 
@@ -25,6 +26,9 @@ FAIL_COUNT=0
 cleanup() {
     if [[ -n "$TMPDIR_ROOT" && -d "$TMPDIR_ROOT" ]]; then
         rm -rf "$TMPDIR_ROOT"
+    fi
+    if [[ -n "$TEST_HOME" && -d "$TEST_HOME" ]]; then
+        rm -rf "$TEST_HOME"
     fi
     # Clean up any worktrees we created under GROVE_WORKTREE_BASE
     if [[ -n "${GROVE_WORKTREE_BASE:-}" && -d "$GROVE_WORKTREE_BASE" ]]; then
@@ -56,6 +60,9 @@ fail() {
 #
 setup_fixture() {
     TMPDIR_ROOT="$(mktemp -d)"
+    TEST_HOME="$TMPDIR_ROOT/home"
+    mkdir -p "$TEST_HOME"
+    export HOME="$TEST_HOME"
     export GROVE_WORKTREE_BASE="$TMPDIR_ROOT/grove_worktrees"
     mkdir -p "$GROVE_WORKTREE_BASE"
 
@@ -218,8 +225,6 @@ test_remote_add_new_tracking_branch() {
 test_local_add_without_remote_flag() {
     local desc="grove --plain add <branch> (without --remote) still works normally"
 
-    # Create a new local branch in the work repo so we have something
-    # to add without --remote.
     git -C "$WORK_REPO" branch "feat/local-test" >/dev/null 2>&1
 
     local output
@@ -252,6 +257,112 @@ test_local_add_without_remote_flag() {
     git -C "$WORK_REPO" worktree remove "$wt_dir" --force 2>/dev/null || true
 }
 
+test_cache_literal_and_glob_rules() {
+    local desc="grove add applies literal and glob cache rules"
+
+    mkdir -p "$WORK_REPO/node_modules" "$WORK_REPO/packages/pkg-a/node_modules" "$WORK_REPO/packages/pkg-b/node_modules"
+    cat > "$WORK_REPO/.groverc" <<'EOF'
+node_modules
+packages/*/node_modules
+EOF
+    git -C "$WORK_REPO" branch "feat/cache-rules" >/dev/null 2>&1
+
+    local output
+    output="$(cd "$WORK_REPO" && "$GROVE_BIN" --plain add "feat/cache-rules" 2>&1)" || {
+        fail "$desc" "exit code $?, output: $output"
+        return
+    }
+
+    local wt_dir
+    wt_dir="$(echo "$output" | tail -1)"
+    if [[ ! -L "$wt_dir/node_modules" ]]; then
+        fail "$desc" "expected root node_modules symlink"
+        return
+    fi
+    if [[ ! -L "$wt_dir/packages/pkg-a/node_modules" || ! -L "$wt_dir/packages/pkg-b/node_modules" ]]; then
+        fail "$desc" "expected nested node_modules symlinks from glob rule"
+        return
+    fi
+
+    pass "$desc"
+    git -C "$WORK_REPO" worktree remove "$wt_dir" --force 2>/dev/null || true
+}
+
+test_cache_negation_and_global_override() {
+    local desc="project .groverc overrides global rules with last-match-wins"
+
+    mkdir -p "$WORK_REPO/.cache/public" "$WORK_REPO/.cache/private"
+    cat > "$HOME/.groverc" <<'EOF'
+.cache/*
+EOF
+    cat > "$WORK_REPO/.groverc" <<'EOF'
+!.cache/private
+EOF
+    git -C "$WORK_REPO" branch "feat/cache-override" >/dev/null 2>&1
+
+    local output
+    output="$(cd "$WORK_REPO" && "$GROVE_BIN" --plain add "feat/cache-override" 2>&1)" || {
+        fail "$desc" "exit code $?, output: $output"
+        return
+    }
+
+    local wt_dir
+    wt_dir="$(echo "$output" | tail -1)"
+    if [[ ! -L "$wt_dir/.cache/public" ]]; then
+        fail "$desc" "expected .cache/public symlink"
+        return
+    fi
+    if [[ -e "$wt_dir/.cache/private" || -L "$wt_dir/.cache/private" ]]; then
+        fail "$desc" "expected .cache/private to be excluded by project rule"
+        return
+    fi
+
+    pass "$desc"
+    git -C "$WORK_REPO" worktree remove "$wt_dir" --force 2>/dev/null || true
+    rm -f "$HOME/.groverc"
+}
+
+test_cache_status_and_unlink_follow_resolved_paths() {
+    local desc="grove cache status and unlink follow resolved cache paths"
+
+    mkdir -p "$WORK_REPO/.cache/public" "$WORK_REPO/.cache/private"
+    cat > "$WORK_REPO/.groverc" <<'EOF'
+.cache/*
+!.cache/private
+EOF
+    git -C "$WORK_REPO" branch "feat/cache-status" >/dev/null 2>&1
+
+    local output
+    output="$(cd "$WORK_REPO" && "$GROVE_BIN" --plain add "feat/cache-status" 2>&1)" || {
+        fail "$desc" "exit code $?, output: $output"
+        return
+    }
+
+    local wt_dir
+    wt_dir="$(echo "$output" | tail -1)"
+
+    local status_output
+    status_output="$(cd "$wt_dir" && "$GROVE_BIN" --plain cache --status 2>&1)"
+    if [[ "$status_output" != *"matched"* || "$status_output" != *"exclude"* ]]; then
+        fail "$desc" "unexpected cache status output: $status_output"
+        return
+    fi
+
+    local unlink_output
+    unlink_output="$(cd "$wt_dir" && "$GROVE_BIN" --plain cache --unlink 2>&1)"
+    if [[ "$unlink_output" != *"Unlinked 1 cache dir(s)"* ]]; then
+        fail "$desc" "unexpected unlink output: $unlink_output"
+        return
+    fi
+    if [[ -L "$wt_dir/.cache/public" ]]; then
+        fail "$desc" "expected resolved symlink to be removed"
+        return
+    fi
+
+    pass "$desc"
+    git -C "$WORK_REPO" worktree remove "$wt_dir" --force 2>/dev/null || true
+}
+
 # ── Main ─────────────────────────────────────────────────────────────────
 
 main() {
@@ -263,6 +374,9 @@ main() {
     test_remote_add_when_local_branch_exists
     test_remote_add_new_tracking_branch
     test_local_add_without_remote_flag
+    test_cache_literal_and_glob_rules
+    test_cache_negation_and_global_override
+    test_cache_status_and_unlink_follow_resolved_paths
 
     echo ""
     echo "--- Results: $PASS_COUNT passed, $FAIL_COUNT failed ---"

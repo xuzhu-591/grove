@@ -63,6 +63,18 @@ branch	/path/to/worktree	commit	staged=N	modified=N	untracked=N	ahead=N	behind=N
 
 Worktrees are organized as `{base}/{project}/{branch}`.
 
+### `.groverc`
+
+`grove add` reads rules from both `~/.groverc` and `<project>/.groverc` to decide which directories should be symlinked from the main worktree into the new one.
+
+Rules are matched against repo-relative directory paths. Supported syntax is a gitignore-like subset:
+
+- literal paths such as `node_modules`
+- glob rules such as `.cache/*` or `packages/*/node_modules`
+- negation rules such as `!.cache/private`
+
+Rules are evaluated in order. Project rules are read after global rules, so project rules override global ones when both match.
+
 ## Requirements
 
 - Bash 4+
