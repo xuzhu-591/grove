@@ -10,31 +10,44 @@ GROVE_ROOT="${GROVE_ROOT:-$(cd "$(dirname "${(%):-%x}")/.." && pwd)}"
 grove() {
     local grove_exec="${GROVE_ROOT}/bin/grove"
 
-    # Commands that might emit __GROVE_CD__ directive
+    # Commands that might need cd or interactive input
     case "${1:-}" in
         switch|cd|add|new|remove|rm)
-            local output rc
-            output=$("$grove_exec" "$@")
+            local _grove_cd_file _grove_read_file rc
+            _grove_cd_file=$(mktemp)
+            _grove_read_file=$(mktemp)
+            trap "rm -f '$_grove_cd_file' '$_grove_read_file'" INT TERM
+
+            GROVE_CD_FILE="$_grove_cd_file" \
+            GROVE_READ_FILE="$_grove_read_file" \
+                "$grove_exec" "$@"
             rc=$?
 
+            # Script requested interactive input (rc=201)
+            if [[ $rc -eq 201 && -s "$_grove_read_file" ]]; then
+                local _grove_prompt=$(<"$_grove_read_file")
+                local _grove_input=""
+                vared -p "$_grove_prompt" _grove_input
+                if [[ -n "$_grove_input" ]]; then
+                    GROVE_CD_FILE="$_grove_cd_file" \
+                        "$grove_exec" --plain add "$_grove_input" --create
+                    rc=$?
+                else
+                    rc=0
+                fi
+            fi
+
+            local cd_target=""
+            [[ -s "$_grove_cd_file" ]] && cd_target=$(<"$_grove_cd_file")
+            rm -f "$_grove_cd_file" "$_grove_read_file"
+            trap - INT TERM
+
             if [[ $rc -ne 0 ]]; then
-                # Error output already went to stderr; show any stdout too
-                [[ -n "$output" ]] && echo "$output"
                 return $rc
             fi
 
-            # Check last line for cd directive
-            local last_line="${output##*$'\n'}"
-            if [[ "$last_line" == __GROVE_CD__:* ]]; then
-                # Print everything except the cd directive
-                local rest="${output%$'\n'$last_line}"
-                [[ -n "$rest" && "$rest" != "$last_line" ]] && echo "$rest"
-                # Execute cd
-                local target_dir="${last_line#__GROVE_CD__:}"
-                builtin cd "$target_dir"
-            else
-                # No cd directive, print as-is
-                [[ -n "$output" ]] && echo "$output"
+            if [[ -n "$cd_target" ]]; then
+                builtin cd "$cd_target"
             fi
             ;;
         *)
