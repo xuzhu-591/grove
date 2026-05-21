@@ -1,0 +1,51 @@
+lib/add.sh
+  088bc868c098360b 110-111,117-120
+bin/grove
+  088bc868c098360b 7
+shell/grove.zsh
+  088bc868c098360b 13,16-23,26-43,49-50
+lib/common.sh
+  088bc868c098360b 108-110
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.8.preview.1",
+  "base_commit_sha": "9d2cfb246794f44c8fcdb4c46c4f0220e7b56aab",
+  "prompts": {
+    "088bc868c098360b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "11f63de0-c78b-4bb8-882b-a3f67eee6ff4",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 75,
+      "total_deletions": 68,
+      "accepted_lines": 41,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "bin/grove": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "shell/grove.zsh": {
+          "additions": 52,
+          "deletions": 39,
+          "accepted_lines": 30
+        },
+        "lib/add.sh": {
+          "additions": 17,
+          "deletions": 25,
+          "accepted_lines": 6
+        },
+        "lib/common.sh": {
+          "additions": 5,
+          "deletions": 3,
+          "accepted_lines": 4
+        }
+      }
+    }
+  }
+}
