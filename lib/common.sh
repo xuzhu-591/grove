@@ -105,7 +105,9 @@ grove_main_worktree_dir() {
 # ---------- CD directive ----------
 grove_emit_cd() {
     local dir="$1"
-    if [[ "$GROVE_PLAIN" == true ]]; then
+    if [[ -n "${GROVE_CD_FILE:-}" ]]; then
+        echo "$dir" > "$GROVE_CD_FILE"
+    elif [[ "$GROVE_PLAIN" == true ]]; then
         echo "$dir"
     else
         echo "__GROVE_CD__:${dir}"

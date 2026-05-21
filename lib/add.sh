@@ -107,25 +107,17 @@ _grove_add_fzf() {
         grove_emit_cd "$wt_dir"
         return
     else
-        echo -n "New branch name: " >&2
-        read -r branch </dev/tty
-        [[ -z "$branch" ]] && return 0
+        echo "New branch name: " > "${GROVE_READ_FILE:-/dev/null}"
+        return 201
     fi
 
     local wt_dir
     wt_dir=$(grove_worktree_path "$branch") || return 1
 
-    if [[ "$action" == "new branch" ]]; then
-        git worktree add -b "$branch" "$wt_dir" >&2 || {
-            grove_error "grove add: failed"
-            return 1
-        }
-    else
-        git worktree add "$wt_dir" "$branch" >&2 || {
-            grove_error "grove add: failed"
-            return 1
-        }
-    fi
+    git worktree add "$wt_dir" "$branch" >&2 || {
+        grove_error "grove add: failed"
+        return 1
+    }
 
     grove_info "Created: $wt_dir"
     _grove_post_add "$wt_dir"
