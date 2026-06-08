@@ -1,0 +1,1516 @@
+crates/grove/tests/add_tests.rs
+  63b0233db45e4b62 25-28
+crates/grove/tests/helpers/mod.rs
+  63b0233db45e4b62 4,11
+crates/grove-core/src/cache.rs
+  63b0233db45e4b62 19,84-85
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "459ccc66532843368608231f3e95228365302bfe",
+  "prompts": {
+    "63b0233db45e4b62": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ffadfa3-4cc4-49eb-87f9-d90f91a2d2f1",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 9,
+      "total_deletions": 13,
+      "accepted_lines": 2178,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "target/debug/.fingerprint/tempfile-fb7297b7079e9240/lib-tempfile.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-6d9fbea1d92c12ae/lib-dirs.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot-0b53cbfae0df9031/lib-parking_lot": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-288fa2a08e10f745/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-6ed9591127a1b6f3/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/option-ext-569a564fdf3f334f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/thiserror-f6e22fa36e9dcda1.d": {
+          "accepted_lines": 9
+        },
+        "target/debug/.fingerprint/toml_datetime-ee2b9786b3e20347/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/clap-cb4377731ed4eaae.d": {
+          "accepted_lines": 9
+        },
+        "target/debug/.fingerprint/console-c567a477e7e91012/lib-console.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/errno-564fa275fa706419.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/deps/list_tests-7a5e2c2dca64380e.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/parking_lot_core-6832ab796be4be4e/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/rustix-5d7f3b1c915ea08f/build_script_build-5d7f3b1c915ea08f.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/newline-converter-a2f3767b7fdaf870/lib-newline_converter": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap_lex-ff48407295abe431/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/once_cell-a3c870353a5f2150/lib-once_cell": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde-258665a108843663/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fuzzy-matcher-6467595f18551d26/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/anstyle_parse-dd95ffdf55595417.d": {
+          "accepted_lines": 11
+        },
+        "target/debug/.fingerprint/libc-e9aa4decb4d275de/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap_lex-ff48407295abe431/lib-clap_lex.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fastrand-501d863df18959b6/lib-fastrand": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/cfg-if-0ae1c8e84680e82e/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/grove.d": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-d82dafe99edd55ef/test-integration-test-add_tests.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/cache_tests-13af66ad3ae16d36.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/quote-c70793a7d92755e0/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/thiserror-0131d91ae01a690f/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-bf80cd9a3b2a42a4/bin-grove.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fastrand-501d863df18959b6/lib-fastrand.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/anyhow-d967057818ef337f.d": {
+          "accepted_lines": 17
+        },
+        "target/debug/.fingerprint/toml-c240b94c982d766a/lib-toml.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot-0b53cbfae0df9031/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-impl-a293820f9da0c20d/lib-thiserror_impl": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/parking_lot_core-a7c87d00cc73c1ec/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/signal-hook-474d247bcb237f00/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-3b6c97c95c981d64/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/colorchoice-3d6c94c803300789.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/deps/rustix-fd3d4b3f03c9c921.d": {
+          "accepted_lines": 59
+        },
+        "target/debug/.fingerprint/signal-hook-mio-4d666e9a0dd4968a/lib-signal_hook_mio": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/is_terminal_polyfill-445bff4e05a4720f/lib-is_terminal_polyfill": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap_builder-65807049d133e591/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/bitflags-c470df78d030ae0f/lib-bitflags": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-8333fc1648c187f1/lib-serde": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/mio-75e966552a98dba1/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-3b6c97c95c981d64/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-sys-995f79728428af80/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/byteorder-f4ebe7b43782c067/lib-byteorder": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-5d2c683c0e7f9118/test-lib-grove_core.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anyhow-70cd94bdc0ada339/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/libc-ff35aac0c372988d/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/once_cell-4054bdf643a3a600/lib-once_cell": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/clap_derive-3e7392e817fd08e4.d": {
+          "accepted_lines": 21
+        },
+        "target/debug/deps/bitflags-c470df78d030ae0f.d": {
+          "accepted_lines": 13
+        },
+        "target/debug/.fingerprint/syn-ccbb04b1b7167c2c/lib-syn.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_edit-639fb5f1421270c7/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/strsim-2fd4c6f964b07a8b.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/grove-9fb35586803843d9/output-test-integration-test-switch_tests": {
+          "accepted_lines": 3
+        },
+        "target/debug/.fingerprint/signal-hook-a6a0940aea6cc6a2/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/inquire-aa2530bec61ad2c4/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-13af66ad3ae16d36/output-test-integration-test-cache_tests": {
+          "accepted_lines": 3
+        },
+        "target/debug/.fingerprint/thiserror-dd6c6de9cd885cba/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml-c240b94c982d766a/lib-toml": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/signal-hook-a6a0940aea6cc6a2/build_script_build-a6a0940aea6cc6a2.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/deps/unicode_segmentation-e4c4400a0f940d95.d": {
+          "accepted_lines": 11
+        },
+        "target/debug/.fingerprint/crossterm-ccefd3a76e76d249/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/mio-75e966552a98dba1/lib-mio": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/syn-ee2ac9864e7d6018/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/tempfile-fb7297b7079e9240.d": {
+          "accepted_lines": 17
+        },
+        "target/debug/deps/anstyle_query-e9e894ddb52c2c48.d": {
+          "accepted_lines": 8
+        },
+        "target/CACHEDIR.TAG": {
+          "accepted_lines": 3
+        },
+        "target/debug/.fingerprint/bitflags-1530101c9ae1c8e0/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/toml_datetime-ee2b9786b3e20347.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/deps/log-c7d8296ebba1bf31.d": {
+          "accepted_lines": 10
+        },
+        "target/debug/deps/signal_hook-44b408f0e4e9244d.d": {
+          "accepted_lines": 16
+        },
+        "target/debug/.fingerprint/proc-macro2-78dea9461882b558/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/rustix-ecf161b42709b256.d": {
+          "accepted_lines": 59
+        },
+        "target/debug/.fingerprint/tempfile-fb7297b7079e9240/lib-tempfile": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/lock_api-ab9272809972542c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/equivalent-db868c7169d84e3b/lib-equivalent.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/fxhash-e9fd9ad71be1eec0.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/deps/fuzzy_matcher-6467595f18551d26.d": {
+          "accepted_lines": 10
+        },
+        "target/debug/deps/crossterm-ccefd3a76e76d249.d": {
+          "accepted_lines": 38
+        },
+        "target/debug/deps/unicode_width-123436391015352c.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/deps/toml_datetime-854e32b1ef281049.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/grove-7a5e2c2dca64380e/test-integration-test-list_tests": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/scopeguard-2e694ad3e3154269/lib-scopeguard": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/equivalent-db868c7169d84e3b.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/signal-hook-a6a0940aea6cc6a2/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/scopeguard-2e694ad3e3154269/lib-scopeguard.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot_core-6832ab796be4be4e/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-a77b955f4448988c/test-bin-grove": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/inquire-6b3067b03926577d.d": {
+          "accepted_lines": 57
+        },
+        "target/debug/.fingerprint/lock_api-ab9272809972542c/lib-lock_api.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_spanned-7465e4707591143a/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot_core-6832ab796be4be4e/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_datetime-854e32b1ef281049/lib-toml_datetime.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/unicode_width-fd5e2d1944d995e4.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/build/serde_core-4e61cbbdc4ff3098/out/private.rs": {
+          "accepted_lines": 5
+        },
+        "target/debug/deps/serde_spanned-3a47a174e92354bf.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/signal-hook-a6a0940aea6cc6a2/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "crates/grove-core/src/cache.rs": {
+          "additions": 3,
+          "deletions": 5,
+          "accepted_lines": 3
+        },
+        "target/debug/.fingerprint/serde_derive-d5981230ecf1036c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/heck-8d88815e63637fb1/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_edit-1e6f7ee0d60459ff/lib-toml_edit.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anyhow-d967057818ef337f/lib-anyhow.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/strsim-2fd4c6f964b07a8b/lib-strsim": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/strsim-2fd4c6f964b07a8b/lib-strsim.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde-258665a108843663/output": {
+          "accepted_lines": 13
+        },
+        "target/debug/.fingerprint/quote-219ddb02c0f8464f/lib-quote.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/anyhow-70cd94bdc0ada339/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-6ed9591127a1b6f3/lib-proc_macro2": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anstream-3c98c03950740d34/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/log-c7d8296ebba1bf31/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/remove_tests-0329b731fc03939c.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/proc-macro2-6ed9591127a1b6f3/lib-proc_macro2.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/indexmap-e829eff5a7228406.d": {
+          "accepted_lines": 23
+        },
+        "target/debug/.fingerprint/grove-core-5d2c683c0e7f9118/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-5f9b76f302439b8a/lib-serde_core.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-f6e22fa36e9dcda1/lib-thiserror": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap_derive-3e7392e817fd08e4/lib-clap_derive.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/dirs-6d9fbea1d92c12ae.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/once_cell-4054bdf643a3a600/lib-once_cell.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-width-fd5e2d1944d995e4/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml-7c3ec934949d7dc1/lib-toml.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/clap_lex-ff48407295abe431.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/grove-0329b731fc03939c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anstyle-query-e9e894ddb52c2c48/lib-anstyle_query": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/signal-hook-mio-4d666e9a0dd4968a/lib-signal_hook_mio.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/signal-hook-474d247bcb237f00/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/toml_edit-1e6f7ee0d60459ff.d": {
+          "accepted_lines": 50
+        },
+        "target/debug/.fingerprint/unicode-segmentation-e4c4400a0f940d95/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/smallvec-9861fba14f98f253/lib-smallvec.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/errno-564fa275fa706419/lib-errno.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-width-123436391015352c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/cfg-if-0ae1c8e84680e82e/lib-cfg_if.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_derive-d5981230ecf1036c/lib-serde_derive.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-e9aa4decb4d275de/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/inquire-6b3067b03926577d/lib-inquire": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-ecf161b42709b256/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-f6e22fa36e9dcda1/lib-thiserror.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anstream-3c98c03950740d34/lib-anstream": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/console-c567a477e7e91012/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/quote-219ddb02c0f8464f.d": {
+          "accepted_lines": 13
+        },
+        "target/debug/.fingerprint/winnow-71e6cc11d48dfc39/lib-winnow": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fastrand-501d863df18959b6/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-d82dafe99edd55ef/test-integration-test-add_tests": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/anstyle-8fd51f8da57948fc.d": {
+          "accepted_lines": 12
+        },
+        "target/debug/.fingerprint/syn-ccbb04b1b7167c2c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/newline_converter-a2f3767b7fdaf870.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/build/serde-d1ce05261c883019/build_script_build-d1ce05261c883019.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/deps/unicode_ident-eac911d12ba49da7.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/getrandom-3b6c97c95c981d64/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fuzzy-matcher-6467595f18551d26/lib-fuzzy_matcher": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/add_tests-d82dafe99edd55ef.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/build/thiserror-dd6c6de9cd885cba/build_script_build-dd6c6de9cd885cba.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/build/serde_core-4e61cbbdc4ff3098/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/syn-ee2ac9864e7d6018/lib-syn": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_write-7c3cdd3f51be7999/lib-toml_write.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-6c21111b1381442e/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/is_terminal_polyfill-445bff4e05a4720f.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/log-c7d8296ebba1bf31/lib-log.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-7e92907fc28d6d83/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/bitflags-1530101c9ae1c8e0/lib-bitflags": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-3cd0dd65eaf5b592/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/syn-ee2ac9864e7d6018.d": {
+          "accepted_lines": 53
+        },
+        "target/debug/.fingerprint/inquire-aa2530bec61ad2c4/lib-inquire": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-a77b955f4448988c/test-bin-grove.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-ident-eac911d12ba49da7/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/bitflags-891a542d5314e5d2/lib-bitflags.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-5d7f3b1c915ea08f/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-ident-eac911d12ba49da7/lib-unicode_ident": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fxhash-e9fd9ad71be1eec0/lib-fxhash": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-impl-a293820f9da0c20d/lib-thiserror_impl.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/proc-macro2-78dea9461882b558/build_script_build-78dea9461882b558.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/bitflags-c470df78d030ae0f/lib-bitflags.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/getrandom-3b6c97c95c981d64/build_script_build-3b6c97c95c981d64.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/signal-hook-registry-c87696b4cdd4f3f9/lib-signal_hook_registry.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-aa50def7f9f19485/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/signal-hook-474d247bcb237f00/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_edit-1e6f7ee0d60459ff/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-3cd0dd65eaf5b592/test-lib-grove_core": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/cfg-if-0ae1c8e84680e82e/lib-cfg_if": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/once_cell-4054bdf643a3a600.d": {
+          "accepted_lines": 9
+        },
+        "target/debug/deps/utf8parse-eeaf22f230c1fb6b.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/anstyle-query-e9e894ddb52c2c48/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-258665a108843663/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/option-ext-569a564fdf3f334f/lib-option_ext.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/getrandom-7e92907fc28d6d83/output": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/serde_derive-d5981230ecf1036c.d": {
+          "accepted_lines": 34
+        },
+        "target/debug/.fingerprint/colorchoice-3d6c94c803300789/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-8333fc1648c187f1/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dyn-clone-e346daa8fde3d971/lib-dyn_clone": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/dyn_clone-e346daa8fde3d971.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/deps/scopeguard-2e694ad3e3154269.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/deps/thiserror-7713f00b403fe54d.d": {
+          "accepted_lines": 9
+        },
+        "target/debug/build/rustix-3f78019452a6f8e7/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/smallvec-9861fba14f98f253/lib-smallvec": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/libc-e9aa4decb4d275de/build_script_build-e9aa4decb4d275de.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/build/thiserror-0131d91ae01a690f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_edit-1e6f7ee0d60459ff/lib-toml_edit": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-width-123436391015352c/lib-unicode_width": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/scopeguard-2e694ad3e3154269/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/signal_hook_mio-4d666e9a0dd4968a.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/anyhow-d967057818ef337f/lib-anyhow": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_edit-639fb5f1421270c7/lib-toml_edit.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/cfg_if-0ae1c8e84680e82e.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/byteorder-f4ebe7b43782c067/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-ff35aac0c372988d/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-7713f00b403fe54d/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-0329b731fc03939c/test-integration-test-remove_tests": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/libc-288fa2a08e10f745.d": {
+          "accepted_lines": 45
+        },
+        "target/debug/.fingerprint/serde_spanned-3a47a174e92354bf/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-258665a108843663/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-ecf161b42709b256/lib-rustix.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anyhow-1973ce3adc01d0da/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/inquire-aa2530bec61ad2c4/lib-inquire.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/errno-a57adda38e92ca10.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/clap_derive-3e7392e817fd08e4/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/signal-hook-44b408f0e4e9244d/lib-signal_hook.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde_core-c9c71f116f26aaba/build_script_build-c9c71f116f26aaba.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/toml_write-7c3cdd3f51be7999/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/grove_core-8f978a58a0990986.d": {
+          "accepted_lines": 14
+        },
+        "target/debug/.fingerprint/shellexpand-95b257f3d027cc11/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-7a5e2c2dca64380e/test-integration-test-list_tests.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/grove_core-3cd0dd65eaf5b592.d": {
+          "accepted_lines": 12
+        },
+        "target/debug/.fingerprint/anstyle-8fd51f8da57948fc/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/hashbrown-918ce8e33f7e30ee/lib-hashbrown.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/serde_spanned-7465e4707591143a.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/deps/grove_core-95531fd0a0396684.d": {
+          "accepted_lines": 14
+        },
+        "target/debug/build/quote-c70793a7d92755e0/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_spanned-7465e4707591143a/lib-serde_spanned": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/tempfile-fb7297b7079e9240/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/tempfile-28864e5905004f14/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/errno-a57adda38e92ca10/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-ident-eac911d12ba49da7/lib-unicode_ident.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-c9c71f116f26aaba/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-3f78019452a6f8e7/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-9fb35586803843d9/test-integration-test-switch_tests.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-d82dafe99edd55ef/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anyhow-70cd94bdc0ada339/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-aa50def7f9f19485/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/smallvec-9861fba14f98f253.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/build/parking_lot_core-a7c87d00cc73c1ec/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-c9c71f116f26aaba/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/serde-e4b5f957288a2d7e.d": {
+          "accepted_lines": 14
+        },
+        "target/debug/.fingerprint/clap-cb4377731ed4eaae/lib-clap.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-bf80cd9a3b2a42a4/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/clap_builder-65807049d133e591.d": {
+          "accepted_lines": 61
+        },
+        "target/debug/deps/console-c567a477e7e91012.d": {
+          "accepted_lines": 13
+        },
+        "target/debug/build/proc-macro2-aa50def7f9f19485/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_datetime-854e32b1ef281049/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/heck-8d88815e63637fb1.d": {
+          "accepted_lines": 15
+        },
+        "target/debug/deps/serde-8333fc1648c187f1.d": {
+          "accepted_lines": 14
+        },
+        "target/debug/build/quote-c70793a7d92755e0/output": {
+          "accepted_lines": 2
+        },
+        "target/debug/.fingerprint/serde_core-5f9b76f302439b8a/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-c9c71f116f26aaba/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-6c21111b1381442e/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-3da08b443367db53/output-bin-grove": {
+          "accepted_lines": 2
+        },
+        "target/debug/.fingerprint/serde_derive-d5981230ecf1036c/lib-serde_derive": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-6c21111b1381442e/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/toml-c240b94c982d766a.d": {
+          "accepted_lines": 20
+        },
+        "target/debug/.fingerprint/utf8parse-eeaf22f230c1fb6b/lib-utf8parse.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/toml_write-7c3cdd3f51be7999.d": {
+          "accepted_lines": 11
+        },
+        "target/debug/.fingerprint/is_terminal_polyfill-445bff4e05a4720f/lib-is_terminal_polyfill.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/once_cell-4054bdf643a3a600/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde_core-4e61cbbdc4ff3098/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/option-ext-569a564fdf3f334f/lib-option_ext": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde-258665a108843663/out/private.rs": {
+          "accepted_lines": 6
+        },
+        "target/debug/.fingerprint/bitflags-c470df78d030ae0f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-width-fd5e2d1944d995e4/lib-unicode_width.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/signal-hook-registry-c87696b4cdd4f3f9/lib-signal_hook_registry": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dyn-clone-e346daa8fde3d971/lib-dyn_clone.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/tempfile-28864e5905004f14/lib-tempfile.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/crossterm-ccefd3a76e76d249/lib-crossterm": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-0329b731fc03939c/test-integration-test-remove_tests.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/dirs_sys-995f79728428af80.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/deps/serde_derive-1af2eeb70f03f854.d": {
+          "accepted_lines": 34
+        },
+        "target/.rustc_info.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml-c240b94c982d766a/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/libc-ff35aac0c372988d/output": {
+          "accepted_lines": 27
+        },
+        "target/debug/.fingerprint/grove-core-95531fd0a0396684/lib-grove_core": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dyn-clone-e346daa8fde3d971/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-sys-995f79728428af80/lib-dirs_sys": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-9fb35586803843d9/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/toml_edit-639fb5f1421270c7.d": {
+          "accepted_lines": 50
+        },
+        "target/debug/.fingerprint/grove-core-8f978a58a0990986/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-7713f00b403fe54d/lib-thiserror": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-impl-a293820f9da0c20d/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/shellexpand-95b257f3d027cc11/lib-shellexpand": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/parking_lot_core-6832ab796be4be4e/build_script_build-6832ab796be4be4e.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/deps/grove-a77b955f4448988c.d": {
+          "accepted_lines": 10
+        },
+        "target/debug/libgrove_core.d": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thread_local-fb62798ba8a381df/lib-thread_local": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/inquire-aa2530bec61ad2c4.d": {
+          "accepted_lines": 57
+        },
+        "target/debug/.fingerprint/libc-ff35aac0c372988d/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-78dea9461882b558/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/thiserror_impl-f298fb10c5b3cda0.d": {
+          "accepted_lines": 14
+        },
+        "target/debug/deps/tempfile-28864e5905004f14.d": {
+          "accepted_lines": 17
+        },
+        "target/debug/deps/syn-ccbb04b1b7167c2c.d": {
+          "accepted_lines": 49
+        },
+        "target/debug/.fingerprint/grove-13af66ad3ae16d36/test-integration-test-cache_tests.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_edit-639fb5f1421270c7/lib-toml_edit": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-ecf161b42709b256/lib-rustix": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap_builder-65807049d133e591/lib-clap_builder.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/grove_core-5d2c683c0e7f9118.d": {
+          "accepted_lines": 12
+        },
+        "target/debug/deps/toml-7c3ec934949d7dc1.d": {
+          "accepted_lines": 20
+        },
+        "target/debug/.fingerprint/serde_core-4e61cbbdc4ff3098/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/signal-hook-474d247bcb237f00/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-8f978a58a0990986/lib-grove_core": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/rustix-3f78019452a6f8e7/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap-cb4377731ed4eaae/lib-clap": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/inquire-6b3067b03926577d/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anstyle-parse-dd95ffdf55595417/lib-anstyle_parse.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot_core-6d8a8289b9089508/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/hashbrown-918ce8e33f7e30ee.d": {
+          "accepted_lines": 22
+        },
+        "target/debug/.fingerprint/thiserror-0131d91ae01a690f/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-sys-995f79728428af80/lib-dirs_sys.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-7713f00b403fe54d/lib-thiserror.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot-0b53cbfae0df9031/lib-parking_lot.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-fd3d4b3f03c9c921/lib-rustix": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fuzzy-matcher-6467595f18551d26/lib-fuzzy_matcher.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot_core-6d8a8289b9089508/lib-parking_lot_core.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/indexmap-e829eff5a7228406/lib-indexmap": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anstyle-parse-dd95ffdf55595417/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_datetime-ee2b9786b3e20347/lib-toml_datetime.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/winnow-71e6cc11d48dfc39.d": {
+          "accepted_lines": 34
+        },
+        "target/debug/deps/thread_local-fb62798ba8a381df.d": {
+          "accepted_lines": 10
+        },
+        "target/debug/.fingerprint/fxhash-e9fd9ad71be1eec0/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/anyhow-70cd94bdc0ada339/output": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/bitflags-1530101c9ae1c8e0/lib-bitflags.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-78dea9461882b558/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/newline-converter-a2f3767b7fdaf870/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-impl-f298fb10c5b3cda0/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-d1ce05261c883019/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-d1ce05261c883019/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-fd3d4b3f03c9c921/lib-rustix.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-3f78019452a6f8e7/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap-cb4377731ed4eaae/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/anstream-3c98c03950740d34.d": {
+          "accepted_lines": 16
+        },
+        "target/debug/deps/once_cell-a3c870353a5f2150.d": {
+          "accepted_lines": 9
+        },
+        "target/debug/.fingerprint/grove-7a5e2c2dca64380e/output-test-integration-test-list_tests": {
+          "accepted_lines": 3
+        },
+        "target/debug/.fingerprint/grove-13af66ad3ae16d36/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-775f2c69dd61ef5c/lib-getrandom": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-219ddb02c0f8464f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anyhow-d967057818ef337f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/console-c567a477e7e91012/lib-console": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/signal-hook-44b408f0e4e9244d/lib-signal_hook": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/quote-c70793a7d92755e0/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-dd6c6de9cd885cba/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/quote-6c21111b1381442e/build_script_build-6c21111b1381442e.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/unicode-width-fd5e2d1944d995e4/lib-unicode_width": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/byteorder-f4ebe7b43782c067.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/quote-c70793a7d92755e0/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/mio-75e966552a98dba1/lib-mio.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_datetime-854e32b1ef281049/lib-toml_datetime": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde-258665a108843663/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/winnow-71e6cc11d48dfc39/lib-winnow.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_datetime-ee2b9786b3e20347/lib-toml_datetime": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_spanned-3a47a174e92354bf/lib-serde_spanned": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-0131d91ae01a690f/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/utf8parse-eeaf22f230c1fb6b/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-a77b955f4448988c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/fastrand-501d863df18959b6.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/serde_derive-1af2eeb70f03f854/lib-serde_derive": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-e4b5f957288a2d7e/lib-serde.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/serde_core-5f9b76f302439b8a.d": {
+          "accepted_lines": 27
+        },
+        "target/debug/build/parking_lot_core-a7c87d00cc73c1ec/output": {
+          "accepted_lines": 2
+        },
+        "target/debug/.fingerprint/grove-core-3cd0dd65eaf5b592/test-lib-grove_core.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/bitflags-891a542d5314e5d2/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/colorchoice-3d6c94c803300789/lib-colorchoice.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/proc-macro2-aa50def7f9f19485/output": {
+          "accepted_lines": 23
+        },
+        "target/debug/.fingerprint/serde_derive-1af2eeb70f03f854/lib-serde_derive.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_spanned-3a47a174e92354bf/lib-serde_spanned.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/bitflags-891a542d5314e5d2.d": {
+          "accepted_lines": 13
+        },
+        "target/debug/.fingerprint/serde-8333fc1648c187f1/lib-serde.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/parking_lot-0b53cbfae0df9031.d": {
+          "accepted_lines": 19
+        },
+        "target/debug/.fingerprint/anstyle-8fd51f8da57948fc/lib-anstyle": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-bf80cd9a3b2a42a4/bin-grove": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/shellexpand-95b257f3d027cc11.d": {
+          "accepted_lines": 10
+        },
+        "target/debug/deps/bitflags-1530101c9ae1c8e0.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/rustix-5d7f3b1c915ea08f/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/signal_hook_registry-c87696b4cdd4f3f9.d": {
+          "accepted_lines": 9
+        },
+        "target/debug/.fingerprint/thiserror-dd6c6de9cd885cba/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-a77b955f4448988c/output-test-bin-grove": {
+          "accepted_lines": 2
+        },
+        "crates/grove/tests/add_tests.rs": {
+          "additions": 4,
+          "deletions": 8,
+          "accepted_lines": 4
+        },
+        "target/debug/build/proc-macro2-aa50def7f9f19485/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap_derive-3e7392e817fd08e4/lib-clap_derive": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_spanned-7465e4707591143a/lib-serde_spanned.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/rustix-3f78019452a6f8e7/output": {
+          "accepted_lines": 12
+        },
+        "target/debug/build/thiserror-0131d91ae01a690f/output": {
+          "accepted_lines": 4
+        },
+        "target/debug/build/libc-ff35aac0c372988d/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-288fa2a08e10f745/lib-libc": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-width-123436391015352c/lib-unicode_width.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/getrandom-7e92907fc28d6d83/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/errno-564fa275fa706419/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/colorchoice-3d6c94c803300789/lib-colorchoice": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/lock_api-ab9272809972542c/lib-lock_api": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/mio-75e966552a98dba1.d": {
+          "accepted_lines": 41
+        },
+        "target/debug/.fingerprint/errno-a57adda38e92ca10/lib-errno.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/signal-hook-44b408f0e4e9244d/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-impl-f298fb10c5b3cda0/lib-thiserror_impl": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/signal-hook-registry-c87696b4cdd4f3f9/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/getrandom-775f2c69dd61ef5c.d": {
+          "accepted_lines": 13
+        },
+        "target/debug/.fingerprint/thread_local-fb62798ba8a381df/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thread_local-fb62798ba8a381df/lib-thread_local.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/indexmap-e829eff5a7228406/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/signal-hook-mio-4d666e9a0dd4968a/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-7a5e2c2dca64380e/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-5f9b76f302439b8a/lib-serde_core": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-f6e22fa36e9dcda1/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/once_cell-a3c870353a5f2150/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml-7c3ec934949d7dc1/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_derive-1af2eeb70f03f854/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-4e61cbbdc4ff3098/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anyhow-1973ce3adc01d0da/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-fd3d4b3f03c9c921/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/proc_macro2-6ed9591127a1b6f3.d": {
+          "accepted_lines": 17
+        },
+        "target/debug/.fingerprint/toml_write-7c3cdd3f51be7999/lib-toml_write": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-5d2c683c0e7f9118/test-lib-grove_core": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-3da08b443367db53/bin-grove": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/heck-8d88815e63637fb1/lib-heck.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anstyle-8fd51f8da57948fc/lib-anstyle.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anstream-3c98c03950740d34/lib-anstream.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-e9aa4decb4d275de/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anyhow-1973ce3adc01d0da/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-6d9fbea1d92c12ae/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/log-c7d8296ebba1bf31/lib-log": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/bitflags-891a542d5314e5d2/lib-bitflags": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/grove-3da08b443367db53.d": {
+          "accepted_lines": 10
+        },
+        "target/debug/.fingerprint/byteorder-f4ebe7b43782c067/lib-byteorder.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/hashbrown-918ce8e33f7e30ee/lib-hashbrown": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-impl-f298fb10c5b3cda0/lib-thiserror_impl.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-e4b5f957288a2d7e/lib-serde": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/heck-8d88815e63637fb1/lib-heck": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-5d7f3b1c915ea08f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/hashbrown-918ce8e33f7e30ee/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/tempfile-28864e5905004f14/lib-tempfile": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fxhash-e9fd9ad71be1eec0/lib-fxhash.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/lock_api-ab9272809972542c.d": {
+          "accepted_lines": 10
+        },
+        "target/debug/.fingerprint/errno-564fa275fa706419/lib-errno": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-219ddb02c0f8464f/lib-quote": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml-7c3ec934949d7dc1/lib-toml": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/thiserror_impl-a293820f9da0c20d.d": {
+          "accepted_lines": 14
+        },
+        "target/debug/deps/option_ext-569a564fdf3f334f.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/grove-d82dafe99edd55ef/output-test-integration-test-add_tests": {
+          "accepted_lines": 3
+        },
+        "target/debug/.fingerprint/errno-a57adda38e92ca10/lib-errno": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/grove-bf80cd9a3b2a42a4.d": {
+          "accepted_lines": 10
+        },
+        "target/debug/.fingerprint/syn-ccbb04b1b7167c2c/lib-syn": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/winnow-71e6cc11d48dfc39/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/utf8parse-eeaf22f230c1fb6b/lib-utf8parse": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-288fa2a08e10f745/lib-libc.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-775f2c69dd61ef5c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-95531fd0a0396684/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-9fb35586803843d9/test-integration-test-switch_tests": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/strsim-2fd4c6f964b07a8b/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde_core-4e61cbbdc4ff3098/output": {
+          "accepted_lines": 11
+        },
+        "target/debug/.fingerprint/serde-e4b5f957288a2d7e/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot_core-a7c87d00cc73c1ec/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-6d9fbea1d92c12ae/lib-dirs": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/is_terminal_polyfill-445bff4e05a4720f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-d1ce05261c883019/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/smallvec-9861fba14f98f253/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-8f978a58a0990986/lib-grove_core.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot_core-a7c87d00cc73c1ec/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-segmentation-e4c4400a0f940d95/lib-unicode_segmentation": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-95531fd0a0396684/lib-grove_core.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/syn-ee2ac9864e7d6018/lib-syn.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/equivalent-db868c7169d84e3b/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-13af66ad3ae16d36/test-integration-test-cache_tests": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/newline-converter-a2f3767b7fdaf870/lib-newline_converter.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/indexmap-e829eff5a7228406/lib-indexmap.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap_builder-65807049d133e591/lib-clap_builder": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/parking_lot_core-6d8a8289b9089508/lib-parking_lot_core": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/anyhow-1973ce3adc01d0da/build_script_build-1973ce3adc01d0da.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/once_cell-a3c870353a5f2150/lib-once_cell.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-3da08b443367db53/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anstyle-query-e9e894ddb52c2c48/lib-anstyle_query.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/inquire-6b3067b03926577d/lib-inquire.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-7e92907fc28d6d83/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/crossterm-ccefd3a76e76d249/lib-crossterm.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/anstyle-parse-dd95ffdf55595417/lib-anstyle_parse": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/shellexpand-95b257f3d027cc11/lib-shellexpand.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/equivalent-db868c7169d84e3b/lib-equivalent": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-segmentation-e4c4400a0f940d95/lib-unicode_segmentation.json": {
+          "accepted_lines": 1
+        },
+        "crates/grove/tests/helpers/mod.rs": {
+          "additions": 2,
+          "accepted_lines": 2
+        },
+        "target/debug/.fingerprint/getrandom-775f2c69dd61ef5c/lib-getrandom.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/clap_lex-ff48407295abe431/lib-clap_lex": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-0329b731fc03939c/output-test-integration-test-remove_tests": {
+          "accepted_lines": 4
+        },
+        "target/debug/build/getrandom-7e92907fc28d6d83/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/anyhow-70cd94bdc0ada339/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/parking_lot_core-6d8a8289b9089508.d": {
+          "accepted_lines": 13
+        },
+        "target/debug/deps/switch_tests-9fb35586803843d9.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/grove-3da08b443367db53/bin-grove.json": {
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
