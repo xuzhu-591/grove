@@ -11,7 +11,7 @@ name = "grove"
 path = "src/main.rs"
 
 [dependencies]
-grove-core = { path = "../grove-core" }
+grove-core = { path = "../grove-core", version = "0.1.0" }
 clap = { version = "4", features = ["derive"] }
 inquire = "0.7"
 console = "0.15"
