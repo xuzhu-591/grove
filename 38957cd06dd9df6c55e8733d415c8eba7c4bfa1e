@@ -1,0 +1,30 @@
+crates/grove/Cargo.toml
+  63b0233db45e4b62 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "38957cd06dd9df6c55e8733d415c8eba7c4bfa1e",
+  "prompts": {
+    "63b0233db45e4b62": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ffadfa3-4cc4-49eb-87f9-d90f91a2d2f1",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "crates/grove/Cargo.toml": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
