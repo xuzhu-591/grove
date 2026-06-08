@@ -1,0 +1,690 @@
+crates/grove-core/src/config.rs
+  63b0233db45e4b62 1-147
+crates/grove-core/src/pattern.rs
+  63b0233db45e4b62 1-318
+crates/grove-core/src/cache.rs
+  63b0233db45e4b62 1-127
+crates/grove-core/src/git.rs
+  63b0233db45e4b62 1-211
+crates/grove-core/src/worktree.rs
+  63b0233db45e4b62 1-200
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "3323146cfa43e41d57e0019e6692e5872fce3bb9",
+  "prompts": {
+    "63b0233db45e4b62": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ffadfa3-4cc4-49eb-87f9-d90f91a2d2f1",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 1010,
+      "total_deletions": 8,
+      "accepted_lines": 1916,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "target/debug/.fingerprint/tempfile-28864e5905004f14/lib-tempfile": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_spanned-3a47a174e92354bf/lib-serde_spanned": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-e4b5f957288a2d7e/lib-serde": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_write-7c3cdd3f51be7999/lib-toml_write.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/bitflags-c470df78d030ae0f/lib-bitflags.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-fd3d4b3f03c9c921/lib-rustix.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/quote-c70793a7d92755e0/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-288fa2a08e10f745/lib-libc.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-d1ce05261c883019/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-288fa2a08e10f745/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-dd6c6de9cd885cba/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde_core-4e61cbbdc4ff3098/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-219ddb02c0f8464f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-dd6c6de9cd885cba/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml-7c3ec934949d7dc1/lib-toml": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-4e61cbbdc4ff3098/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/quote-c70793a7d92755e0/output": {
+          "accepted_lines": 2
+        },
+        "target/debug/deps/fastrand-501d863df18959b6.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/thiserror-7713f00b403fe54d/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/equivalent-db868c7169d84e3b/lib-equivalent.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-fd3d4b3f03c9c921/lib-rustix": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/thiserror-0131d91ae01a690f/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/syn-ccbb04b1b7167c2c/lib-syn": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-e9aa4decb4d275de/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-3cd0dd65eaf5b592/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-aa50def7f9f19485/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-5d7f3b1c915ea08f/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/proc-macro2-78dea9461882b558/build_script_build-78dea9461882b558.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/equivalent-db868c7169d84e3b/lib-equivalent": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-219ddb02c0f8464f/lib-quote": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-5f9b76f302439b8a/lib-serde_core.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/cfg_if-0ae1c8e84680e82e.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/cfg-if-0ae1c8e84680e82e/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/getrandom-775f2c69dd61ef5c.d": {
+          "accepted_lines": 13
+        },
+        "target/debug/.fingerprint/serde_derive-d5981230ecf1036c/lib-serde_derive.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-3f78019452a6f8e7/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-e4b5f957288a2d7e/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/shellexpand-95b257f3d027cc11/lib-shellexpand": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/winnow-71e6cc11d48dfc39/lib-winnow": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/option_ext-569a564fdf3f334f.d": {
+          "accepted_lines": 8
+        },
+        "crates/grove-core/src/cache.rs": {
+          "additions": 127,
+          "deletions": 1,
+          "accepted_lines": 127
+        },
+        "target/debug/.fingerprint/bitflags-c470df78d030ae0f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-e4b5f957288a2d7e/lib-serde.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/tempfile-28864e5905004f14/lib-tempfile.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-775f2c69dd61ef5c/lib-getrandom": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/errno-564fa275fa706419.d": {
+          "accepted_lines": 8
+        },
+        "crates/grove-core/src/config.rs": {
+          "additions": 147,
+          "deletions": 1,
+          "accepted_lines": 147
+        },
+        "target/debug/.fingerprint/serde-d1ce05261c883019/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/winnow-71e6cc11d48dfc39.d": {
+          "accepted_lines": 34
+        },
+        "target/debug/build/proc-macro2-aa50def7f9f19485/output": {
+          "accepted_lines": 23
+        },
+        "target/debug/deps/shellexpand-95b257f3d027cc11.d": {
+          "accepted_lines": 10
+        },
+        "target/debug/.fingerprint/getrandom-775f2c69dd61ef5c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/libc-ff35aac0c372988d/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/getrandom-7e92907fc28d6d83/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-5d7f3b1c915ea08f/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-c9c71f116f26aaba/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde-258665a108843663/output": {
+          "accepted_lines": 13
+        },
+        "target/debug/build/libc-ff35aac0c372988d/output": {
+          "accepted_lines": 27
+        },
+        "target/debug/.fingerprint/syn-ccbb04b1b7167c2c/lib-syn.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/libc-e9aa4decb4d275de/build_script_build-e9aa4decb4d275de.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/build/getrandom-7e92907fc28d6d83/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/equivalent-db868c7169d84e3b/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde_core-4e61cbbdc4ff3098/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_derive-d5981230ecf1036c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde-258665a108843663/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_spanned-3a47a174e92354bf/lib-serde_spanned.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-3b6c97c95c981d64/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/syn-ccbb04b1b7167c2c.d": {
+          "accepted_lines": 49
+        },
+        "target/debug/.fingerprint/hashbrown-918ce8e33f7e30ee/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-dd6c6de9cd885cba/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/shellexpand-95b257f3d027cc11/lib-shellexpand.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde-d1ce05261c883019/build_script_build-d1ce05261c883019.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/once_cell-4054bdf643a3a600/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/winnow-71e6cc11d48dfc39/lib-winnow.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-ff35aac0c372988d/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-ident-eac911d12ba49da7/lib-unicode_ident.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-3b6c97c95c981d64/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/rustix-3f78019452a6f8e7/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-6ed9591127a1b6f3/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/once_cell-4054bdf643a3a600/lib-once_cell.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/serde_spanned-3a47a174e92354bf.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/build/libc-ff35aac0c372988d/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-sys-995f79728428af80/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-258665a108843663/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/thiserror-0131d91ae01a690f/output": {
+          "accepted_lines": 4
+        },
+        "target/debug/build/serde_core-c9c71f116f26aaba/build_script_build-c9c71f116f26aaba.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/once_cell-4054bdf643a3a600/lib-once_cell": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/indexmap-e829eff5a7228406.d": {
+          "accepted_lines": 23
+        },
+        "target/debug/deps/proc_macro2-6ed9591127a1b6f3.d": {
+          "accepted_lines": 17
+        },
+        "crates/grove-core/src/worktree.rs": {
+          "additions": 200,
+          "deletions": 1,
+          "accepted_lines": 200
+        },
+        "crates/grove-core/src/git.rs": {
+          "additions": 211,
+          "deletions": 1,
+          "accepted_lines": 211
+        },
+        "target/debug/.fingerprint/proc-macro2-6ed9591127a1b6f3/lib-proc_macro2.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-7713f00b403fe54d/lib-thiserror": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/getrandom-3b6c97c95c981d64/build_script_build-3b6c97c95c981d64.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/thiserror-7713f00b403fe54d/lib-thiserror.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-fd3d4b3f03c9c921/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-95531fd0a0396684/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-6c21111b1381442e/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-ff35aac0c372988d/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-d1ce05261c883019/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_write-7c3cdd3f51be7999/lib-toml_write": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-e9aa4decb4d275de/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/libc-288fa2a08e10f745.d": {
+          "accepted_lines": 45
+        },
+        "target/debug/.fingerprint/errno-564fa275fa706419/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/cfg-if-0ae1c8e84680e82e/lib-cfg_if": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-c9c71f116f26aaba/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/hashbrown-918ce8e33f7e30ee.d": {
+          "accepted_lines": 22
+        },
+        "target/debug/build/serde-258665a108843663/out/private.rs": {
+          "accepted_lines": 6
+        },
+        "target/debug/.fingerprint/dirs-6d9fbea1d92c12ae/lib-dirs": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-78dea9461882b558/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/bitflags-c470df78d030ae0f.d": {
+          "accepted_lines": 13
+        },
+        "target/debug/.fingerprint/grove-core-3cd0dd65eaf5b592/test-lib-grove_core": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/rustix-5d7f3b1c915ea08f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/libc-e9aa4decb4d275de/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/CACHEDIR.TAG": {
+          "accepted_lines": 3
+        },
+        "target/debug/.fingerprint/getrandom-7e92907fc28d6d83/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/getrandom-7e92907fc28d6d83/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/bitflags-c470df78d030ae0f/lib-bitflags": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/winnow-71e6cc11d48dfc39/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/toml_write-7c3cdd3f51be7999.d": {
+          "accepted_lines": 11
+        },
+        "target/debug/.fingerprint/hashbrown-918ce8e33f7e30ee/lib-hashbrown.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/rustix-3f78019452a6f8e7/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-c9c71f116f26aaba/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-3cd0dd65eaf5b592/output-test-lib-grove_core": {
+          "additions": 2,
+          "accepted_lines": 2
+        },
+        "target/debug/.fingerprint/proc-macro2-6ed9591127a1b6f3/lib-proc_macro2": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/grove_core-3cd0dd65eaf5b592.d": {
+          "accepted_lines": 12
+        },
+        "target/debug/deps/tempfile-28864e5905004f14.d": {
+          "accepted_lines": 17
+        },
+        "target/debug/.fingerprint/indexmap-e829eff5a7228406/lib-indexmap.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/rustix-3f78019452a6f8e7/output": {
+          "accepted_lines": 12
+        },
+        "target/debug/.fingerprint/toml_edit-1e6f7ee0d60459ff/lib-toml_edit.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/serde_derive-d5981230ecf1036c.d": {
+          "accepted_lines": 34
+        },
+        "crates/grove-core/src/pattern.rs": {
+          "additions": 321,
+          "deletions": 4,
+          "accepted_lines": 318
+        },
+        "target/debug/build/serde_core-4e61cbbdc4ff3098/out/private.rs": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/toml-7c3ec934949d7dc1/lib-toml.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-78dea9461882b558/build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-95531fd0a0396684/lib-grove_core.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/thiserror-0131d91ae01a690f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/option-ext-569a564fdf3f334f/lib-option_ext.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/toml_datetime-ee2b9786b3e20347.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/deps/dirs_sys-995f79728428af80.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/dirs-6d9fbea1d92c12ae/lib-dirs.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/getrandom-7e92907fc28d6d83/output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-sys-995f79728428af80/lib-dirs_sys.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-impl-a293820f9da0c20d/lib-thiserror_impl": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/toml_edit-1e6f7ee0d60459ff.d": {
+          "accepted_lines": 50
+        },
+        "target/debug/deps/dirs-6d9fbea1d92c12ae.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/unicode-ident-eac911d12ba49da7/lib-unicode_ident": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-6d9fbea1d92c12ae/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/shellexpand-95b257f3d027cc11/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/errno-564fa275fa706419/lib-errno": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/indexmap-e829eff5a7228406/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-4e61cbbdc4ff3098/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/errno-564fa275fa706419/lib-errno.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_write-7c3cdd3f51be7999/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fastrand-501d863df18959b6/lib-fastrand.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/quote-6c21111b1381442e/build_script_build-6c21111b1381442e.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/deps/rustix-fd3d4b3f03c9c921.d": {
+          "accepted_lines": 59
+        },
+        "target/debug/.fingerprint/fastrand-501d863df18959b6/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/toml-7c3ec934949d7dc1.d": {
+          "accepted_lines": 20
+        },
+        "target/debug/deps/thiserror-7713f00b403fe54d.d": {
+          "accepted_lines": 9
+        },
+        "target/debug/.fingerprint/toml_datetime-ee2b9786b3e20347/lib-toml_datetime": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/option-ext-569a564fdf3f334f/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/indexmap-e829eff5a7228406/lib-indexmap": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/serde-e4b5f957288a2d7e.d": {
+          "accepted_lines": 14
+        },
+        "target/debug/build/thiserror-dd6c6de9cd885cba/build_script_build-dd6c6de9cd885cba.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/.fingerprint/thiserror-impl-a293820f9da0c20d/lib-thiserror_impl.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/hashbrown-918ce8e33f7e30ee/lib-hashbrown": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/tempfile-28864e5905004f14/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/unicode-ident-eac911d12ba49da7/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/.rustc_info.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde_core-4e61cbbdc4ff3098/output": {
+          "accepted_lines": 11
+        },
+        "target/debug/.fingerprint/quote-6c21111b1381442e/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_datetime-ee2b9786b3e20347/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-c70793a7d92755e0/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/proc-macro2-aa50def7f9f19485/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/once_cell-4054bdf643a3a600.d": {
+          "accepted_lines": 9
+        },
+        "target/debug/.fingerprint/grove-core-95531fd0a0396684/output-lib-grove_core": {
+          "additions": 2,
+          "accepted_lines": 2
+        },
+        "target/debug/build/quote-c70793a7d92755e0/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_spanned-3a47a174e92354bf/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-0131d91ae01a690f/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde-258665a108843663/run-build-script-build-script-build": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/serde-258665a108843663/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-219ddb02c0f8464f/lib-quote.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-5f9b76f302439b8a/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-0131d91ae01a690f/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/thiserror_impl-a293820f9da0c20d.d": {
+          "accepted_lines": 14
+        },
+        "target/debug/.fingerprint/option-ext-569a564fdf3f334f/lib-option_ext": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/proc-macro2-aa50def7f9f19485/root-output": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_derive-d5981230ecf1036c/lib-serde_derive": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-c70793a7d92755e0/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/grove_core-95531fd0a0396684.d": {
+          "accepted_lines": 14
+        },
+        "target/debug/.fingerprint/getrandom-775f2c69dd61ef5c/lib-getrandom.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-3cd0dd65eaf5b592/test-lib-grove_core.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-78dea9461882b558/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/cfg-if-0ae1c8e84680e82e/lib-cfg_if.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/proc-macro2-aa50def7f9f19485/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/quote-6c21111b1381442e/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/grove-core-95531fd0a0396684/lib-grove_core": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/fastrand-501d863df18959b6/lib-fastrand": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/thiserror-impl-a293820f9da0c20d/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml-7c3ec934949d7dc1/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_datetime-ee2b9786b3e20347/lib-toml_datetime.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_edit-1e6f7ee0d60459ff/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/build/rustix-5d7f3b1c915ea08f/build_script_build-5d7f3b1c915ea08f.d": {
+          "accepted_lines": 5
+        },
+        "target/debug/deps/equivalent-db868c7169d84e3b.d": {
+          "accepted_lines": 7
+        },
+        "target/debug/.fingerprint/syn-ccbb04b1b7167c2c/invoked.timestamp": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/unicode_ident-eac911d12ba49da7.d": {
+          "accepted_lines": 8
+        },
+        "target/debug/.fingerprint/getrandom-3b6c97c95c981d64/build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/serde_core-5f9b76f302439b8a/lib-serde_core": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/toml_edit-1e6f7ee0d60459ff/lib-toml_edit": {
+          "accepted_lines": 1
+        },
+        "target/debug/.fingerprint/dirs-sys-995f79728428af80/lib-dirs_sys": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/serde_core-5f9b76f302439b8a.d": {
+          "accepted_lines": 27
+        },
+        "target/debug/.fingerprint/rustix-3f78019452a6f8e7/run-build-script-build-script-build.json": {
+          "accepted_lines": 1
+        },
+        "target/debug/deps/quote-219ddb02c0f8464f.d": {
+          "accepted_lines": 13
+        },
+        "target/debug/.fingerprint/libc-288fa2a08e10f745/lib-libc": {
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
