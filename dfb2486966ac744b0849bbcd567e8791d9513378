@@ -1,0 +1,30 @@
+README.md
+  63b0233db45e4b62 28,31-37,41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "dfb2486966ac744b0849bbcd567e8791d9513378",
+  "prompts": {
+    "63b0233db45e4b62": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ffadfa3-4cc4-49eb-87f9-d90f91a2d2f1",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 2,
+      "accepted_lines": 10,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "README.md": {
+          "additions": 10,
+          "deletions": 2,
+          "accepted_lines": 10
+        }
+      }
+    }
+  }
+}
