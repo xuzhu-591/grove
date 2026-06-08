@@ -3,39 +3,41 @@
 set -euo pipefail
 
 GROVE_ROOT="$(cd "$(dirname "$0")" && pwd)"
+BIN_SRC="$GROVE_ROOT/target/release/grove"
 BIN_DIR="$HOME/.local/bin"
 ZSHRC="$HOME/.zshrc"
+MARKER="# grove shell integration"
 
 echo "grove installer"
 echo "==============="
 echo ""
 
-# 1. Make executable
-chmod +x "$GROVE_ROOT/bin/grove"
-echo "[ok] bin/grove made executable"
+# Build if release binary not found
+if [[ ! -f "$BIN_SRC" ]]; then
+    echo "Building grove..."
+    cargo build --release --manifest-path "$GROVE_ROOT/Cargo.toml"
+fi
 
-# 2. Symlink to PATH
+# Symlink binary
 mkdir -p "$BIN_DIR"
-ln -sf "$GROVE_ROOT/bin/grove" "$BIN_DIR/grove"
+ln -sf "$BIN_SRC" "$BIN_DIR/grove"
 echo "[ok] symlinked to $BIN_DIR/grove"
 
 # Check PATH
 if ! echo "$PATH" | tr ':' '\n' | grep -q "^${BIN_DIR}$"; then
     echo "[warn] $BIN_DIR is not in PATH"
-    echo "       add this to .zshrc:  export PATH=\"\$HOME/.local/bin:\$PATH\""
+    echo "       add to .zshrc:  export PATH=\"\$HOME/.local/bin:\$PATH\""
 fi
 
-# 3. Add shell integration to .zshrc
-MARKER="# grove shell integration"
+# Add shell integration
 if grep -q "$MARKER" "$ZSHRC" 2>/dev/null; then
     echo "[ok] shell integration already in .zshrc"
 else
-    cat >> "$ZSHRC" <<EOF
+    cat >> "$ZSHRC" <<SHELLEOF
 
 $MARKER
-export GROVE_ROOT="$GROVE_ROOT"
 source "$GROVE_ROOT/shell/grove.zsh"
-EOF
+SHELLEOF
     echo "[ok] added shell integration to .zshrc"
 fi
 
