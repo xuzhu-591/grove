@@ -1,12 +1,14 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+#[allow(dead_code)]
 pub struct TestRepo {
     pub temp_dir: tempfile::TempDir,
     pub work_repo: PathBuf,
     grove_bin: PathBuf,
 }
 
+#[allow(dead_code)]
 impl TestRepo {
     pub fn new() -> Self {
         let temp_dir = tempfile::tempdir().unwrap();

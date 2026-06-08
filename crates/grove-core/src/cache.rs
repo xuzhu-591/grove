@@ -16,7 +16,7 @@ fn walk_dirs(root: &Path, current: &Path, out: &mut Vec<PathBuf>) {
             if !path.is_dir() {
                 continue;
             }
-            if path.file_name().map_or(false, |n| n == ".git") {
+            if path.file_name().is_some_and(|n| n == ".git") {
                 continue;
             }
             let rel = path.strip_prefix(root).unwrap_or(&path);
@@ -81,10 +81,8 @@ pub fn unlink_cache(target: &Path, rules: &[CompiledRule]) -> usize {
         let rel_str = rel.display().to_string();
         if pattern::evaluate(rules, &rel_str) {
             let dst = target.join(&rel);
-            if dst.is_symlink() {
-                if std::fs::remove_file(&dst).is_ok() {
-                    removed += 1;
-                }
+            if dst.is_symlink() && std::fs::remove_file(&dst).is_ok() {
+                removed += 1;
             }
         }
     }
