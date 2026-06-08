@@ -22,7 +22,7 @@ Every command supports two modes:
 ### Via cargo
 
 ```bash
-cargo install grove
+cargo install grove-cli
 ```
 
 Then add shell integration to `.zshrc` (adjust path to wherever you cloned grove):
