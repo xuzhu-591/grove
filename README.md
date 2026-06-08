@@ -1,50 +1,66 @@
 # grove
 
-Git worktree manager with dual-mode support — interactive (fzf) for humans, plain for AI/scripts.
+Git worktree manager — interactive for humans, machine-readable for AI/scripts.
 
 ## Features
 
 - **`grove list`** — Rich status display: staged, modified, untracked, ahead/behind
-- **`grove add`** — Create worktree from existing or new branch
-- **`grove switch`** — Jump to a worktree (with log preview)
+- **`grove add`** — Create worktree from existing/new/remote branch, auto link cache
+- **`grove switch`** — Jump to a worktree (cd support via shell integration)
 - **`grove remove`** — Safe removal with uncommitted/unpushed checks
+- **`grove cache`** — Manage build cache symlinks with gitignore-style rules
 
 Every command supports two modes:
 
 | Mode | When | Output |
 |------|------|--------|
-| **fzf** (default) | Interactive terminal use | Colored, fzf selection, preview |
-| **plain** (`--plain`) | AI agents / scripts | TSV, machine-parseable |
+| **Human** (default) | Interactive terminal use | Colored, inquire selection |
+| **Plain** (`--plain`) | AI agents / scripts | TSV, machine-parseable |
 
 ## Install
+
+### Via cargo
+
+```bash
+cargo install grove
+```
+
+Then add shell integration to `.zshrc` (adjust path to wherever you cloned grove):
+
+```bash
+echo "source /path/to/grove/shell/grove.zsh" >> ~/.zshrc
+source ~/.zshrc
+```
+
+### From source
 
 ```bash
 git clone https://github.com/xuzhu-591/grove.git
 cd grove
+cargo build --release
 bash install.sh
 source ~/.zshrc
 ```
 
-The installer symlinks `grove` to `~/.local/bin/` and adds shell integration to `.zshrc`.
-
 ## Usage
 
-### Interactive (human)
+### Interactive (default)
 
 ```bash
 grove list              # show all worktrees with status
-grove add               # create worktree (fzf branch picker)
-grove switch            # jump to worktree (fzf selector + log preview)
-grove remove            # remove worktree (fzf + safety checks)
+grove add               # create worktree (interactive branch picker)
+grove switch            # jump to worktree (interactive selector)
+grove remove            # remove worktree (interactive + safety)
 ```
 
 ### Plain mode (AI / scripts)
 
 ```bash
 grove --plain list
-grove --plain add <branch> [--create]
+grove --plain add <branch> [--create] [--remote] [--no-cache]
 grove --plain switch <branch>
 grove --plain remove <branch> [--force]
+grove --plain cache [link|status|unlink]
 ```
 
 ### Plain output format
@@ -57,30 +73,46 @@ branch	/path/to/worktree	commit	staged=N	modified=N	untracked=N	ahead=N	behind=N
 
 ## Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `GROVE_WORKTREE_BASE` | `~/.grove/worktrees` | Base directory for worktrees |
+### Worktree base path
 
-Worktrees are organized as `{base}/{project}/{branch}`.
+| Priority | Source |
+|----------|--------|
+| 1 (highest) | `GROVE_WORKTREE_BASE` env var |
+| 2 | `config.worktree.base_path` in config file |
+| 3 (default) | `~/.grove/worktrees` |
 
-### `.groverc`
+### Cache rules
 
-`grove add` reads rules from both `~/.groverc` and `<project>/.groverc` to decide which directories should be symlinked from the main worktree into the new one.
+Define directories to symlink from the main worktree into new ones:
 
-Rules are matched against repo-relative directory paths. Supported syntax is a gitignore-like subset:
+```toml
+# ~/.config/grove/config.toml (global, all projects)
+[cache]
+rules = [
+    "node_modules",
+    ".cache/*",
+]
 
-- literal paths such as `node_modules`
-- glob rules such as `.cache/*` or `packages/*/node_modules`
-- negation rules such as `!.cache/private`
+[worktree]
+# base_path = "~/worktrees"
+```
 
-Rules are evaluated in order. Project rules are read after global rules, so project rules override global ones when both match.
+```toml
+# <project>/grove.toml (project-specific, overrides global)
+[cache]
+rules = [
+    "!**/test",
+    "packages/*/node_modules",
+]
+```
+
+Rules use a gitignore subset: literal paths, `*`, `?`, `**`, `!negation`, `/anchored`. Evaluated last-match-wins across both config files.
 
 ## Requirements
 
-- Bash 4+
+- Rust toolchain (for install from source)
 - Git
-- [fzf](https://github.com/junegunn/fzf) (for interactive mode)
-- Zsh (for shell integration / tab completion)
+- Zsh (for shell integration)
 
 ## License
 
