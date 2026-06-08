@@ -6,6 +6,8 @@ pub struct TestRepo {
     pub temp_dir: tempfile::TempDir,
     pub work_repo: PathBuf,
     grove_bin: PathBuf,
+    home_dir: PathBuf,
+    worktree_base: PathBuf,
 }
 
 #[allow(dead_code)]
@@ -43,11 +45,14 @@ impl TestRepo {
 
         // Locate grove binary
         let grove_bin = find_grove_bin();
+        let worktree_base = temp_dir.path().join("grove_worktrees");
 
         TestRepo {
             temp_dir,
             work_repo,
             grove_bin,
+            home_dir,
+            worktree_base,
         }
     }
 
@@ -59,6 +64,8 @@ impl TestRepo {
         let output = Command::new(&self.grove_bin)
             .args(args)
             .current_dir(&self.work_repo)
+            .env("HOME", &self.home_dir)
+            .env("GROVE_WORKTREE_BASE", &self.worktree_base)
             .output()
             .expect("failed to run grove");
 
@@ -159,11 +166,7 @@ fn git_add_commit(dir: &Path, msg: &str) {
         .current_dir(dir)
         .output()
         .unwrap();
-    assert!(
-        output.status.success(),
-        "commit failed: {:?}",
-        output
-    );
+    assert!(output.status.success(), "commit failed: {:?}", output);
 }
 
 fn git_push(dir: &Path) {

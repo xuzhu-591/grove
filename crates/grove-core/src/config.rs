@@ -71,7 +71,10 @@ pub fn resolve_worktree_base(config: &GroveConfig) -> PathBuf {
 
 fn global_config_path() -> PathBuf {
     let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".into());
-    PathBuf::from(home).join(".config").join("grove").join("config.toml")
+    PathBuf::from(home)
+        .join(".config")
+        .join("grove")
+        .join("config.toml")
 }
 
 #[cfg(test)]

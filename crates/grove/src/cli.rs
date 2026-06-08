@@ -30,9 +30,7 @@ pub enum Commands {
     },
 
     #[command(alias = "cd")]
-    Switch {
-        branch: Option<String>,
-    },
+    Switch { branch: Option<String> },
 
     #[command(alias = "rm")]
     Remove {

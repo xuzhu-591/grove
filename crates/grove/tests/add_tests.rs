@@ -8,7 +8,10 @@ fn test_add_local_branch() {
     repo.create_branch("feat/test-add");
     let (code, stdout, stderr) = repo.run_grove(&["--plain", "add", "feat/test-add"]);
     assert_eq!(code, 0, "stderr: {stderr}");
-    assert!(!stdout.trim().is_empty(), "expected worktree path in stdout");
+    assert!(
+        !stdout.trim().is_empty(),
+        "expected worktree path in stdout"
+    );
     let wt_dir = stdout.trim().to_string();
     assert!(std::path::Path::new(&wt_dir).is_dir());
 }
@@ -16,8 +19,7 @@ fn test_add_local_branch() {
 #[test]
 fn test_add_create_new_branch() {
     let repo = TestRepo::new();
-    let (code, stdout, stderr) =
-        repo.run_grove(&["--plain", "add", "feat/new-branch", "--create"]);
+    let (code, stdout, stderr) = repo.run_grove(&["--plain", "add", "feat/new-branch", "--create"]);
     assert_eq!(code, 0, "stderr: {stderr}");
 
     let wt_dir = stdout.trim().to_string();

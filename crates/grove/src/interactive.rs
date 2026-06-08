@@ -17,8 +17,8 @@ pub fn add_interactive(dir: &Path) -> Result<AddAction> {
 
     match action {
         "existing branch" => {
-            let branches = grove_core::git::list_local_branches(dir)
-                .context("failed to list branches")?;
+            let branches =
+                grove_core::git::list_local_branches(dir).context("failed to list branches")?;
             let branch = Select::new("选择已有分支", branches).prompt()?;
             Ok(AddAction::Existing(branch))
         }
@@ -38,8 +38,7 @@ pub fn add_interactive(dir: &Path) -> Result<AddAction> {
 }
 
 pub fn switch_interactive(dir: &Path) -> Result<String> {
-    let wts = grove_core::git::parse_worktree_list(dir)
-        .context("failed to list worktrees")?;
+    let wts = grove_core::git::parse_worktree_list(dir).context("failed to list worktrees")?;
 
     let display_lines: Vec<String> = wts
         .iter()
@@ -56,8 +55,7 @@ pub fn switch_interactive(dir: &Path) -> Result<String> {
 }
 
 pub fn remove_interactive(dir: &Path) -> Result<String> {
-    let wts = grove_core::git::parse_worktree_list(dir)
-        .context("failed to list worktrees")?;
+    let wts = grove_core::git::parse_worktree_list(dir).context("failed to list worktrees")?;
 
     if wts.len() <= 1 {
         anyhow::bail!("no removable worktrees (main worktree cannot be removed)");

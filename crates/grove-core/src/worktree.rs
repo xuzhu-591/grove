@@ -57,7 +57,13 @@ pub fn add(branch: &str, opts: &AddOptions) -> GroveResult<PathBuf> {
     } else if opts.create {
         run_git(
             &cwd,
-            &["worktree", "add", "-b", branch, &wt_dir.display().to_string()],
+            &[
+                "worktree",
+                "add",
+                "-b",
+                branch,
+                &wt_dir.display().to_string(),
+            ],
         )?;
     } else {
         run_git(
@@ -158,10 +164,7 @@ pub fn remove(branch: &str, force: bool) -> GroveResult<PathBuf> {
             &["worktree", "remove", "--force", &dir.display().to_string()],
         )?;
     } else {
-        run_git(
-            &cwd,
-            &["worktree", "remove", &dir.display().to_string()],
-        )?;
+        run_git(&cwd, &["worktree", "remove", &dir.display().to_string()])?;
     }
 
     Ok(main_dir)

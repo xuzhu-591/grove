@@ -10,7 +10,6 @@ use grove_core::worktree::{self, AddOptions};
 use std::env;
 use std::path::Path;
 
-
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
     let cwd = env::current_dir()?;
@@ -52,35 +51,33 @@ fn cmd_add(
     grove_core::git::ensure_git_repo()?;
     let branch = match branch {
         Some(b) => b,
-        None => {
-            match interactive::add_interactive(cwd)? {
-                interactive::AddAction::Existing(b) => b,
-                interactive::AddAction::New(b) => {
-                    let wt_dir = worktree::add(
-                        &b,
-                        &AddOptions {
-                            create: true,
-                            remote: false,
-                            no_cache,
-                        },
-                    )?;
-                    output::emit_cd(&wt_dir, plain);
-                    return Ok(());
-                }
-                interactive::AddAction::Remote(b) => {
-                    let wt_dir = worktree::add(
-                        &b,
-                        &AddOptions {
-                            create: false,
-                            remote: true,
-                            no_cache,
-                        },
-                    )?;
-                    output::emit_cd(&wt_dir, plain);
-                    return Ok(());
-                }
+        None => match interactive::add_interactive(cwd)? {
+            interactive::AddAction::Existing(b) => b,
+            interactive::AddAction::New(b) => {
+                let wt_dir = worktree::add(
+                    &b,
+                    &AddOptions {
+                        create: true,
+                        remote: false,
+                        no_cache,
+                    },
+                )?;
+                output::emit_cd(&wt_dir, plain);
+                return Ok(());
             }
-        }
+            interactive::AddAction::Remote(b) => {
+                let wt_dir = worktree::add(
+                    &b,
+                    &AddOptions {
+                        create: false,
+                        remote: true,
+                        no_cache,
+                    },
+                )?;
+                output::emit_cd(&wt_dir, plain);
+                return Ok(());
+            }
+        },
     };
 
     let wt_dir = worktree::add(
@@ -130,12 +127,7 @@ fn cmd_switch(plain: bool, branch: Option<String>, cwd: &Path) -> anyhow::Result
     Ok(())
 }
 
-fn cmd_remove(
-    plain: bool,
-    branch: Option<String>,
-    force: bool,
-    cwd: &Path,
-) -> anyhow::Result<()> {
+fn cmd_remove(plain: bool, branch: Option<String>, force: bool, cwd: &Path) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
     let branch = match branch {
         Some(b) => b,
@@ -161,11 +153,7 @@ fn cmd_remove(
     Ok(())
 }
 
-fn cmd_cache(
-    plain: bool,
-    action: Option<CacheAction>,
-    cwd: &Path,
-) -> anyhow::Result<()> {
+fn cmd_cache(plain: bool, action: Option<CacheAction>, cwd: &Path) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
     let action = match action {
         Some(a) => a,

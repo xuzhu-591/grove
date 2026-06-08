@@ -4,8 +4,14 @@ use helpers::TestRepo;
 use std::process::Command;
 
 fn git_add_commit(dir: &std::path::Path, msg: &str) {
-    let _ = Command::new("git").args(["add", "."]).current_dir(dir).output();
-    let _ = Command::new("git").args(["commit", "-m", msg]).current_dir(dir).output();
+    let _ = Command::new("git")
+        .args(["add", "."])
+        .current_dir(dir)
+        .output();
+    let _ = Command::new("git")
+        .args(["commit", "-m", msg])
+        .current_dir(dir)
+        .output();
 }
 
 #[test]
@@ -32,12 +38,10 @@ rules = ["node_modules", "packages/*/node_modules"]
     assert_eq!(code, 0);
 
     let wt_dir = stdout.trim().to_string();
-    assert!(
-        std::fs::symlink_metadata(format!("{wt_dir}/node_modules"))
-            .unwrap()
-            .file_type()
-            .is_symlink()
-    );
+    assert!(std::fs::symlink_metadata(format!("{wt_dir}/node_modules"))
+        .unwrap()
+        .file_type()
+        .is_symlink());
     assert!(
         std::fs::symlink_metadata(format!("{wt_dir}/packages/pkg-a/node_modules"))
             .unwrap()
@@ -77,9 +81,13 @@ rules = ["node_modules"]
         .join("debug")
         .join("grove");
 
+    let home = repo.temp_dir.path().join("home");
+    let wt_base = repo.temp_dir.path().join("grove_worktrees");
     let output = std::process::Command::new(&grove_bin)
         .args(["--plain", "cache", "unlink"])
         .current_dir(&wt_dir)
+        .env("HOME", &home)
+        .env("GROVE_WORKTREE_BASE", &wt_base)
         .output()
         .unwrap();
     assert!(

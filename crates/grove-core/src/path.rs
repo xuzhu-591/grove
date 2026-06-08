@@ -40,7 +40,10 @@ mod tests {
     fn test_worktree_path_simple_branch() {
         let base = Path::new("/home/user/.grove/worktrees");
         let p = worktree_path(base, "myproject", "feat/login");
-        assert_eq!(p, Path::new("/home/user/.grove/worktrees/myproject/feat-login"));
+        assert_eq!(
+            p,
+            Path::new("/home/user/.grove/worktrees/myproject/feat-login")
+        );
     }
 
     #[test]

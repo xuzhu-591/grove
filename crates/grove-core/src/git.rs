@@ -3,10 +3,7 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 fn git(dir: &Path, args: &[&str]) -> std::io::Result<std::process::Output> {
-    Command::new("git")
-        .args(args)
-        .current_dir(dir)
-        .output()
+    Command::new("git").args(args).current_dir(dir).output()
 }
 
 fn git_checked(dir: &Path, args: &[&str]) -> GroveResult<std::process::Output> {

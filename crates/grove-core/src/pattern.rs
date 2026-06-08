@@ -19,10 +19,7 @@ enum RuleKind {
     /// Contains `/**` suffix: match prefix and all descendants
     Prefix(String),
     /// Contains `/**/` middle: match prefix + any path + suffix
-    Recursive {
-        prefix: String,
-        suffix: String,
-    },
+    Recursive { prefix: String, suffix: String },
     /// Pattern contains `*` or `?` WITH `/`: glob match per path segment
     Glob(String),
     /// Pattern contains `*` or `?` without `/`: match basename at any depth
@@ -52,9 +49,17 @@ pub fn compile(pattern_raw: &str) -> GroveResult<CompiledRule> {
     validate_pattern(pattern_raw)?;
 
     let negated = pattern_raw.starts_with('!');
-    let without_neg = if negated { &pattern_raw[1..] } else { pattern_raw };
+    let without_neg = if negated {
+        &pattern_raw[1..]
+    } else {
+        pattern_raw
+    };
     let anchored = without_neg.starts_with('/');
-    let pattern = if anchored { &without_neg[1..] } else { without_neg };
+    let pattern = if anchored {
+        &without_neg[1..]
+    } else {
+        without_neg
+    };
 
     let kind = classify(pattern);
 
@@ -108,9 +113,7 @@ pub fn matches(rule: &CompiledRule, rel_path: &str) -> bool {
                 rel_path == name || rel_path.ends_with(&format!("/{}", name))
             }
         }
-        RuleKind::ExactPath(path) => {
-            rel_path == path || rel_path.ends_with(&format!("/{}", path))
-        }
+        RuleKind::ExactPath(path) => rel_path == path || rel_path.ends_with(&format!("/{}", path)),
         RuleKind::Anywhere(suffix) => {
             rel_path == suffix || rel_path.ends_with(&format!("/{}", suffix))
         }
@@ -119,8 +122,7 @@ pub fn matches(rule: &CompiledRule, rel_path: &str) -> bool {
         }
         RuleKind::Recursive { prefix, suffix } => {
             if prefix.is_empty() {
-                rel_path == suffix
-                    || rel_path.ends_with(&format!("/{}", suffix))
+                rel_path == suffix || rel_path.ends_with(&format!("/{}", suffix))
             } else {
                 (rel_path.starts_with(&format!("{}/", prefix)) || rel_path == prefix)
                     && (rel_path.ends_with(&format!("/{}", suffix)) || rel_path == suffix)
