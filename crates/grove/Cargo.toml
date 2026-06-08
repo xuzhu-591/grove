@@ -1,8 +1,10 @@
 [package]
-name = "grove"
+name = "grove-cli"
 version = "0.1.0"
 edition = "2021"
 description = "Git worktree manager"
+license = "MIT"
+repository = "https://github.com/xuzhu-591/grove"
 
 [[bin]]
 name = "grove"

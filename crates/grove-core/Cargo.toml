@@ -3,6 +3,8 @@ name = "grove-core"
 version = "0.1.0"
 edition = "2021"
 description = "Core logic for grove git worktree manager"
+license = "MIT"
+repository = "https://github.com/xuzhu-591/grove"
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }
