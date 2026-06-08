@@ -1,0 +1,19 @@
+[package]
+name = "grove"
+version = "0.1.0"
+edition = "2021"
+description = "Git worktree manager"
+
+[[bin]]
+name = "grove"
+path = "src/main.rs"
+
+[dependencies]
+grove-core = { path = "../grove-core" }
+clap = { version = "4", features = ["derive"] }
+inquire = "0.7"
+console = "0.15"
+anyhow = "1"
+
+[dev-dependencies]
+tempfile = "3"
