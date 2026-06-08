@@ -1,0 +1,56 @@
+.gitignore
+  63b0233db45e4b62 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "8c9a4bd726fe739230a910b8ea162888df2f083b",
+  "prompts": {
+    "63b0233db45e4b62": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ffadfa3-4cc4-49eb-87f9-d90f91a2d2f1",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1512,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".gitignore": {
+          "additions": 1,
+          "accepted_lines": 1
+        },
+        "lib/cache.sh": {
+          "deletions": 366
+        },
+        "bin/grove": {
+          "deletions": 92
+        },
+        "lib/list.sh": {
+          "deletions": 79
+        },
+        "tests/add.acceptance.test.sh": {
+          "deletions": 390
+        },
+        "lib/switch.sh": {
+          "deletions": 80
+        },
+        "lib/remove.sh": {
+          "deletions": 163
+        },
+        "lib/common.sh": {
+          "deletions": 164
+        },
+        ".groverc.example": {
+          "deletions": 19
+        },
+        "lib/add.sh": {
+          "deletions": 159
+        }
+      }
+    }
+  }
+}
