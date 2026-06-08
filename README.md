@@ -25,12 +25,20 @@ Every command supports two modes:
 cargo install grove-cli
 ```
 
-Then add shell integration to `.zshrc` (adjust path to wherever you cloned grove):
+### Shell integration (optional, enables cd + tab completion)
 
 ```bash
-echo "source /path/to/grove/shell/grove.zsh" >> ~/.zshrc
+# Download grove.zsh
+mkdir -p ~/.config/grove
+curl -fsSL -o ~/.config/grove/grove.zsh \
+  https://raw.githubusercontent.com/xuzhu-591/grove/main/shell/grove.zsh
+
+# Add to .zshrc
+echo 'source ~/.config/grove/grove.zsh' >> ~/.zshrc
 source ~/.zshrc
 ```
+
+Without shell integration, all commands work normally except `grove switch`/`grove cd` won't change your working directory (they print the path instead).
 
 ### From source
 
