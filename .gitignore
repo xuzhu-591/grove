@@ -6,5 +6,4 @@
 
 # Rust
 /target/
-Cargo.lock
 .claude/
