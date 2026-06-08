@@ -1,4 +1,4 @@
-use console::style;
+use console::{pad_str, style, Alignment};
 use grove_core::git::WorktreeStatus;
 use grove_core::worktree::WorktreeEntry;
 use std::path::Path;
@@ -62,32 +62,30 @@ pub fn print_list_pretty(entries: &[WorktreeEntry]) {
         .max(3)
         .min(80);
 
+    // Header: pad first, then wrap with style (avoids ANSI width issues)
     println!(
-        "  {:max_branch$}  {:max_dir$}  {:7}  {}",
-        style("BRANCH").bold(),
-        style("DIR").bold(),
-        style("COMMIT").bold(),
-        style("STATUS").bold(),
-        max_branch = max_branch,
-        max_dir = max_dir,
+        "  {}  {}  {}  {}",
+        style(pad_str("BRANCH", max_branch, Alignment::Left, None)).bold(),
+        style(pad_str("DIR", max_dir, Alignment::Left, None)).bold(),
+        style(pad_str("COMMIT", 7, Alignment::Left, None)).bold(),
+        style(pad_str("STATUS", 0, Alignment::Left, None)).bold(),
     );
 
-    for (i, entry) in entries.iter().enumerate() {
+    for entry in entries {
         let marker = if entry.is_main { "*" } else { " " };
-        let branch = style(&entry.wt.branch).cyan();
         let short_dir = grove_core::path::short_path(&entry.wt.path);
         let mut display_dir = short_dir.clone();
         if display_dir.len() > max_dir {
             display_dir = format!("{}...", &display_dir[..max_dir.saturating_sub(3)]);
         }
-        let commit = style(&entry.wt.commit).dim();
-        let status = format_status_human(&entry.status);
 
-        println!(
-            "{marker} {branch:max_branch$}  {display_dir:max_dir$}  {commit:7}  {status}",
-            max_branch = max_branch,
-            max_dir = max_dir,
-        );
+        // Pad plain text, then apply ANSI styles — avoids color codes breaking alignment
+        let branch_col = style(pad_str(&entry.wt.branch, max_branch, Alignment::Left, None)).cyan();
+        let dir_col = pad_str(&display_dir, max_dir, Alignment::Left, None);
+        let commit_col = style(pad_str(&entry.wt.commit, 7, Alignment::Left, None)).dim();
+        let status_col = format_status_human(&entry.status);
+
+        println!("{marker} {branch_col}  {dir_col}  {commit_col}  {status_col}");
     }
 }
 
