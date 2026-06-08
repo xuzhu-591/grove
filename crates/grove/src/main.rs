@@ -8,7 +8,8 @@ use grove_core::config::GroveConfig;
 use grove_core::pattern;
 use grove_core::worktree::{self, AddOptions};
 use std::env;
-use std::path::PathBuf;
+use std::path::Path;
+
 
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
@@ -46,15 +47,15 @@ fn cmd_add(
     create: bool,
     remote: bool,
     no_cache: bool,
-    cwd: &PathBuf,
+    cwd: &Path,
 ) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
     let branch = match branch {
         Some(b) => b,
         None => {
             match interactive::add_interactive(cwd)? {
-                interactive::AddAction::ExistingBranch(b) => b,
-                interactive::AddAction::NewBranch(b) => {
+                interactive::AddAction::Existing(b) => b,
+                interactive::AddAction::New(b) => {
                     let wt_dir = worktree::add(
                         &b,
                         &AddOptions {
@@ -66,7 +67,7 @@ fn cmd_add(
                     output::emit_cd(&wt_dir, plain);
                     return Ok(());
                 }
-                interactive::AddAction::RemoteBranch(b) => {
+                interactive::AddAction::Remote(b) => {
                     let wt_dir = worktree::add(
                         &b,
                         &AddOptions {
@@ -114,7 +115,7 @@ fn cmd_add(
     Ok(())
 }
 
-fn cmd_switch(plain: bool, branch: Option<String>, cwd: &PathBuf) -> anyhow::Result<()> {
+fn cmd_switch(plain: bool, branch: Option<String>, cwd: &Path) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
     let branch = match branch {
         Some(b) => b,
@@ -133,7 +134,7 @@ fn cmd_remove(
     plain: bool,
     branch: Option<String>,
     force: bool,
-    cwd: &PathBuf,
+    cwd: &Path,
 ) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
     let branch = match branch {
@@ -163,7 +164,7 @@ fn cmd_remove(
 fn cmd_cache(
     plain: bool,
     action: Option<CacheAction>,
-    cwd: &PathBuf,
+    cwd: &Path,
 ) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
     let action = match action {

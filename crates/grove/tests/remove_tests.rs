@@ -23,6 +23,6 @@ fn test_remove_clean_worktree() {
 #[test]
 fn test_cannot_remove_main_worktree() {
     let repo = TestRepo::new();
-    let (code, _, stderr) = repo.run_grove(&["--plain", "remove", "main"]);
+    let (code, _, _stderr) = repo.run_grove(&["--plain", "remove", "main"]);
     assert_ne!(code, 0, "should not be able to remove main worktree");
 }

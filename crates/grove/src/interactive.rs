@@ -3,9 +3,9 @@ use inquire::{Confirm, Select, Text};
 use std::path::Path;
 
 pub enum AddAction {
-    ExistingBranch(String),
-    NewBranch(String),
-    RemoteBranch(String),
+    Existing(String),
+    New(String),
+    Remote(String),
 }
 
 pub fn add_interactive(dir: &Path) -> Result<AddAction> {
@@ -20,18 +20,18 @@ pub fn add_interactive(dir: &Path) -> Result<AddAction> {
             let branches = grove_core::git::list_local_branches(dir)
                 .context("failed to list branches")?;
             let branch = Select::new("选择已有分支", branches).prompt()?;
-            Ok(AddAction::ExistingBranch(branch))
+            Ok(AddAction::Existing(branch))
         }
         "new branch" => {
             let branch = Text::new("输入新分支名:").prompt()?;
-            Ok(AddAction::NewBranch(branch))
+            Ok(AddAction::New(branch))
         }
         "remote branch" => {
             grove_core::git::fetch_all(dir).context("fetch failed")?;
             let branches = grove_core::git::list_remote_branches(dir)
                 .context("failed to list remote branches")?;
             let branch = Select::new("选择远程分支", branches).prompt()?;
-            Ok(AddAction::RemoteBranch(branch))
+            Ok(AddAction::Remote(branch))
         }
         _ => unreachable!(),
     }

@@ -59,8 +59,7 @@ pub fn print_list_pretty(entries: &[WorktreeEntry]) {
         .map(|e| grove_core::path::short_path(&e.wt.path).len())
         .max()
         .unwrap_or(3)
-        .max(3)
-        .min(80);
+        .clamp(3, 80);
 
     // Header: pad first, then wrap with style (avoids ANSI width issues)
     println!(
