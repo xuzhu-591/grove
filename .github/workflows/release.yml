@@ -12,6 +12,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo test --all-targets
-      - run: cargo publish -p grove-core
+      - run: cargo publish -p grove-core || true
       - run: sleep 30
       - run: cargo publish -p grove-cli
