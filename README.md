@@ -45,9 +45,7 @@ Without shell integration, all commands work normally except `grove switch`/`gro
 ```bash
 git clone https://github.com/xuzhu-591/grove.git
 cd grove
-cargo build --release
-bash install.sh
-source ~/.zshrc
+cargo install --path crates/grove
 ```
 
 ## Usage

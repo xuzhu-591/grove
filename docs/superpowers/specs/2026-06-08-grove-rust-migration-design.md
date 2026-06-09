@@ -1,124 +1,124 @@
-# grove Rust 迁移设计方案
+# grove Rust Migration Design
 
-## 1. 背景与动机
+## 1. Background and Motivation
 
-grove 是一个 git worktree 管理工具，当前用 Bash 实现（~800 行）。功能已稳定，但存在以下局限：
+grove is a git worktree management tool, currently implemented in Bash (~800 lines). The functionality is stable, but it has the following limitations:
 
-- Bash 代码难以编写自动化测试
-- 复杂逻辑（如 gitignore 风格 glob 匹配）在 Bash 中难以维护
-- 缺乏统一的配置管理
-- 跨平台分发不便
+- Bash code is difficult to write automated tests for
+- Complex logic (such as gitignore-style glob matching) is hard to maintain in Bash
+- Lack of unified configuration management
+- Inconvenient cross-platform distribution
 
-本次迁移将 grove 用 Rust 重写，在保留全部功能的前提下，补齐测试、CI 和分发体系。
+This migration rewrites grove in Rust, preserving all functionality while adding tests, CI, and a distribution system.
 
-## 2. 目标与非目标
+## 2. Goals and Non-Goals
 
-### 目标
+### Goals
 
-1. **功能完整迁移**：保留所有现有功能，用户在迁移前后行为无差异
-2. **测试覆盖**：单元测试覆盖核心逻辑，集成测试覆盖完整命令链路
-3. **统一配置**：全局配置 + 项目级配置，TOML 格式，遵循 XDG 规范
-4. **CI/CD**：GitHub Actions 自动 lint / test / build，tag 触发发布
-5. **分发**：crates.io 发布，`cargo install grove` 一键安装
+1. **Complete feature migration**: Preserve all existing functionality; user behavior should be identical before and after migration
+2. **Test coverage**: Unit tests covering core logic, integration tests covering complete command chains
+3. **Unified configuration**: Global config + project-level config, TOML format, following XDG conventions
+4. **CI/CD**: GitHub Actions for automatic lint / test / build, tag-triggered release
+5. **Distribution**: Publish to crates.io, `cargo install grove` for one-command installation
 
-### 非目标
+### Non-Goals
 
-- 不新增功能（仅做等价迁移）
-- 不支持 Windows（仅 Linux + macOS）
-- 不支持 Zsh 以外的 shell 集成
+- No new features (equivalent migration only)
+- No Windows support (Linux + macOS only)
+- No shell integration beyond Zsh
 
-## 3. 现状功能清单
+## 3. Current Feature Inventory
 
-基于对 v0.3.0 源码的完整梳理。
+Based on a complete review of the v0.3.0 source code.
 
-| 命令 | 功能 | 关键行为 |
-|------|------|---------|
-| `grove list` | 列出 worktree | human: 彩色表格; plain: TSV |
-| `grove add` | 创建 worktree | 本地/新建/远程分支; fzf 交互选分支; 自动 cache symlink |
-| `grove switch` | 切换 worktree | 输出 cd 路径; fzf 交互 + 5 commits preview |
-| `grove remove` | 删除 worktree | 安全检查(未提交/未推送); --force 跳过; 主 worktree 保护; 自动 cd 离开 |
-| `grove cache` | cache symlink | link/status/unlink 三个子操作; gitignore 风格规则匹配 |
+| Command | Function | Key Behavior |
+|---------|----------|--------------|
+| `grove list` | List worktrees | human: colored table; plain: TSV |
+| `grove add` | Create worktree | local/new/remote branch; fzf interactive branch selection; automatic cache symlink |
+| `grove switch` | Switch worktree | Output cd path; fzf interactive + 5 commits preview |
+| `grove remove` | Remove worktree | Safety checks (uncommitted/unpushed); --force to skip; main worktree protection; auto cd out |
+| `grove cache` | Cache symlink | link/status/unlink sub-operations; gitignore-style rule matching |
 
-### 输出模式
+### Output Modes
 
-| 模式 | 触发 | 用途 |
-|------|------|------|
-| `human`（默认） | 终端交互 | 彩色、格式化、fzf 选择 |
-| `plain`（`--plain`） | AI / 脚本 | TSV 格式、无颜色、确定性输出 |
+| Mode | Trigger | Purpose |
+|------|---------|---------|
+| `human` (default) | Terminal interactive | Colored, formatted, fzf selection |
+| `plain` (`--plain`) | AI / scripts | TSV format, no color, deterministic output |
 
-### 配置
+### Configuration
 
-| 配置 | 当前实现 | 迁移后 |
-|------|---------|--------|
-| worktree 基路径 | 环境变量 `GROVE_WORKTREE_BASE`，默认 `~/.grove/worktrees` | 同 |
-| cache 规则 | `~/.groverc` + `<repo>/.groverc`，gitignore 风格 | `~/.config/grove/config.toml` + `<repo>/grove.toml`，TOML 格式 |
+| Config | Current Implementation | After Migration |
+|--------|----------------------|-----------------|
+| Worktree base path | Env var `GROVE_WORKTREE_BASE`, default `~/.grove/worktrees` | Same |
+| Cache rules | `~/.groverc` + `<repo>/.groverc`, gitignore-style | `~/.config/grove/config.toml` + `<repo>/grove.toml`, TOML format |
 
-## 4. 总体架构
+## 4. Overall Architecture
 
-采用 Cargo Workspace 架构：一个核心逻辑库 crate + 一个 CLI 二进制 crate。
+Uses a Cargo Workspace architecture: one core logic library crate + one CLI binary crate.
 
 ```
-grove/                           # 仓库根
-├── Cargo.toml                   # workspace 声明
+grove/                           # Repository root
+├── Cargo.toml                   # Workspace declaration
 ├── crates/
-│   ├── grove-core/              # 核心逻辑库
+│   ├── grove-core/              # Core logic library
 │   │   ├── Cargo.toml
 │   │   └── src/
-│   │       ├── lib.rs           # 库入口，暴露公共 API
-│   │       ├── config.rs        # 配置解析（TOML + 规则模型）
-│   │       ├── worktree.rs      # worktree 增删查改核心逻辑
-│   │       ├── cache.rs         # cache symlink 规则匹配与操作
-│   │       ├── git.rs           # git 命令封装（status 解析、分支查询）
-│   │       ├── path.rs          # 路径计算（worktree 路径、短路径等）
-│   │       └── pattern.rs       # gitignore 风格 glob 匹配引擎
-│   └── grove/                   # CLI 二进制
+│   │       ├── lib.rs           # Library entry, exposes public API
+│   │       ├── config.rs        # Config parsing (TOML + rule model)
+│   │       ├── worktree.rs      # Worktree CRUD core logic
+│   │       ├── cache.rs         # Cache symlink rule matching and operations
+│   │       ├── git.rs           # Git command wrappers (status parsing, branch queries)
+│   │       ├── path.rs          # Path computation (worktree paths, short paths, etc.)
+│   │       └── pattern.rs       # Gitignore-style glob matching engine
+│   └── grove/                   # CLI binary
 │       ├── Cargo.toml
 │       └── src/
-│           ├── main.rs          # 入口：parse → dispatch
-│           ├── cli.rs           # clap 命令/参数定义
-│           ├── output.rs        # 双模输出（human 彩色 / plain 纯文本）
-│           └── interactive.rs   # inquire 交互式选择
+│           ├── main.rs          # Entry: parse → dispatch
+│           ├── cli.rs           # Clap command/argument definitions
+│           ├── output.rs        # Dual-mode output (human colored / plain text)
+│           └── interactive.rs   # inquire interactive selection
 ├── shell/
-│   └── grove.zsh                # Zsh shell 集成（cd + tab completion）
+│   └── grove.zsh                # Zsh shell integration (cd + tab completion)
 ├── tests/
-│   ├── integration/             # 集成测试（操作真实 git 仓库）
-│   └── e2e/                     # 端到端测试
-├── docs/                        # 文档
+│   ├── integration/             # Integration tests (operating on real git repos)
+│   └── e2e/                     # End-to-end tests
+├── docs/                        # Documentation
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml               # PR 检查（lint / test / build）
-│       └── release.yml          # 发布（crates.io）
+│       ├── ci.yml               # PR checks (lint / test / build)
+│       └── release.yml          # Release (crates.io)
 ├── README.md
-├── install.sh                   # 快速安装脚本
+├── install.sh                   # Quick install script
 └── LICENSE
 ```
 
-### 依赖关系
+### Dependency Relationships
 
 ```mermaid
 graph TD
-    Zsh[grove.zsh shell函数] --> |"GROVE_CD_FILE 环境变量"| CLI
-    CLI[crates/grove<br/>clap + inquire + colored] --> |"调用 API"| Core
-    Core[crates/grove-core<br/>纯逻辑库，无终端依赖]
+    Zsh[grove.zsh shell function] --> |"GROVE_CD_FILE env var"| CLI
+    CLI[crates/grove<br/>clap + inquire + colored] --> |"API calls"| Core
+    Core[crates/grove-core<br/>pure logic library, no terminal dependencies]
 
-    Core --> Git[git 命令]
+    Core --> Git[git commands]
     Core --> Config["~/.config/grove/config.toml<br/>+ <repo>/grove.toml"]
-    Core --> FS[文件系统<br/>symlink 操作]
+    Core --> FS[Filesystem<br/>symlink operations]
 ```
 
-### 职责分离
+### Separation of Concerns
 
-| 层 | crate | 依赖 | 职责 |
-|----|-------|------|------|
-| Shell | `shell/grove.zsh` | Rust 二进制 | cd 桥接 + tab 补全 |
-| CLI | `grove` | grove-core, clap, inquire | 参数解析、展示、交互 |
-| Core | `grove-core` | serde, toml | 所有业务逻辑 |
+| Layer | Crate | Dependencies | Responsibilities |
+|-------|-------|-------------|------------------|
+| Shell | `shell/grove.zsh` | Rust binary | cd bridging + tab completion |
+| CLI | `grove` | grove-core, clap, inquire | Argument parsing, display, interaction |
+| Core | `grove-core` | serde, toml | All business logic |
 
-Core 层不依赖任何终端/UI 库，可独立运行单元测试，无 I/O 副作用时测试毫秒级完成。
+The Core layer has no terminal/UI dependencies, can run unit tests independently, and tests complete in milliseconds when there are no I/O side effects.
 
-## 5. CLI 接口设计
+## 5. CLI Interface Design
 
-### 5.1 命令定义
+### 5.1 Command Definitions
 
 ```rust
 #[derive(Parser)]
@@ -166,47 +166,47 @@ enum Commands {
 }
 ```
 
-### 5.2 行为规则（统一约定）
+### 5.2 Behavior Rules (Unified Conventions)
 
-| 命令 | 提供了 branch 参数 | 未提供 |
-|------|-------------------|--------|
-| `add` | 直接执行 | 进入 inquire 交互选择 |
-| `switch` | 查找 worktree，输出路径 | 进入 inquire 交互选择 |
-| `remove` | 查找 worktree，安全检查，执行 | 进入 inquire 交互选择 |
-| `list` | N/A | 直接输出 |
-| `cache` | N/A | 有子命令直接执行，无进入交互 |
+| Command | Branch argument provided | Not provided |
+|---------|------------------------|--------------|
+| `add` | Execute directly | Enter inquire interactive selection |
+| `switch` | Find worktree, output path | Enter inquire interactive selection |
+| `remove` | Find worktree, safety check, execute | Enter inquire interactive selection |
+| `list` | N/A | Output directly |
+| `cache` | N/A | With sub-command execute directly, without enter interactive |
 
-### 5.3 输出格式
+### 5.3 Output Format
 
-**human 模式**（`grove list`）：
+**Human mode** (`grove list`):
 ```
   BRANCH        DIR                        COMMIT   STATUS
 * feat/foo      ~/code/proj/feat-foo       a1b2c3d  clean
   feat/bar      ~/code/proj/feat-bar       e4f5g6h  +3 ~1 ?2
 ```
 
-**plain 模式**（`grove --plain list`）：
+**Plain mode** (`grove --plain list`):
 ```
 branch<TAB>path<TAB>commit<TAB>staged=N<TAB>modified=N<TAB>untracked=N<TAB>ahead=N<TAB>behind=N
 ```
 
-所有日志/错误信息一律输出到 stderr，stdout 只输出数据（plain 模式）或格式化文本（human 模式）。
+All log/error messages go to stderr; stdout only outputs data (plain mode) or formatted text (human mode).
 
-## 6. 核心模块设计
+## 6. Core Module Design
 
-### 6.1 数据结构
+### 6.1 Data Structures
 
 ```rust
 // ── worktree ──
 
-/// 一个 worktree 实例
+/// A worktree instance
 struct Worktree {
-    branch: String,      // 分支名，"feat/foo" 或 "(detached)"
-    path: PathBuf,       // 绝对路径
-    commit: String,      // 7 位短 hash
+    branch: String,      // Branch name, "feat/foo" or "(detached)"
+    path: PathBuf,       // Absolute path
+    commit: String,      // 7-character short hash
 }
 
-/// git status 解析结果
+/// git status parsing result
 struct WorktreeStatus {
     staged: u32,
     modified: u32,
@@ -223,7 +223,7 @@ struct WorktreeEntry {
 
 // ── config ──
 
-/// TOML 顶层结构
+/// TOML top-level structure
 struct GroveConfig {
     #[serde(default)]
     cache: CacheSection,
@@ -232,20 +232,20 @@ struct GroveConfig {
 }
 
 struct CacheSection {
-    /// 规则按序求值，last-match-wins
+    /// Rules evaluated in order, last-match-wins
     #[serde(default)]
     rules: Vec<String>,
 }
 
 struct WorktreeSection {
-    /// 替代 GROVE_WORKTREE_BASE 环境变量（可选）
+    /// Alternative to GROVE_WORKTREE_BASE env var (optional)
     #[serde(default)]
     base_path: Option<String>,
 }
 
 // ── pattern ──
 
-/// 编译后的单条匹配规则
+/// A compiled matching rule
 struct CompiledRule {
     raw: String,
     negated: bool,
@@ -262,24 +262,24 @@ enum Matcher {
 }
 ```
 
-### 6.2 模块：config
+### 6.2 Module: config
 
-**配置加载优先级（低→高）：**
+**Config loading priority (low → high):**
 
 ```
-1. ~/.config/grove/config.toml       全局配置
-2. <project>/grove.toml              项目配置
+1. ~/.config/grove/config.toml       Global config
+2. <project>/grove.toml              Project config
 ```
 
-注意：旧的 `.groverc`（gitignore 风格纯文本）不再支持，全部迁移到 TOML 格式。
+Note: The old `.groverc` (gitignore-style plain text) is no longer supported; everything migrates to TOML format.
 
-**合并规则：**
+**Merge rules:**
 
-- 同 key 的结构字段：后加载覆盖先加载
-- `cache.rules` 列表：全局规则在前，项目规则拼接在后
-- 规则求值：按照列表顺序 last-match-wins，因此项目规则自动覆盖全局
+- Struct fields with the same key: later loaded overwrites earlier loaded
+- `cache.rules` list: global rules first, project rules appended after
+- Rule evaluation: last-match-wins in list order, so project rules automatically override global
 
-**TOML 示例：**
+**TOML example:**
 
 ```toml
 # ~/.config/grove/config.toml
@@ -302,229 +302,229 @@ rules = [
 ]
 ```
 
-### 6.3 模块：pattern（gitignore 风格匹配引擎）
+### 6.3 Module: pattern (gitignore-style matching engine)
 
-#### 匹配规格
+#### Matching Specification
 
-| 规则类型 | 示例 | 匹配逻辑 |
-|---------|------|---------|
-| 字面量（无 `/`） | `node_modules` | 匹配 path 的 basename |
-| 字面量（含 `/`） | `packages/node_modules` | 匹配完整路径或路径后缀 |
-| 锚定（`/` 开头） | `/build` | 仅匹配仓库根目录 |
-| `*` 通配（单层） | `*.log` | 匹配当前层级任意名称 |
-| `?` 通配 | `ab?.txt` | 匹配当前层级单个字符 |
-| `**` 递归 | `a/**/b` | `**` 匹配零或多个目录层级 |
-| `/ **` 后缀 | `packages/**` | 匹配 `packages` 及其所有子孙 |
-| `**/ ` 前缀 | `**/node_modules` | 等价于非锚定 `node_modules` |
-| 取反（`!`） | `!.cache/private` | 取消之前规则的匹配 |
+| Rule Type | Example | Matching Logic |
+|-----------|---------|----------------|
+| Literal (no `/`) | `node_modules` | Matches path basename |
+| Literal (with `/`) | `packages/node_modules` | Matches full path or path suffix |
+| Anchored (`/` prefix) | `/build` | Only matches repository root |
+| `*` wildcard (single level) | `*.log` | Matches any name at current level |
+| `?` wildcard | `ab?.txt` | Matches single character at current level |
+| `**` recursive | `a/**/b` | `**` matches zero or more directory levels |
+| `/**` suffix | `packages/**` | Matches `packages` and all descendants |
+| `**/` prefix | `**/node_modules` | Equivalent to unanchored `node_modules` |
+| Negation (`!`) | `!.cache/private` | Cancels a previous rule's match |
 
-#### 匹配流程
-
-```
-输入: 一条 rule 文本 + 一个仓库相对路径
-
-1. 预处理:
-   ├── 以 ! 开头? → negated = true，去掉 !
-   └── 以 / 开头? → anchored = true，去掉 /
-
-2. 如果 anchored → 从根精确匹配
-
-3. 如果 pattern 含 /**/  → 拆分为 prefix + suffix, 锚定两端
-
-4. 如果 pattern 以 **/ 开头 → 去掉后非锚定匹配
-
-5. 如果 pattern 以 /** 结尾 → 去掉后匹配前缀及其子孙
-
-6. 如果 pattern 含 / (不含 **) → 匹配完整路径或后缀
-
-7. 如果 pattern 不含 / → 匹配最后一段 (basename)
-```
-
-#### 规则求值（last-match-wins）
+#### Matching Flow
 
 ```
-对给定的相对路径 path:
+Input: one rule text + one repo-relative path
+
+1. Preprocessing:
+   ├── Starts with !? → negated = true, remove !
+   └── Starts with /? → anchored = true, remove /
+
+2. If anchored → exact match from root
+
+3. If pattern contains /**/ → split into prefix + suffix, anchor both ends
+
+4. If pattern starts with **/ → remove and match unanchored
+
+5. If pattern ends with /** → remove and match prefix and its descendants
+
+6. If pattern contains / (without **) → match full path or suffix
+
+7. If pattern does not contain / → match last segment (basename)
+```
+
+#### Rule Evaluation (last-match-wins)
+
+```
+For a given relative path:
   selected = false
 
-  for rule in rules:       # 全局在前，项目在后
+  for rule in rules:       # Global first, project after
     if matches(rule, path):
       selected = !rule.negated
 
   return selected
 ```
 
-#### 安全检查
+#### Safety Checks
 
-拒绝以下模式（返回错误）：
-- 空字符串
-- 包含 `../`
-- 仅 `..`
+Reject the following patterns (return error):
+- Empty string
+- Contains `../`
+- Just `..`
 
-### 6.4 模块：cache
+### 6.4 Module: cache
 
-三个子操作，均通过同一套规则求值引擎驱动。
+Three sub-operations, all driven by the same rule evaluation engine.
 
 ```
-link（默认）
-  ┌── 加载配置规则
-  ├── 扫描主 worktree（find -type d，跳过 .git）
-  ├── 对每个目录路径执行规则求值
-  ├── 筛选：selected == true 且 source 存在
-  └── 对每个目标：
-       ├── 目标已存在 → 跳过
-       ├── 父目录不存在 → mkdir -p
-       └── 创建 symlink: ln -s <source> <target>
+link (default)
+  ┌── Load config rules
+  ├── Scan main worktree (find -type d, skip .git)
+  ├── Evaluate rules for each directory path
+  ├── Filter: selected == true AND source exists
+  └── For each target:
+       ├── Target already exists → skip
+       ├── Parent directory missing → mkdir -p
+       └── Create symlink: ln -s <source> <target>
 
 status
-  ┌── 加载配置规则
-  ├── 扫描主 worktree
-  └── 对每条规则显示状态：
-       linked:   已是 symlink
-       local:    存在真实目录（非 symlink）
-       missing:  本应是 symlink 但不存在，source 可用
-       N/A:      规则未匹配到任何目录
+  ┌── Load config rules
+  ├── Scan main worktree
+  └── Display status for each rule:
+       linked:   Already a symlink
+       local:    Real directory exists (not a symlink)
+       missing:  Should be a symlink but doesn't exist, source available
+       N/A:      Rule didn't match any directory
 
 unlink
-  ┌── 加载配置规则
-  ├── 扫描当前 worktree
-  └── 对每个由规则匹配到的 symlink：删除它
-  （只删除 symlink，不删除真实目录）
+  ┌── Load config rules
+  ├── Scan current worktree
+  └── For each symlink matched by rules: delete it
+  (Only deletes symlinks, not real directories)
 ```
 
-**关键行为：**
+**Key behaviors:**
 
-- 只处理目录，不处理文件
-- symlink 目标是**绝对路径**（因为 worktree 可能在不同位置）
-- 跳过 `.git` 目录
-- `grove add` 后自动执行 link（可通过 `--no-cache` 跳过）
-- 已存在的目录/文件/symlink 不覆盖
-- 后续新增 cache 目录需手动重新 `grove cache link`
+- Only processes directories, not files
+- Symlink targets are **absolute paths** (because worktrees may be in different locations)
+- Skips `.git` directory
+- `grove add` automatically runs link afterward (can be skipped with `--no-cache`)
+- Existing directories/files/symlinks are not overwritten
+- Newly added cache directories require manual `grove cache link` afterward
 
-### 6.5 模块：worktree
+### 6.5 Module: worktree
 
 ```rust
-/// 列出所有 worktree
+/// List all worktrees
 fn list_all() -> Result<Vec<WorktreeEntry>>;
 
-/// 按分支名查找 worktree
+/// Find worktree by branch name
 fn find_by_branch(branch: &str) -> Result<PathBuf>;
 
-/// 创建 worktree
+/// Create worktree
 fn add(branch: &str, opts: AddOptions) -> Result<PathBuf>;
 
-/// 删除 worktree
+/// Remove worktree
 fn remove(branch: &str, force: bool) -> Result<()>;
 
-/// 获取主 worktree 路径
+/// Get main worktree path
 fn main_worktree() -> Result<PathBuf>;
 ```
 
-**路径计算：**
+**Path computation:**
 
 ```
 worktree_dir = {WORKTREE_BASE}/{project_name}/{safe_branch}
 
-WORKTREE_BASE: 环境变量 GROVE_WORKTREE_BASE
-               或 config.worktree.base_path
-               或默认 ~/.grove/worktrees
+WORKTREE_BASE: Env var GROVE_WORKTREE_BASE
+               or config.worktree.base_path
+               or default ~/.grove/worktrees
 
-project_name: git remote get-url origin → basename → 去掉 .git
+project_name: git remote get-url origin → basename → remove .git
 
-safe_branch: 将 / 替换为 -
+safe_branch: Replace / with -
 ```
 
-**add 行为：**
+**add behavior:**
 
-| 场景 | 操作 |
-|------|------|
+| Scenario | Operation |
+|----------|-----------|
 | `add <branch>` | `git worktree add <path> <branch>` |
 | `add <branch> --create` | `git worktree add -b <branch> <path>` |
-| `add <branch> --remote` | fetch --all → 如果本地存在则 `git worktree add <path> <branch>`，否则 `git worktree add --track -b <branch> <path> <remote/branch>` |
+| `add <branch> --remote` | fetch --all → if local exists `git worktree add <path> <branch>`, otherwise `git worktree add --track -b <branch> <path> <remote/branch>` |
 
-**remove 安全检查：**
+**remove safety checks:**
 
 ```
-1. 不允许删除主 worktree
-2. 检查未提交变更: git status --porcelain ≠ 空 → 阻止（除非 --force）
-3. 检查未推送提交: git log @{u}..HEAD ≠ 空 → 阻止（除非 --force）
-4. 如果当前目录在待删除 worktree 内 → 自动 cd 到主 worktree
+1. Cannot remove main worktree
+2. Check uncommitted changes: git status --porcelain != empty → block (unless --force)
+3. Check unpushed commits: git log @{u}..HEAD != empty → block (unless --force)
+4. If current directory is inside the worktree being removed → auto cd to main worktree
 ```
 
-### 6.6 模块：git
+### 6.6 Module: git
 
-对 git 命令的封装，所有调用通过 `std::process::Command`：
+Wrappers for git commands, all calls via `std::process::Command`:
 
 ```rust
-/// 确保在 git 仓库中
+/// Ensure we're in a git repo
 fn ensure_git_repo() -> Result<()>;
 
-/// 解析 git worktree list --porcelain
+/// Parse git worktree list --porcelain
 fn parse_worktree_list() -> Result<Vec<Worktree>>;
 
-/// 解析 git status --porcelain=v2 --branch
+/// Parse git status --porcelain=v2 --branch
 fn parse_status(path: &Path) -> Result<WorktreeStatus>;
 
-/// 提取项目名（从 origin URL）
+/// Extract project name (from origin URL)
 fn project_name() -> Result<String>;
 
-/// 获取主 worktree 目录
+/// Get main worktree directory
 fn main_worktree_dir() -> Result<PathBuf>;
 
-/// 列出本地分支
+/// List local branches
 fn list_branches() -> Result<Vec<String>>;
 
-/// 列出远程分支
+/// List remote branches
 fn list_remote_branches() -> Result<Vec<String>>;
 ```
 
-## 7. 交互式 UI
+## 7. Interactive UI
 
-使用 `inquire` crate（纯 Rust，无外部依赖），替代当前 fzf。
+Uses the `inquire` crate (pure Rust, no external dependencies), replacing the current fzf.
 
-### 7.1 `grove add` 交互
+### 7.1 `grove add` interaction
 
 ```
-Step 1: Select "选择操作"
+Step 1: Select "Select action"
   > existing branch
     new branch
     remote branch
 
-Step 2 (existing): Select "选择已有分支"
+Step 2 (existing): Select "Select existing branch"
   > feat/login
     feat/api-v2
     fix/typo
-  (输入即搜索过滤)
+  (Type to search/filter)
 
-Step 2 (new): Text "输入新分支名: "
+Step 2 (new): Text "Enter new branch name: "
 
-Step 2 (remote): 先 fetch --all --prune，然后 Select
+Step 2 (remote): fetch --all --prune first, then Select
   > origin/main
     origin/feat/login
     second/feat/only-on-second
 ```
 
-### 7.2 `grove switch` 交互
+### 7.2 `grove switch` interaction
 
 ```
-Select "选择 worktree"
+Select "Select worktree"
   > feat/login   ~/code/proj/feat-login
     main          ~/code/proj
     feat/api-v2   ~/code/proj/feat-api-v2
 ```
 
-### 7.3 `grove remove` 交互
+### 7.3 `grove remove` interaction
 
 ```
-Select "选择要删除的 worktree"（不含主 worktree）
+Select "Select worktree to remove" (excluding main worktree)
   > feat/login
     feat/api-v2
 
-Confirm "确认删除 worktree 'feat/login'? [y/N]"
+Confirm "Remove worktree 'feat/login'? [y/N]"
 ```
 
-**错误处理：** 安全检查失败时显示明确提示并退出，不执行删除。
+**Error handling:** When safety checks fail, show a clear prompt and exit without performing the removal.
 
-## 8. Shell 集成
+## 8. Shell Integration
 
 ### 8.1 zsh wrapper
 
@@ -545,43 +545,43 @@ grove() {
 }
 ```
 
-### 8.2 工作原理
+### 8.2 How it works
 
 ```
-zsh grove() 函数
-  → 创建临时文件
-  → GROVE_CD_FILE=<临时文件路径> grove <args>
-  → Rust 二进制执行操作
-  → 需要切换目录时：把路径写入 GROVE_CD_FILE
-  → Rust 退出
-  → zsh 读取临时文件内容
-  → builtin cd <路径>
-  → 删除临时文件
+zsh grove() function
+  → Create temp file
+  → GROVE_CD_FILE=<temp file path> grove <args>
+  → Rust binary executes operation
+  → When directory change needed: write path to GROVE_CD_FILE
+  → Rust exits
+  → zsh reads temp file contents
+  → builtin cd <path>
+  → Delete temp file
 ```
 
-### 8.3 Rust 侧的 emit_cd
+### 8.3 Rust-side emit_cd
 
 ```rust
 fn emit_cd(path: &Path) {
     if let Ok(file) = env::var("GROVE_CD_FILE") {
         fs::write(&file, path.display().to_string()).ok();
     } else if is_plain_mode() {
-        // 非 shell 环境 + plain 模式：直接打印路径
+        // Non-shell environment + plain mode: print path directly
         println!("{}", path.display());
     }
-    // 非 shell 环境 + human 模式：不输出 cd 路径
+    // Non-shell environment + human mode: don't output cd path
 }
 ```
 
-### 8.4 Tab 补全
+### 8.4 Tab Completion
 
-同当前版本，在 `grove.zsh` 中用 `compdef` 实现：
-- 命令补全（list / add / switch / remove / cache / help / version）
-- 全局 flag 补全（`--plain`）
-- add 时补全分支名 + flag（`--create` / `--remote` / `--no-cache`）
-- switch / remove 时补全现有 worktree 分支名
+Same as current version, implemented in `grove.zsh` using `compdef`:
+- Command completion (list / add / switch / remove / cache / help / version)
+- Global flag completion (`--plain`)
+- Add: complete branch names + flags (`--create` / `--remote` / `--no-cache`)
+- Switch / remove: complete existing worktree branch names
 
-### 8.5 快捷别名
+### 8.5 Quick Aliases
 
 ```zsh
 alias wls='grove ls'
@@ -590,56 +590,56 @@ alias wcd='grove cd'
 alias wrm='grove rm'
 ```
 
-## 9. 测试策略
+## 9. Testing Strategy
 
-### 9.1 单元测试
+### 9.1 Unit Tests
 
-位置：与源码同文件，`#[cfg(test)] mod tests`
+Location: Same file as source code, `#[cfg(test)] mod tests`
 
-| 模块 | 覆盖重点 |
-|------|---------|
-| `pattern` | 每条匹配规则类型；锚定/非锚定；`**` 递归；取反；安全拒绝 |
-| `config` | TOML 解析；空文件/缺文件容错；规则顺序保持；多层合并；旧名 `.groverc` 兼容 |
-| `path` | worktree 路径计算；HOME→~；`/`→`-` 转义 |
-| `git` | 命令输出解析（branch list、status porcelain v2）；错误处理 |
-| `worktree` | 分支查找；主 worktree 保护；add/remove 逻辑 |
-| `cache` | 规则求值；symlink 路径；skip 条件 |
-| `output` | TSV 格式化；颜色切换；cd 文件写入 |
+| Module | Coverage Focus |
+|--------|---------------|
+| `pattern` | Each matching rule type; anchored/unanchored; `**` recursive; negation; safety rejection |
+| `config` | TOML parsing; empty/missing file tolerance; rule order preservation; multi-layer merge; old `.groverc` compatibility |
+| `path` | Worktree path computation; HOME→~; `/`→`-` escaping |
+| `git` | Command output parsing (branch list, status porcelain v2); error handling |
+| `worktree` | Branch finding; main worktree protection; add/remove logic |
+| `cache` | Rule evaluation; symlink paths; skip conditions |
+| `output` | TSV formatting; color switching; cd file writing |
 
-### 9.2 集成测试
+### 9.2 Integration Tests
 
-位置：`tests/integration/`，每个文件是一个独立测试二进制。
+Location: `tests/integration/`, each file is an independent test binary.
 
-每个测试创建临时 git 仓库（bare origin + clone），在独立 HOME 和 GROVE_WORKTREE_BASE 下执行。
+Each test creates a temporary git repo (bare origin + clone), runs under isolated HOME and GROVE_WORKTREE_BASE.
 
 ```
 tests/integration/
-├── add_tests.rs         # 本地分支 / --create / --remote / --no-cache
-├── list_tests.rs        # human 和 plain 两种输出格式
-├── remove_tests.rs      # 安全检查 / --force / 主 worktree 保护
-├── switch_tests.rs      # 路径输出 / GROVE_CD_FILE 写入
-└── cache_tests.rs       # link / status / unlink / 规则覆盖
+├── add_tests.rs         # Local branch / --create / --remote / --no-cache
+├── list_tests.rs        # Human and plain output formats
+├── remove_tests.rs      # Safety checks / --force / main worktree protection
+├── switch_tests.rs      # Path output / GROVE_CD_FILE writing
+└── cache_tests.rs       # link / status / unlink / rule overrides
 ```
 
-### 9.3 E2E 测试
+### 9.3 E2E Tests
 
-位置：`tests/e2e/`，模拟用户完整使用流程。
+Location: `tests/e2e/`, simulating complete user workflows.
 
 ```
 tests/e2e/
 └── smoke.sh             # install → add → list → cache → switch → remove
 ```
 
-### 9.4 覆盖目标
+### 9.4 Coverage Targets
 
-| 类型 | 目标 |
-|------|------|
-| 核心逻辑（pattern / config / git parsing） | > 90% 分支覆盖 |
-| 整体 | > 80% 行覆盖 |
+| Type | Target |
+|------|--------|
+| Core logic (pattern / config / git parsing) | > 90% branch coverage |
+| Overall | > 80% line coverage |
 
 ## 10. CI / CD
 
-### 10.1 PR 检查（`.github/workflows/ci.yml`）
+### 10.1 PR Checks (`.github/workflows/ci.yml`)
 
 ```yaml
 name: CI
@@ -669,7 +669,7 @@ jobs:
       - run: cargo build --release
 ```
 
-### 10.2 发布（`.github/workflows/release.yml`）
+### 10.2 Release (`.github/workflows/release.yml`)
 
 ```yaml
 name: Release
@@ -686,53 +686,53 @@ jobs:
       - run: cargo publish --token ${{ secrets.CARGO_TOKEN }}
 ```
 
-## 11. 关键依赖
+## 11. Key Dependencies
 
 ### grove-core
 
-| crate | 版本 | 用途 |
-|-------|------|------|
-| `serde` | 1 | 序列化/反序列化（配置 TOML） |
-| `toml` | 0.8 | TOML 解析 |
-| `thiserror` | 1 | 错误类型定义 |
+| Crate | Version | Purpose |
+|-------|---------|---------|
+| `serde` | 1 | Serialization/deserialization (config TOML) |
+| `toml` | 0.8 | TOML parsing |
+| `thiserror` | 1 | Error type definitions |
 
 ### grove (CLI)
 
-| crate | 版本 | 用途 |
-|-------|------|------|
-| `clap` | 4 | 命令行参数解析（derive 模式） |
-| `inquire` | 0.7 | 交互式选择 / 文本输入 |
-| `console` | 0.15 | 终端彩色输出 |
-| `anyhow` | 1 | 便捷错误处理 |
+| Crate | Version | Purpose |
+|-------|---------|---------|
+| `clap` | 4 | Command-line argument parsing (derive mode) |
+| `inquire` | 0.7 | Interactive selection / text input |
+| `console` | 0.15 | Terminal colored output |
+| `anyhow` | 1 | Convenient error handling |
 
-## 12. 迁移策略
+## 12. Migration Strategy
 
-### 12.1 分步实施
+### 12.1 Phased Implementation
 
-1. **搭建工程骨架**：Workspace + CI + crate 结构
-2. **core::config**：TOML 解析 + 规则模型
-3. **core::pattern**：glob 匹配引擎 + 单测
-4. **core::git**：git 命令封装
-5. **core::worktree**：worktree CRUD
-6. **core::cache**：cache 规则求值 + symlink 操作
-7. **cli**：clap 定义 + 命令分发 + 输出
-8. **shell**：zsh wrapper + tab completion
-9. **install.sh**：安装脚本
-10. **文档**：README + 使用文档
+1. **Set up project skeleton**: Workspace + CI + crate structure
+2. **core::config**: TOML parsing + rule model
+3. **core::pattern**: Glob matching engine + unit tests
+4. **core::git**: Git command wrappers
+5. **core::worktree**: Worktree CRUD
+6. **core::cache**: Cache rule evaluation + symlink operations
+7. **cli**: Clap definitions + command dispatch + output
+8. **shell**: zsh wrapper + tab completion
+9. **install.sh**: Install script
+10. **Docs**: README + usage documentation
 
-### 12.2 旧代码清理
+### 12.2 Legacy Code Cleanup
 
-- 所有 Bash 代码（`bin/grove`、`lib/*.sh`、`shell/grove.zsh`）在 PR 合入后删除
-- `.groverc` 格式不再支持（迁移到 TOML），但新版本可提供一个一次性迁移命令
+- All Bash code (`bin/grove`, `lib/*.sh`, `shell/grove.zsh`) will be deleted after PR merge
+- `.groverc` format is no longer supported (migrating to TOML), but the new version can provide a one-time migration command
 
-### 12.3 兼容性
+### 12.3 Compatibility
 
-- CLI 命令名和参数名尽量不变（用户脚本无感切换）
-- `--plain` 输出格式不变
-- `GROVE_WORKTREE_BASE` 环境变量继续支持（优先于配置文件）
+- CLI command and argument names remain unchanged where possible (seamless switch for user scripts)
+- `--plain` output format unchanged
+- `GROVE_WORKTREE_BASE` env var continues to be supported (takes priority over config file)
 
-## 附录 A：修订历史
+## Appendix A: Revision History
 
-| 日期 | 版本 | 变更 |
-|------|------|------|
-| 2026-06-08 | v1.0 | 初始设计 |
+| Date | Version | Changes |
+|------|---------|---------|
+| 2026-06-08 | v1.0 | Initial design |
