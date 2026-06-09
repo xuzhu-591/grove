@@ -1,0 +1,36 @@
+CHANGELOG.md
+  ce052af31e8ab744 1-62
+.github/workflows/ci.yml
+  ce052af31e8ab744 3-11,14,19,21-27,29-30,34-35,38,46,50-52,57-105
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "4b545ded4ff651765c27625daaa320ea1e347e59",
+  "prompts": {
+    "ce052af31e8ab744": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1c7fe348-c7de-4aca-b4a6-6f58a73b1fee",
+        "model": "mimo-v2.5-pro"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 139,
+      "total_deletions": 11,
+      "accepted_lines": 139,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".github/workflows/ci.yml": {
+          "additions": 77,
+          "deletions": 11,
+          "accepted_lines": 77
+        },
+        "CHANGELOG.md": {
+          "additions": 62,
+          "accepted_lines": 62
+        }
+      }
+    }
+  }
+}
