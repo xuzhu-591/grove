@@ -140,8 +140,8 @@ fn cmd_remove(plain: bool, branch: Option<String>, force: bool, cwd: &Path) -> a
                 output::info(&format!("Removed: {}", branch));
             }
             // If cwd was inside the removed worktree, emit cd to main
-            let current = env::current_dir()?;
-            if !worktree::is_inside(&current, &main_dir) {
+            // Use captured cwd — env::current_dir() fails after worktree is deleted
+            if !worktree::is_inside(cwd, &main_dir) {
                 output::emit_cd(&main_dir, plain);
             }
         }
