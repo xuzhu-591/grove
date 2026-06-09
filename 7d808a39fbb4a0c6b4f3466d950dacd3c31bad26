@@ -1,0 +1,30 @@
+crates/grove/src/main.rs
+  63b0233db45e4b62 143-144
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "7d808a39fbb4a0c6b4f3466d950dacd3c31bad26",
+  "prompts": {
+    "63b0233db45e4b62": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ffadfa3-4cc4-49eb-87f9-d90f91a2d2f1",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 2,
+      "accepted_lines": 2,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "crates/grove/src/main.rs": {
+          "additions": 2,
+          "deletions": 2,
+          "accepted_lines": 2
+        }
+      }
+    }
+  }
+}
