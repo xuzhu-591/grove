@@ -16,9 +16,8 @@ pub struct WorktreeEntry {
     pub is_main: bool,
 }
 
-pub fn list_all() -> GroveResult<Vec<WorktreeEntry>> {
-    let dir = std::env::current_dir()?;
-    let wts = git::parse_worktree_list(&dir)?;
+pub fn list_all(cwd: &Path) -> GroveResult<Vec<WorktreeEntry>> {
+    let wts = git::parse_worktree_list(cwd)?;
     let mut entries = Vec::new();
     for (i, wt) in wts.into_iter().enumerate() {
         let status = git::parse_status(&wt.path).unwrap_or_default();
@@ -31,9 +30,8 @@ pub fn list_all() -> GroveResult<Vec<WorktreeEntry>> {
     Ok(entries)
 }
 
-pub fn find_by_branch(branch: &str) -> GroveResult<PathBuf> {
-    let dir = std::env::current_dir()?;
-    let wts = git::parse_worktree_list(&dir)?;
+pub fn find_by_branch(branch: &str, cwd: &Path) -> GroveResult<PathBuf> {
+    let wts = git::parse_worktree_list(cwd)?;
     for wt in &wts {
         if wt.branch == branch {
             return Ok(wt.path.clone());
@@ -46,17 +44,16 @@ pub fn main_worktree() -> GroveResult<PathBuf> {
     git::main_worktree_dir()
 }
 
-pub fn add(branch: &str, opts: &AddOptions) -> GroveResult<PathBuf> {
+pub fn add(branch: &str, opts: &AddOptions, cwd: &Path) -> GroveResult<PathBuf> {
     let base = path::resolve_worktree_base();
     let project = git::project_name()?;
     let wt_dir = path::worktree_path(&base, &project, branch);
-    let cwd = std::env::current_dir()?;
 
     if opts.remote {
-        add_from_remote(branch, &wt_dir, &cwd)?;
+        add_from_remote(branch, &wt_dir, cwd)?;
     } else if opts.create {
         run_git(
-            &cwd,
+            cwd,
             &[
                 "worktree",
                 "add",
@@ -67,7 +64,7 @@ pub fn add(branch: &str, opts: &AddOptions) -> GroveResult<PathBuf> {
         )?;
     } else {
         run_git(
-            &cwd,
+            cwd,
             &["worktree", "add", &wt_dir.display().to_string(), branch],
         )?;
     }
@@ -132,8 +129,8 @@ fn add_from_remote(branch: &str, wt_dir: &Path, cwd: &Path) -> GroveResult<()> {
     Ok(())
 }
 
-pub fn remove(branch: &str, force: bool) -> GroveResult<PathBuf> {
-    let dir = find_by_branch(branch)?;
+pub fn remove(branch: &str, force: bool, cwd: &Path) -> GroveResult<PathBuf> {
+    let dir = find_by_branch(branch, cwd)?;
     let main_dir = main_worktree()?;
 
     if dir == main_dir {
@@ -157,14 +154,13 @@ pub fn remove(branch: &str, force: bool) -> GroveResult<PathBuf> {
         }
     }
 
-    let cwd = std::env::current_dir()?;
     if force {
         run_git(
-            &cwd,
+            cwd,
             &["worktree", "remove", "--force", &dir.display().to_string()],
         )?;
     } else {
-        run_git(&cwd, &["worktree", "remove", &dir.display().to_string()])?;
+        run_git(cwd, &["worktree", "remove", &dir.display().to_string()])?;
     }
 
     Ok(main_dir)

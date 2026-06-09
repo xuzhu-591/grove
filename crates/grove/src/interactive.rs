@@ -10,7 +10,7 @@ pub enum AddAction {
 
 pub fn add_interactive(dir: &Path) -> Result<AddAction> {
     let action = Select::new(
-        "选择操作",
+        "Select action",
         vec!["existing branch", "new branch", "remote branch"],
     )
     .prompt()?;
@@ -19,18 +19,18 @@ pub fn add_interactive(dir: &Path) -> Result<AddAction> {
         "existing branch" => {
             let branches =
                 grove_core::git::list_local_branches(dir).context("failed to list branches")?;
-            let branch = Select::new("选择已有分支", branches).prompt()?;
+            let branch = Select::new("Select existing branch", branches).prompt()?;
             Ok(AddAction::Existing(branch))
         }
         "new branch" => {
-            let branch = Text::new("输入新分支名:").prompt()?;
+            let branch = Text::new("Enter new branch name:").prompt()?;
             Ok(AddAction::New(branch))
         }
         "remote branch" => {
             grove_core::git::fetch_all(dir).context("fetch failed")?;
             let branches = grove_core::git::list_remote_branches(dir)
                 .context("failed to list remote branches")?;
-            let branch = Select::new("选择远程分支", branches).prompt()?;
+            let branch = Select::new("Select remote branch", branches).prompt()?;
             Ok(AddAction::Remote(branch))
         }
         _ => unreachable!(),
@@ -48,7 +48,7 @@ pub fn switch_interactive(dir: &Path) -> Result<String> {
         })
         .collect();
 
-    let selected = Select::new("选择 worktree", display_lines).prompt()?;
+    let selected = Select::new("Select worktree", display_lines).prompt()?;
 
     let branch = selected.split_whitespace().next().unwrap_or("").to_string();
     Ok(branch)
@@ -70,10 +70,10 @@ pub fn remove_interactive(dir: &Path) -> Result<String> {
         })
         .collect();
 
-    let selected = Select::new("选择要删除的 worktree", display_lines).prompt()?;
+    let selected = Select::new("Select worktree to remove", display_lines).prompt()?;
     let branch = selected.split_whitespace().next().unwrap_or("").to_string();
 
-    let confirmed = Confirm::new(&format!("确认删除 worktree '{}'?", branch))
+    let confirmed = Confirm::new(&format!("Remove worktree '{}'?", branch))
         .with_default(false)
         .prompt()?;
 
@@ -85,6 +85,6 @@ pub fn remove_interactive(dir: &Path) -> Result<String> {
 }
 
 pub fn cache_interactive() -> Result<String> {
-    let action = Select::new("Cache 操作", vec!["link", "status", "unlink"]).prompt()?;
+    let action = Select::new("Cache action", vec!["link", "status", "unlink"]).prompt()?;
     Ok(action.to_string())
 }

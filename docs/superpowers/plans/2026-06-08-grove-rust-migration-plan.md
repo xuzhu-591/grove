@@ -1,10 +1,10 @@
-# grove Rust 迁移实施计划
+# grove Rust Migration Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 将 grove git worktree manager 从 Bash 完整迁移到 Rust，功能等价，补齐测试和 CI。
+**Goal:** Fully migrate grove git worktree manager from Bash to Rust, with feature parity,completing tests and CI.
 
-**Architecture:** Cargo Workspace 双 crate 架构——`grove-core` 纯逻辑库（无终端依赖，可独立单测）+ `grove` CLI 二进制（clap + inquire + console）。zsh shell wrapper 做 cd 桥接。配置统一到 TOML（`~/.config/grove/config.toml` + `<repo>/grove.toml`）。
+**Architecture:** Cargo Workspace dual-crate architecture——`grove-core` pure logic library (no terminal dependencies, independently testable) + `grove` CLI binary (clap + inquire + console). zsh shell wrapper for cd bridging. Configuration unified to TOML（`~/.config/grove/config.toml` + `<repo>/grove.toml`）。
 
 **Tech Stack:** Rust 2024 edition, clap 4 (derive), inquire 0.7, console, serde + toml, thiserror + anyhow
 
@@ -1911,7 +1911,7 @@ pub enum AddAction {
 /// Run interactive `grove add` flow.
 pub fn add_interactive(dir: &Path) -> Result<AddAction> {
     let action = Select::new(
-        "选择操作",
+        "Select action",
         vec!["existing branch", "new branch", "remote branch"],
     )
     .prompt()?;
@@ -1920,18 +1920,18 @@ pub fn add_interactive(dir: &Path) -> Result<AddAction> {
         "existing branch" => {
             let branches = grove_core::git::list_local_branches(dir)
                 .context("failed to list branches")?;
-            let branch = Select::new("选择已有分支", branches).prompt()?;
+            let branch = Select::new("Select existing branch", branches).prompt()?;
             Ok(AddAction::ExistingBranch(branch))
         }
         "new branch" => {
-            let branch = Text::new("输入新分支名:").prompt()?;
+            let branch = Text::new("Enter new branch name:").prompt()?;
             Ok(AddAction::NewBranch(branch))
         }
         "remote branch" => {
             grove_core::git::fetch_all(dir).context("fetch failed")?;
             let branches = grove_core::git::list_remote_branches(dir)
                 .context("failed to list remote branches")?;
-            let branch = Select::new("选择远程分支", branches).prompt()?;
+            let branch = Select::new("Select remote branch", branches).prompt()?;
             Ok(AddAction::RemoteBranch(branch))
         }
         _ => unreachable!(),
@@ -1951,7 +1951,7 @@ pub fn switch_interactive(dir: &Path) -> Result<String> {
         })
         .collect();
 
-    let selected = Select::new("选择 worktree", display_lines).prompt()?;
+    let selected = Select::new("Select worktree", display_lines).prompt()?;
 
     // Extract branch name (first word)
     let branch = selected.split_whitespace().next().unwrap_or("").to_string();
@@ -1977,10 +1977,10 @@ pub fn remove_interactive(dir: &Path) -> Result<String> {
         })
         .collect();
 
-    let selected = Select::new("选择要删除的 worktree", display_lines).prompt()?;
+    let selected = Select::new("Select worktree to remove", display_lines).prompt()?;
     let branch = selected.split_whitespace().next().unwrap_or("").to_string();
 
-    let confirmed = Confirm::new(&format!("确认删除 worktree '{}'?", branch))
+    let confirmed = Confirm::new(&format!("Remove worktree '{}'?", branch))
         .with_default(false)
         .prompt()?;
 
@@ -1994,7 +1994,7 @@ pub fn remove_interactive(dir: &Path) -> Result<String> {
 /// Run interactive `grove cache` flow.
 pub fn cache_interactive() -> Result<String> {
     let action = Select::new(
-        "Cache 操作",
+        "Cache action",
         vec!["link", "status", "unlink"],
     )
     .prompt()?;

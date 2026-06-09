@@ -15,7 +15,7 @@ fn main() -> anyhow::Result<()> {
     let cwd = env::current_dir()?;
 
     match cli.command {
-        Commands::List => cmd_list(cli.plain),
+        Commands::List => cmd_list(cli.plain, &cwd),
         Commands::Add {
             branch,
             create,
@@ -28,9 +28,9 @@ fn main() -> anyhow::Result<()> {
     }
 }
 
-fn cmd_list(plain: bool) -> anyhow::Result<()> {
+fn cmd_list(plain: bool, cwd: &Path) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
-    let entries = worktree::list_all()?;
+    let entries = worktree::list_all(cwd)?;
 
     if plain {
         output::print_list_plain(&entries);
@@ -61,6 +61,7 @@ fn cmd_add(
                         remote: false,
                         no_cache,
                     },
+                    cwd,
                 )?;
                 output::emit_cd(&wt_dir, plain);
                 return Ok(());
@@ -73,6 +74,7 @@ fn cmd_add(
                         remote: true,
                         no_cache,
                     },
+                    cwd,
                 )?;
                 output::emit_cd(&wt_dir, plain);
                 return Ok(());
@@ -87,6 +89,7 @@ fn cmd_add(
             remote,
             no_cache,
         },
+        cwd,
     )?;
 
     if !no_cache {
@@ -119,7 +122,7 @@ fn cmd_switch(plain: bool, branch: Option<String>, cwd: &Path) -> anyhow::Result
         None => interactive::switch_interactive(cwd)?,
     };
 
-    let dir = worktree::find_by_branch(&branch)?;
+    let dir = worktree::find_by_branch(&branch, cwd)?;
     if !plain {
         output::info(&format!("-> {}", grove_core::path::short_path(&dir)));
     }
@@ -134,7 +137,7 @@ fn cmd_remove(plain: bool, branch: Option<String>, force: bool, cwd: &Path) -> a
         None => interactive::remove_interactive(cwd)?,
     };
 
-    match worktree::remove(&branch, force) {
+    match worktree::remove(&branch, force, cwd) {
         Ok(main_dir) => {
             if !plain {
                 output::info(&format!("Removed: {}", branch));
