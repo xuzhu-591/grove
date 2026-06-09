@@ -59,7 +59,7 @@ jobs:
       - name: Publish grove-core
         run: cargo publish -p grove-core --no-verify
         env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_TOKEN }}
 
       - name: Wait for crates.io index
         run: |
@@ -78,7 +78,7 @@ jobs:
       - name: Publish grove-cli
         run: cargo publish -p grove-cli
         env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_TOKEN }}
 
   release:
     needs: [check, build-macos, e2e, publish]
