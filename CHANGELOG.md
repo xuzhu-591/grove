@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
   - Release job extracts CHANGELOG.md section and creates GitHub Release
 - Add CHANGELOG.md with full project history
 
+### Bug Fixes
+
+- Fix crates.io secret name in publish job (CARGO_TOKEN)
+
 ## [0.1.2]
 
 ### Bug Fixes
