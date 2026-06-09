@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.3]
+
+### Features
+
+- Unified CI workflow with automated release and changelog
+  - Merge ci.yml + release.yml into single ci.yml
+  - Add cargo-audit security check
+  - Add Swatinem/rust-cache for faster CI builds
+  - Release job extracts CHANGELOG.md section and creates GitHub Release
+- Add CHANGELOG.md with full project history
+
 ## [0.1.2]
 
 ### Bug Fixes
