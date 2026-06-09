@@ -1,0 +1,37 @@
+crates/grove/Cargo.toml
+  ce052af31e8ab744 3,14
+crates/grove-core/Cargo.toml
+  ce052af31e8ab744 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "963f11a5518a597c2c59b9fdcaf3b541da2a77f9",
+  "prompts": {
+    "ce052af31e8ab744": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1c7fe348-c7de-4aca-b4a6-6f58a73b1fee",
+        "model": "mimo-v2.5-pro"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 3,
+      "accepted_lines": 3,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "crates/grove/Cargo.toml": {
+          "additions": 2,
+          "deletions": 2,
+          "accepted_lines": 2
+        },
+        "crates/grove-core/Cargo.toml": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
