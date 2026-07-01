@@ -60,6 +60,7 @@ pub struct Worktree {
     pub branch: String,
     pub path: PathBuf,
     pub commit: String,
+    pub prunable: bool,
 }
 
 pub fn parse_worktree_list(dir: &Path) -> GroveResult<Vec<Worktree>> {
@@ -70,6 +71,7 @@ pub fn parse_worktree_list(dir: &Path) -> GroveResult<Vec<Worktree>> {
     let mut current_path: Option<PathBuf> = None;
     let mut current_branch = String::new();
     let mut current_commit = String::new();
+    let mut current_prunable = false;
 
     for line in text.lines() {
         if let Some(p) = line.strip_prefix("worktree ") {
@@ -82,15 +84,19 @@ pub fn parse_worktree_list(dir: &Path) -> GroveResult<Vec<Worktree>> {
                     },
                     path,
                     commit: std::mem::take(&mut current_commit),
+                    prunable: current_prunable,
                 });
             }
             current_path = Some(PathBuf::from(p));
+            current_prunable = false;
         } else if let Some(h) = line.strip_prefix("HEAD ") {
             current_commit = h[..7.min(h.len())].to_string();
         } else if let Some(b) = line.strip_prefix("branch refs/heads/") {
             current_branch = b.to_string();
         } else if line == "detached" {
             current_branch = "(detached)".into();
+        } else if line.starts_with("prunable") {
+            current_prunable = true;
         }
     }
     if let Some(path) = current_path {
@@ -102,6 +108,7 @@ pub fn parse_worktree_list(dir: &Path) -> GroveResult<Vec<Worktree>> {
             },
             path,
             commit: current_commit,
+            prunable: current_prunable,
         });
     }
 

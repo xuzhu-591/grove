@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4]
+
+### Bug Fixes
+
+- Allow `grove remove` to clean up prunable worktrees.
+
 ## [0.1.3]
 
 ### Features
