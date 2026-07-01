@@ -1,0 +1,84 @@
+crates/grove-core/Cargo.toml
+  89ef28dfadadb623 3
+CHANGELOG.md
+  89ef28dfadadb623 5-10
+crates/grove-core/src/git.rs
+  2fe8c8aa128f174c 63,74,87,91,98-99,111
+crates/grove/Cargo.toml
+  89ef28dfadadb623 3,14
+crates/grove-core/src/worktree.rs
+  2fe8c8aa128f174c 34-37,39,41,137-138,145-147
+crates/grove/src/interactive.rs
+  2fe8c8aa128f174c 69-70
+crates/grove/tests/remove_tests.rs
+  2fe8c8aa128f174c 4,30-67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9.preview.3",
+  "base_commit_sha": "53bdf68a132cb6badb9e4457cce5f4b8816fc7bb",
+  "prompts": {
+    "2fe8c8aa128f174c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f1bc9-5731-72b2-82f9-1e11768c2ae2",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Xu Zhu",
+      "messages": [],
+      "total_additions": 62,
+      "total_deletions": 4,
+      "accepted_lines": 62,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "crates/grove/src/interactive.rs": {
+          "additions": 2,
+          "deletions": 1,
+          "accepted_lines": 2
+        },
+        "crates/grove-core/src/git.rs": {
+          "additions": 7,
+          "accepted_lines": 7
+        },
+        "crates/grove/tests/remove_tests.rs": {
+          "additions": 40,
+          "accepted_lines": 40
+        },
+        "crates/grove-core/src/worktree.rs": {
+          "additions": 13,
+          "deletions": 3,
+          "accepted_lines": 13
+        }
+      }
+    },
+    "89ef28dfadadb623": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f1c00-d9fb-7ed0-a7d4-3340fbb32727",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Xu Zhu",
+      "messages": [],
+      "total_additions": 9,
+      "total_deletions": 3,
+      "accepted_lines": 9,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "crates/grove/Cargo.toml": {
+          "additions": 2,
+          "deletions": 2,
+          "accepted_lines": 2
+        },
+        "CHANGELOG.md": {
+          "additions": 6,
+          "accepted_lines": 6
+        },
+        "crates/grove-core/Cargo.toml": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
