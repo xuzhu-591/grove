@@ -66,7 +66,8 @@ pub fn remove_interactive(dir: &Path) -> Result<String> {
         .skip(1)
         .map(|wt| {
             let short = grove_core::path::short_path(&wt.path);
-            format!("{:30}  {}", wt.branch, short)
+            let state = if wt.prunable { "  [prunable]" } else { "" };
+            format!("{:30}  {}{}", wt.branch, short, state)
         })
         .collect();
 

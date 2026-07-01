@@ -31,10 +31,14 @@ pub fn list_all(cwd: &Path) -> GroveResult<Vec<WorktreeEntry>> {
 }
 
 pub fn find_by_branch(branch: &str, cwd: &Path) -> GroveResult<PathBuf> {
+    Ok(find_worktree_by_branch(branch, cwd)?.path)
+}
+
+fn find_worktree_by_branch(branch: &str, cwd: &Path) -> GroveResult<GitWorktree> {
     let wts = git::parse_worktree_list(cwd)?;
-    for wt in &wts {
+    for wt in wts {
         if wt.branch == branch {
-            return Ok(wt.path.clone());
+            return Ok(wt);
         }
     }
     Err(GroveError::WorktreeNotFound(branch.to_string()))
@@ -130,11 +134,17 @@ fn add_from_remote(branch: &str, wt_dir: &Path, cwd: &Path) -> GroveResult<()> {
 }
 
 pub fn remove(branch: &str, force: bool, cwd: &Path) -> GroveResult<PathBuf> {
-    let dir = find_by_branch(branch, cwd)?;
+    let wt = find_worktree_by_branch(branch, cwd)?;
+    let dir = wt.path;
     let main_dir = main_worktree()?;
 
     if dir == main_dir {
         return Err(GroveError::CannotRemoveMain);
+    }
+
+    if wt.prunable || !dir.exists() {
+        run_git(cwd, &["worktree", "prune"])?;
+        return Ok(main_dir);
     }
 
     if !force {
