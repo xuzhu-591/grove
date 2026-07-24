@@ -10,21 +10,52 @@ pub struct AddOptions {
     pub no_cache: bool,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MergeState {
+    Merged,
+    Unmerged,
+    /// Main worktree or detached HEAD — merge status does not apply.
+    NotApplicable,
+}
+
 pub struct WorktreeEntry {
     pub wt: GitWorktree,
     pub status: WorktreeStatus,
     pub is_main: bool,
+    pub merged: MergeState,
 }
 
 pub fn list_all(cwd: &Path) -> GroveResult<Vec<WorktreeEntry>> {
     let wts = git::parse_worktree_list(cwd)?;
+
+    // The first worktree is always the primary one; its branch is the reference
+    // for "merged". Skip assessment when it is detached (no branch ref).
+    let main_branch: Option<String> = wts
+        .first()
+        .map(|w| w.branch.clone())
+        .filter(|b| b != "(detached)" && !b.is_empty());
+
+    let merged_branches: Vec<String> = match main_branch.as_deref() {
+        Some(base) => git::merged_branches(cwd, base).unwrap_or_default(),
+        None => Vec::new(),
+    };
+
     let mut entries = Vec::new();
     for (i, wt) in wts.into_iter().enumerate() {
+        let is_main = i == 0;
         let status = git::parse_status(&wt.path).unwrap_or_default();
+        let merged = if is_main || wt.branch == "(detached)" || wt.branch.is_empty() {
+            MergeState::NotApplicable
+        } else if merged_branches.contains(&wt.branch) {
+            MergeState::Merged
+        } else {
+            MergeState::Unmerged
+        };
         entries.push(WorktreeEntry {
             wt,
             status,
-            is_main: i == 0,
+            is_main,
+            merged,
         });
     }
     Ok(entries)

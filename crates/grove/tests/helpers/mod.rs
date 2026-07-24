@@ -97,6 +97,33 @@ impl TestRepo {
             .unwrap();
         assert!(output.status.success());
     }
+
+    pub fn commit_on_branch(&self, branch: &str, name: &str, content: &str) {
+        self.checkout(branch);
+        write_file(&self.work_repo, name, content);
+        git_add_commit(&self.work_repo, "wip");
+    }
+
+    pub fn merge_into_main(&self, branch: &str) {
+        self.checkout("main");
+        let output = Command::new("git")
+            .args([
+                "merge",
+                "--no-ff",
+                branch,
+                "-m",
+                &format!("merge {}", branch),
+            ])
+            .current_dir(&self.work_repo)
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "failed to merge {} into main: {:?}",
+            branch,
+            output
+        );
+    }
 }
 
 fn find_grove_bin() -> PathBuf {
