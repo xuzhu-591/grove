@@ -1,0 +1,84 @@
+crates/grove/src/output.rs
+  27ecb29250dbbff1 3,35-42,45,54,73-74,78,82,98-108,111
+crates/grove/tests/list_tests.rs
+  27ecb29250dbbff1 32-88
+README.md
+  27ecb29250dbbff1 7,77
+CHANGELOG.md
+  27ecb29250dbbff1 5-10
+crates/grove-core/Cargo.toml
+  27ecb29250dbbff1 3
+crates/grove/tests/helpers/mod.rs
+  27ecb29250dbbff1 100-126
+crates/grove-core/src/worktree.rs
+  27ecb29250dbbff1 13-20,25,30-42,45,47-53,57-58
+crates/grove-core/src/git.rs
+  27ecb29250dbbff1 203-218
+crates/grove/Cargo.toml
+  27ecb29250dbbff1 3,14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9.preview.3",
+  "base_commit_sha": "73d39c246fd08cf2187196e4b134fbd65e423a2c",
+  "prompts": {
+    "27ecb29250dbbff1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "39c8d0c8-6835-47d6-bb41-76afc3d5183d",
+        "model": "glm-5.2"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 177,
+      "total_deletions": 16,
+      "accepted_lines": 171,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "crates/grove/tests/helpers/mod.rs": {
+          "additions": 28,
+          "deletions": 1,
+          "accepted_lines": 27
+        },
+        "crates/grove-core/src/git.rs": {
+          "additions": 19,
+          "deletions": 3,
+          "accepted_lines": 16
+        },
+        "crates/grove/tests/list_tests.rs": {
+          "additions": 57,
+          "accepted_lines": 57
+        },
+        "crates/grove-core/Cargo.toml": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "crates/grove/Cargo.toml": {
+          "additions": 2,
+          "deletions": 2,
+          "accepted_lines": 2
+        },
+        "crates/grove/src/output.rs": {
+          "additions": 30,
+          "deletions": 6,
+          "accepted_lines": 28
+        },
+        "crates/grove-core/src/worktree.rs": {
+          "additions": 32,
+          "deletions": 1,
+          "accepted_lines": 32
+        },
+        "CHANGELOG.md": {
+          "additions": 6,
+          "accepted_lines": 6
+        },
+        "README.md": {
+          "additions": 2,
+          "deletions": 2,
+          "accepted_lines": 2
+        }
+      }
+    }
+  }
+}
