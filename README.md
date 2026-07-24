@@ -4,7 +4,7 @@ Git worktree manager — interactive for humans, machine-readable for AI/scripts
 
 ## Features
 
-- **`grove list`** — Rich status display: staged, modified, untracked, ahead/behind
+- **`grove list`** — Rich status display: staged, modified, untracked, ahead/behind, merge state
 - **`grove add`** — Create worktree from existing/new/remote branch, auto link cache
 - **`grove switch`** — Jump to a worktree (cd support via shell integration)
 - **`grove remove`** — Safe removal with uncommitted/unpushed checks
@@ -74,7 +74,7 @@ grove --plain cache [link|status|unlink]
 `grove --plain list` outputs TSV:
 
 ```
-branch	/path/to/worktree	commit	staged=N	modified=N	untracked=N	ahead=N	behind=N
+branch	/path/to/worktree	commit	staged=N	modified=N	untracked=N	ahead=N	behind=N	merged=yes|no|-
 ```
 
 ## Configuration

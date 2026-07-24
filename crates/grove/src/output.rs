@@ -1,6 +1,6 @@
 use console::{pad_str, style, Alignment};
 use grove_core::git::WorktreeStatus;
-use grove_core::worktree::WorktreeEntry;
+use grove_core::worktree::{MergeState, WorktreeEntry};
 use std::path::Path;
 
 pub fn format_status_human(status: &WorktreeStatus) -> String {
@@ -32,9 +32,17 @@ pub fn format_status_human(status: &WorktreeStatus) -> String {
     parts.join(" ")
 }
 
+fn merged_plain_value(state: MergeState) -> &'static str {
+    match state {
+        MergeState::Merged => "yes",
+        MergeState::Unmerged => "no",
+        MergeState::NotApplicable => "-",
+    }
+}
+
 pub fn format_list_entry_plain(entry: &WorktreeEntry) -> String {
     format!(
-        "{}\t{}\t{}\tstaged={}\tmodified={}\tuntracked={}\tahead={}\tbehind={}",
+        "{}\t{}\t{}\tstaged={}\tmodified={}\tuntracked={}\tahead={}\tbehind={}\tmerged={}",
         entry.wt.branch,
         entry.wt.path.display(),
         entry.wt.commit,
@@ -43,6 +51,7 @@ pub fn format_list_entry_plain(entry: &WorktreeEntry) -> String {
         entry.status.untracked,
         entry.status.ahead,
         entry.status.behind,
+        merged_plain_value(entry.merged),
     )
 }
 
@@ -61,12 +70,16 @@ pub fn print_list_pretty(entries: &[WorktreeEntry]) {
         .unwrap_or(3)
         .clamp(3, 80);
 
+    // Width of the longest merge label ("unmerged"); keeps STATUS aligned.
+    let max_merged = 8;
+
     // Header: pad first, then wrap with style (avoids ANSI width issues)
     println!(
-        "  {}  {}  {}  {}",
+        "  {}  {}  {}  {}  {}",
         style(pad_str("BRANCH", max_branch, Alignment::Left, None)).bold(),
         style(pad_str("DIR", max_dir, Alignment::Left, None)).bold(),
         style(pad_str("COMMIT", 7, Alignment::Left, None)).bold(),
+        style(pad_str("MERGED", max_merged, Alignment::Left, None)).bold(),
         style(pad_str("STATUS", 0, Alignment::Left, None)).bold(),
     );
 
@@ -82,9 +95,20 @@ pub fn print_list_pretty(entries: &[WorktreeEntry]) {
         let branch_col = style(pad_str(&entry.wt.branch, max_branch, Alignment::Left, None)).cyan();
         let dir_col = pad_str(&display_dir, max_dir, Alignment::Left, None);
         let commit_col = style(pad_str(&entry.wt.commit, 7, Alignment::Left, None)).dim();
+        let merged_col = match entry.merged {
+            MergeState::Merged => {
+                style(pad_str("merged", max_merged, Alignment::Left, None)).green()
+            }
+            MergeState::Unmerged => {
+                style(pad_str("unmerged", max_merged, Alignment::Left, None)).yellow()
+            }
+            MergeState::NotApplicable => {
+                style(pad_str("-", max_merged, Alignment::Left, None)).dim()
+            }
+        };
         let status_col = format_status_human(&entry.status);
 
-        println!("{marker} {branch_col}  {dir_col}  {commit_col}  {status_col}");
+        println!("{marker} {branch_col}  {dir_col}  {commit_col}  {merged_col}  {status_col}");
     }
 }
 

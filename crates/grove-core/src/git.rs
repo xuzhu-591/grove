@@ -200,6 +200,22 @@ pub fn list_remote_branches(dir: &Path) -> GroveResult<Vec<String>> {
         .collect())
 }
 
+/// Local branches whose tip is reachable from `base` (i.e. merged into it).
+/// Mirrors `git branch --merged <base>`: detects merge-commit / fast-forward
+/// merges; squash/rebase merges are not detectable from local git topology.
+pub fn merged_branches(dir: &Path, base: &str) -> GroveResult<Vec<String>> {
+    let output = git_checked(
+        dir,
+        &["branch", "--merged", base, "--format=%(refname:short)"],
+    )?;
+    let text = String::from_utf8_lossy(&output.stdout);
+    Ok(text
+        .lines()
+        .map(|s| s.trim().to_string())
+        .filter(|s| !s.is_empty())
+        .collect())
+}
+
 pub fn fetch_all(dir: &Path) -> GroveResult<()> {
     git_checked(dir, &["fetch", "--all", "--prune"])?;
     Ok(())
