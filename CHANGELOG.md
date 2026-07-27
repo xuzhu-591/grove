@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.6]
+
+### Features
+
+- `grove list` refreshes remote refs and fast-forwards a clean, non-diverged main worktree.
+- `grove list` warns without updating when the main worktree is dirty, diverged, or remote refresh fails.
+
 ## [0.1.5]
 
 ### Features

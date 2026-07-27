@@ -4,7 +4,7 @@ Git worktree manager — interactive for humans, machine-readable for AI/scripts
 
 ## Features
 
-- **`grove list`** — Rich status display: staged, modified, untracked, ahead/behind, merge state
+- **`grove list`** — Refresh remote refs, safely fast-forward the main worktree, and show staged, modified, untracked, ahead/behind, and merge state
 - **`grove add`** — Create worktree from existing/new/remote branch, auto link cache
 - **`grove switch`** — Jump to a worktree (cd support via shell integration)
 - **`grove remove`** — Safe removal with uncommitted/unpushed checks

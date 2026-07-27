@@ -221,6 +221,15 @@ pub fn fetch_all(dir: &Path) -> GroveResult<()> {
     Ok(())
 }
 
+/// Fast-forward the current branch to its configured upstream.
+///
+/// This is equivalent to the merge phase of `git pull --ff-only`, after the
+/// caller has refreshed remote refs. It never creates a merge commit.
+pub fn merge_upstream_fast_forward(dir: &Path) -> GroveResult<()> {
+    git_checked(dir, &["merge", "--ff-only", "@{upstream}"])?;
+    Ok(())
+}
+
 pub fn first_remote(dir: &Path) -> GroveResult<String> {
     let output = git_checked(dir, &["remote"])?;
     let text = String::from_utf8_lossy(&output.stdout);

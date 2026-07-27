@@ -25,6 +25,76 @@ pub struct WorktreeEntry {
     pub merged: MergeState,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum MainWorktreeSync {
+    UpToDate,
+    Updated {
+        branch: String,
+    },
+    SkippedDirty {
+        branch: String,
+    },
+    SkippedDiverged {
+        branch: String,
+        ahead: u32,
+        behind: u32,
+    },
+    FetchFailed {
+        error: String,
+    },
+    UpdateFailed {
+        branch: String,
+        error: String,
+    },
+}
+
+/// Refresh remote refs, then fast-forward the primary worktree when safe.
+///
+/// A dirty or diverged main worktree is deliberately left unchanged. Running a
+/// merge during `grove list` could otherwise create a merge commit or leave the
+/// user's main worktree in a conflict state.
+pub fn sync_main_before_list(cwd: &Path) -> GroveResult<MainWorktreeSync> {
+    if let Err(error) = git::fetch_all(cwd) {
+        return Ok(MainWorktreeSync::FetchFailed {
+            error: error.to_string(),
+        });
+    }
+
+    let main = git::parse_worktree_list(cwd)?
+        .into_iter()
+        .next()
+        .ok_or_else(|| GroveError::GitError("no worktrees found".into()))?;
+    let status = git::parse_status(&main.path)?;
+
+    if status.behind == 0 {
+        return Ok(MainWorktreeSync::UpToDate);
+    }
+
+    if status.staged > 0 || status.modified > 0 || status.untracked > 0 {
+        return Ok(MainWorktreeSync::SkippedDirty {
+            branch: main.branch,
+        });
+    }
+
+    if status.ahead > 0 {
+        return Ok(MainWorktreeSync::SkippedDiverged {
+            branch: main.branch,
+            ahead: status.ahead,
+            behind: status.behind,
+        });
+    }
+
+    match git::merge_upstream_fast_forward(&main.path) {
+        Ok(()) => Ok(MainWorktreeSync::Updated {
+            branch: main.branch,
+        }),
+        Err(error) => Ok(MainWorktreeSync::UpdateFailed {
+            branch: main.branch,
+            error: error.to_string(),
+        }),
+    }
+}
+
 pub fn list_all(cwd: &Path) -> GroveResult<Vec<WorktreeEntry>> {
     let wts = git::parse_worktree_list(cwd)?;
 

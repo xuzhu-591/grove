@@ -5,6 +5,7 @@ use std::process::Command;
 pub struct TestRepo {
     pub temp_dir: tempfile::TempDir,
     pub work_repo: PathBuf,
+    bare_origin: PathBuf,
     grove_bin: PathBuf,
     home_dir: PathBuf,
     worktree_base: PathBuf,
@@ -50,6 +51,7 @@ impl TestRepo {
         TestRepo {
             temp_dir,
             work_repo,
+            bare_origin,
             grove_bin,
             home_dir,
             worktree_base,
@@ -123,6 +125,35 @@ impl TestRepo {
             branch,
             output
         );
+    }
+
+    pub fn commit_and_push_remote_main(&self, name: &str, content: &str) {
+        let remote_clone = self.temp_dir.path().join("remote_clone");
+        git_clone(&self.bare_origin, &remote_clone);
+        git_config(&remote_clone);
+        write_file(&remote_clone, name, content);
+        git_add_commit(&remote_clone, "remote update");
+        git_push(&remote_clone);
+        std::fs::remove_dir_all(remote_clone).unwrap();
+    }
+
+    pub fn head(&self) -> String {
+        let output = Command::new("git")
+            .args(["rev-parse", "HEAD"])
+            .current_dir(&self.work_repo)
+            .output()
+            .unwrap();
+        assert!(output.status.success());
+        String::from_utf8_lossy(&output.stdout).trim().to_string()
+    }
+
+    pub fn set_origin_url(&self, url: &Path) {
+        let output = Command::new("git")
+            .args(["remote", "set-url", "origin", &url.display().to_string()])
+            .current_dir(&self.work_repo)
+            .output()
+            .unwrap();
+        assert!(output.status.success());
     }
 }
 
