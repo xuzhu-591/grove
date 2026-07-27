@@ -30,6 +30,25 @@ fn main() -> anyhow::Result<()> {
 
 fn cmd_list(plain: bool, cwd: &Path) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
+    match worktree::sync_main_before_list(cwd)? {
+        worktree::MainWorktreeSync::UpToDate | worktree::MainWorktreeSync::Updated { .. } => {}
+        worktree::MainWorktreeSync::SkippedDirty { branch } => output::warn(&format!(
+            "Skipped automatic update of main worktree '{branch}': local changes are present"
+        )),
+        worktree::MainWorktreeSync::SkippedDiverged {
+            branch,
+            ahead,
+            behind,
+        } => output::warn(&format!(
+            "Skipped automatic update of main worktree '{branch}': branch diverged from upstream (ahead {ahead}, behind {behind}); resolve it manually"
+        )),
+        worktree::MainWorktreeSync::FetchFailed { error } => {
+            output::warn(&format!("Unable to refresh remotes before listing worktrees: {error}"))
+        }
+        worktree::MainWorktreeSync::UpdateFailed { branch, error } => output::warn(&format!(
+            "Unable to fast-forward main worktree '{branch}': {error}"
+        )),
+    }
     let entries = worktree::list_all(cwd)?;
 
     if plain {
