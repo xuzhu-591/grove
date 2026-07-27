@@ -1,0 +1,81 @@
+crates/grove-core/src/git.rs
+  2cd31381aca9631c 224-232
+crates/grove-core/Cargo.toml
+  2cd31381aca9631c 3
+crates/grove-core/src/worktree.rs
+  2cd31381aca9631c 28-31,33-34,36-40,48-97
+CHANGELOG.md
+  2cd31381aca9631c 5-11
+crates/grove/tests/helpers/mod.rs
+  2cd31381aca9631c 8,54,129-156
+crates/grove/tests/list_tests.rs
+  2cd31381aca9631c 34-49,58-75,88-108,117-135
+crates/grove/Cargo.toml
+  2cd31381aca9631c 3,14
+crates/grove/src/main.rs
+  2cd31381aca9631c 33-51
+README.md
+  2cd31381aca9631c 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9.preview.3",
+  "base_commit_sha": "40cefc05ca4353f4e2ddc92dc28984d690e8ec42",
+  "prompts": {
+    "2cd31381aca9631c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa29b-1942-7c32-9301-8884dcd966f5",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 209,
+      "total_deletions": 4,
+      "accepted_lines": 206,
+      "overriden_lines": 2,
+      "per_file_stats": {
+        "crates/grove-core/Cargo.toml": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "crates/grove/tests/helpers/mod.rs": {
+          "additions": 31,
+          "accepted_lines": 31
+        },
+        "crates/grove/Cargo.toml": {
+          "additions": 2,
+          "deletions": 2,
+          "accepted_lines": 2
+        },
+        "crates/grove-core/src/git.rs": {
+          "additions": 9,
+          "accepted_lines": 9
+        },
+        "README.md": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "CHANGELOG.md": {
+          "additions": 7,
+          "accepted_lines": 7
+        },
+        "crates/grove/src/main.rs": {
+          "additions": 19,
+          "accepted_lines": 19
+        },
+        "crates/grove-core/src/worktree.rs": {
+          "additions": 61,
+          "accepted_lines": 61,
+          "overriden_lines": 2
+        },
+        "crates/grove/tests/list_tests.rs": {
+          "additions": 78,
+          "accepted_lines": 75
+        }
+      }
+    }
+  }
+}
