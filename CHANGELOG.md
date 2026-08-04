@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.7]
+
+### Performance
+
+- `grove list` runs per-worktree status checks concurrently and reuses a single worktree-list parse, cutting runtime roughly 3x on repos with many worktrees.
+
 ## [0.1.6]
 
 ### Features

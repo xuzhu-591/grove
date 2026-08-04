@@ -1,6 +1,6 @@
 [package]
 name = "grove-core"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 description = "Core logic for grove git worktree manager"
 license = "MIT"
