@@ -53,16 +53,18 @@ pub enum MainWorktreeSync {
 /// A dirty or diverged main worktree is deliberately left unchanged. Running a
 /// merge during `grove list` could otherwise create a merge commit or leave the
 /// user's main worktree in a conflict state.
-pub fn sync_main_before_list(cwd: &Path) -> GroveResult<MainWorktreeSync> {
+///
+/// `wts` must already be parsed with `git::parse_worktree_list`; the caller
+/// reuses one parse for both the sync and the listing.
+pub fn sync_main_before_list(wts: &[GitWorktree], cwd: &Path) -> GroveResult<MainWorktreeSync> {
     if let Err(error) = git::fetch_all(cwd) {
         return Ok(MainWorktreeSync::FetchFailed {
             error: error.to_string(),
         });
     }
 
-    let main = git::parse_worktree_list(cwd)?
-        .into_iter()
-        .next()
+    let main = wts
+        .first()
         .ok_or_else(|| GroveError::GitError("no worktrees found".into()))?;
     let status = git::parse_status(&main.path)?;
 
@@ -72,13 +74,13 @@ pub fn sync_main_before_list(cwd: &Path) -> GroveResult<MainWorktreeSync> {
 
     if status.staged > 0 || status.modified > 0 || status.untracked > 0 {
         return Ok(MainWorktreeSync::SkippedDirty {
-            branch: main.branch,
+            branch: main.branch.clone(),
         });
     }
 
     if status.ahead > 0 {
         return Ok(MainWorktreeSync::SkippedDiverged {
-            branch: main.branch,
+            branch: main.branch.clone(),
             ahead: status.ahead,
             behind: status.behind,
         });
@@ -86,18 +88,16 @@ pub fn sync_main_before_list(cwd: &Path) -> GroveResult<MainWorktreeSync> {
 
     match git::merge_upstream_fast_forward(&main.path) {
         Ok(()) => Ok(MainWorktreeSync::Updated {
-            branch: main.branch,
+            branch: main.branch.clone(),
         }),
         Err(error) => Ok(MainWorktreeSync::UpdateFailed {
-            branch: main.branch,
+            branch: main.branch.clone(),
             error: error.to_string(),
         }),
     }
 }
 
-pub fn list_all(cwd: &Path) -> GroveResult<Vec<WorktreeEntry>> {
-    let wts = git::parse_worktree_list(cwd)?;
-
+pub fn list_all(wts: &[GitWorktree], cwd: &Path) -> GroveResult<Vec<WorktreeEntry>> {
     // The first worktree is always the primary one; its branch is the reference
     // for "merged". Skip assessment when it is detached (no branch ref).
     let main_branch: Option<String> = wts
@@ -110,10 +110,13 @@ pub fn list_all(cwd: &Path) -> GroveResult<Vec<WorktreeEntry>> {
         None => Vec::new(),
     };
 
+    // `git status` per worktree dominates `grove list`; run them concurrently
+    // (each worktree has its own index and the checks are read-only).
+    let statuses = statuses_in_parallel(wts);
+
     let mut entries = Vec::new();
-    for (i, wt) in wts.into_iter().enumerate() {
+    for (i, (wt, status)) in wts.iter().zip(statuses).enumerate() {
         let is_main = i == 0;
-        let status = git::parse_status(&wt.path).unwrap_or_default();
         let merged = if is_main || wt.branch == "(detached)" || wt.branch.is_empty() {
             MergeState::NotApplicable
         } else if merged_branches.contains(&wt.branch) {
@@ -122,13 +125,49 @@ pub fn list_all(cwd: &Path) -> GroveResult<Vec<WorktreeEntry>> {
             MergeState::Unmerged
         };
         entries.push(WorktreeEntry {
-            wt,
+            wt: wt.clone(),
             status,
             is_main,
             merged,
         });
     }
     Ok(entries)
+}
+
+/// Run `git status` for every worktree concurrently, returning results in
+/// worktree order. Falls back to sequential execution for a single worktree.
+fn statuses_in_parallel(wts: &[GitWorktree]) -> Vec<WorktreeStatus> {
+    let len = wts.len();
+    if len <= 1 {
+        return wts
+            .iter()
+            .map(|wt| git::parse_status(&wt.path).unwrap_or_default())
+            .collect();
+    }
+
+    let threads = std::thread::available_parallelism()
+        .map(|n| n.get())
+        .unwrap_or(4)
+        .min(len);
+    let chunk_size = len.div_ceil(threads);
+
+    std::thread::scope(|s| {
+        let handles: Vec<_> = wts
+            .chunks(chunk_size)
+            .map(|chunk| {
+                s.spawn(move || {
+                    chunk
+                        .iter()
+                        .map(|wt| git::parse_status(&wt.path).unwrap_or_default())
+                        .collect::<Vec<_>>()
+                })
+            })
+            .collect();
+        handles
+            .into_iter()
+            .flat_map(|h| h.join().unwrap())
+            .collect()
+    })
 }
 
 pub fn find_by_branch(branch: &str, cwd: &Path) -> GroveResult<PathBuf> {
