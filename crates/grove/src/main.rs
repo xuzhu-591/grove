@@ -30,7 +30,9 @@ fn main() -> anyhow::Result<()> {
 
 fn cmd_list(plain: bool, cwd: &Path) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
-    match worktree::sync_main_before_list(cwd)? {
+    // Parse once; both the main-worktree sync and the listing reuse the result.
+    let wts = grove_core::git::parse_worktree_list(cwd)?;
+    match worktree::sync_main_before_list(&wts, cwd)? {
         worktree::MainWorktreeSync::UpToDate | worktree::MainWorktreeSync::Updated { .. } => {}
         worktree::MainWorktreeSync::SkippedDirty { branch } => output::warn(&format!(
             "Skipped automatic update of main worktree '{branch}': local changes are present"
@@ -49,7 +51,7 @@ fn cmd_list(plain: bool, cwd: &Path) -> anyhow::Result<()> {
             "Unable to fast-forward main worktree '{branch}': {error}"
         )),
     }
-    let entries = worktree::list_all(cwd)?;
+    let entries = worktree::list_all(&wts, cwd)?;
 
     if plain {
         output::print_list_plain(&entries);
