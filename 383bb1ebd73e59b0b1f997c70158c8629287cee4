@@ -1,0 +1,43 @@
+crates/grove/Cargo.toml
+  93f68699cc66d7af 3,14
+CHANGELOG.md
+  93f68699cc66d7af 5-10
+crates/grove-core/Cargo.toml
+  93f68699cc66d7af 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9.preview.3",
+  "base_commit_sha": "383bb1ebd73e59b0b1f997c70158c8629287cee4",
+  "prompts": {
+    "93f68699cc66d7af": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fdc91b81-c0c8-42f2-ba8a-df16a07d6784",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "Xu Zhu <xu.zhu.hi@outlook.com>",
+      "messages": [],
+      "total_additions": 9,
+      "total_deletions": 3,
+      "accepted_lines": 9,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "crates/grove/Cargo.toml": {
+          "additions": 2,
+          "deletions": 2,
+          "accepted_lines": 2
+        },
+        "CHANGELOG.md": {
+          "additions": 6,
+          "accepted_lines": 6
+        },
+        "crates/grove-core/Cargo.toml": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
