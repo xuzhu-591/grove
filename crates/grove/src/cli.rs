@@ -40,6 +40,17 @@ pub enum Commands {
         force: bool,
     },
 
+    /// Remove merged, clean worktrees; ignored files are removed too.
+    Prune {
+        /// Preview cleanup without removing worktrees.
+        #[arg(long, conflicts_with = "yes")]
+        dry_run: bool,
+
+        /// Remove eligible worktrees without interactive confirmation.
+        #[arg(long, short = 'y')]
+        yes: bool,
+    },
+
     Cache {
         #[command(subcommand)]
         action: Option<CacheAction>,

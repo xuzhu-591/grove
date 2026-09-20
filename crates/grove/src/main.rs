@@ -8,6 +8,7 @@ use grove_core::config::GroveConfig;
 use grove_core::pattern;
 use grove_core::worktree::{self, AddOptions};
 use std::env;
+use std::io::IsTerminal;
 use std::path::Path;
 
 fn main() -> anyhow::Result<()> {
@@ -24,13 +25,14 @@ fn main() -> anyhow::Result<()> {
         } => cmd_add(cli.plain, branch, create, remote, no_cache, &cwd),
         Commands::Switch { branch } => cmd_switch(cli.plain, branch, &cwd),
         Commands::Remove { branch, force } => cmd_remove(cli.plain, branch, force, &cwd),
+        Commands::Prune { dry_run, yes } => cmd_prune(cli.plain, dry_run, yes, &cwd),
         Commands::Cache { action } => cmd_cache(cli.plain, action, &cwd),
     }
 }
 
 fn cmd_list(plain: bool, cwd: &Path) -> anyhow::Result<()> {
     grove_core::git::ensure_git_repo()?;
-    // Parse once; both the main-worktree sync and the listing reuse the result.
+    // Refresh first, then read the updated HEADs for display.
     let wts = grove_core::git::parse_worktree_list(cwd)?;
     match worktree::sync_main_before_list(&wts, cwd)? {
         worktree::MainWorktreeSync::UpToDate | worktree::MainWorktreeSync::Updated { .. } => {}
@@ -51,7 +53,19 @@ fn cmd_list(plain: bool, cwd: &Path) -> anyhow::Result<()> {
             "Unable to fast-forward main worktree '{branch}': {error}"
         )),
     }
+    let wts = grove_core::git::parse_worktree_list(cwd)?;
     let entries = worktree::list_all(&wts, cwd)?;
+    for entry in &entries {
+        if let Err(error) = &entry.status {
+            output::warn(&format!(
+                "Unable to read status for '{}': {error}",
+                entry.wt.branch
+            ));
+        }
+    }
+    if let Some(error) = entries.iter().find_map(|entry| entry.merge_error.as_ref()) {
+        output::warn(&format!("Unable to assess merged branches: {error}"));
+    }
 
     if plain {
         output::print_list_plain(&entries);
@@ -251,5 +265,53 @@ fn cmd_cache(plain: bool, action: Option<CacheAction>, cwd: &Path) -> anyhow::Re
         }
     }
 
+    Ok(())
+}
+
+fn cmd_prune(plain: bool, dry_run: bool, yes: bool, cwd: &Path) -> anyhow::Result<()> {
+    use grove_core::prune::{self, PruneState};
+    grove_core::git::ensure_git_repo()?;
+    if !dry_run
+        && !yes
+        && (plain || !std::io::stdin().is_terminal() || !std::io::stderr().is_terminal())
+    {
+        anyhow::bail!("use --dry-run to preview or --yes to prune non-interactively");
+    }
+    let mut plan = prune::prepare(cwd)?;
+    output::info(&format!(
+        "Prune base: {} ({})",
+        plan.base.branch, plan.base.commit
+    ));
+    output::warn("Ignored files inside removed worktrees are deleted too. Local and remote branches are retained.");
+    if dry_run {
+        output::print_prune(&plan, plain);
+        return Ok(());
+    }
+    if !yes {
+        output::preview_prune(&plan);
+        let count = plan
+            .entries
+            .iter()
+            .filter(|e| e.state == PruneState::Candidate)
+            .count();
+        if count == 0 {
+            return Ok(());
+        }
+        if !inquire::Confirm::new(&format!(
+            "Remove {count} worktree(s), including ignored files?"
+        ))
+        .with_default(false)
+        .prompt()?
+        {
+            output::info("Cancelled; no worktrees removed.");
+            return Ok(());
+        }
+    }
+    let result = prune::execute(&mut plan);
+    output::print_prune(&plan, plain);
+    result?;
+    if plan.entries.iter().any(|e| e.state == PruneState::Failed) {
+        anyhow::bail!("some worktrees could not be removed");
+    }
     Ok(())
 }

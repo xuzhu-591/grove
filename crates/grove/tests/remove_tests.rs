@@ -66,3 +66,50 @@ fn git_worktree_list(dir: &std::path::Path) -> String {
     assert!(output.status.success());
     String::from_utf8_lossy(&output.stdout).to_string()
 }
+
+#[test]
+fn remove_rejects_commits_not_in_main_without_upstream() {
+    let repo = TestRepo::new();
+    repo.create_branch("feat/unmerged");
+    repo.commit_on_branch("feat/unmerged", "local.txt", "unmerged\n");
+    repo.checkout("main");
+    let (code, path, _) = repo.run_grove(&["--plain", "add", "feat/unmerged"]);
+    assert_eq!(code, 0);
+    let (code, _, err) = repo.run_grove(&["--plain", "remove", "feat/unmerged"]);
+    assert_ne!(code, 0);
+    assert!(err.contains("unpushed commits"), "{err}");
+    assert!(std::path::Path::new(path.trim()).exists());
+}
+
+#[test]
+fn remove_checks_configured_upstream_and_propagates_status_failure() {
+    let repo = TestRepo::new();
+    let (code, path, _) = repo.run_grove(&["--plain", "add", "feat/upstream", "--create"]);
+    assert_eq!(code, 0);
+    let path = std::path::Path::new(path.trim());
+    for args in [
+        vec!["push", "-u", "origin", "feat/upstream"],
+        vec!["commit", "--allow-empty", "-m", "local only"],
+    ] {
+        assert!(Command::new("git")
+            .args(args)
+            .current_dir(path)
+            .status()
+            .unwrap()
+            .success());
+    }
+    let (code, _, err) = repo.run_grove(&["--plain", "remove", "feat/upstream"]);
+    assert_ne!(code, 0);
+    assert!(err.contains("unpushed commits"), "{err}");
+    let out = Command::new("git")
+        .args(["rev-parse", "--git-path", "index"])
+        .current_dir(path)
+        .output()
+        .unwrap();
+    let index = String::from_utf8_lossy(&out.stdout);
+    std::fs::write(path.join(index.trim()), "corrupt").unwrap();
+    let (code, _, err) = repo.run_grove(&["--plain", "remove", "feat/upstream"]);
+    assert_ne!(code, 0);
+    assert!(err.contains("git command failed"), "{err}");
+    assert!(path.exists());
+}

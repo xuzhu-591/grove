@@ -43,6 +43,7 @@ _grove() {
         'add:Create a new worktree'
         'switch:Switch to a worktree'
         'remove:Remove a worktree'
+        'prune:Remove merged and clean worktrees'
         'cache:Manage build cache symlinks'
         'help:Show help'
         'version:Show version'
@@ -67,6 +68,9 @@ _grove() {
                 flags=('--create' '--remote' '--no-cache')
                 _values 'branch' $branches
                 _values 'flags' $flags
+                ;;
+            prune)
+                _values 'flags' '--dry-run' '--yes'
                 ;;
             cache)
                 local -a cache_flags=('--status' '--unlink')

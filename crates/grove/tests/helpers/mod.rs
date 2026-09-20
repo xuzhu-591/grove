@@ -21,12 +21,6 @@ impl TestRepo {
         let bare_origin = temp_dir.path().join("bare_origin");
         let work_repo = temp_dir.path().join("work_repo");
 
-        std::env::set_var("HOME", &home_dir);
-        std::env::set_var(
-            "GROVE_WORKTREE_BASE",
-            temp_dir.path().join("grove_worktrees"),
-        );
-
         // Create bare origin
         run_git_init_bare(&bare_origin);
 
@@ -158,22 +152,7 @@ impl TestRepo {
 }
 
 fn find_grove_bin() -> PathBuf {
-    let base = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .unwrap()
-        .parent()
-        .unwrap();
-
-    let release = base.join("target").join("release").join("grove");
-    let debug = base.join("target").join("debug").join("grove");
-
-    if release.exists() {
-        release
-    } else if debug.exists() {
-        debug
-    } else {
-        panic!("grove binary not found at {:?} or {:?}", release, debug);
-    }
+    PathBuf::from(env!("CARGO_BIN_EXE_grove"))
 }
 
 fn run_git_init_bare(path: &Path) {

@@ -105,6 +105,29 @@ else
     fail "grove remove feat/e2e" "command failed: ${output:-}"
 fi
 
+# Test 6: prune previews, removes ignored content, and retains the branch.
+PRUNE_DIR=$("$GROVE_BIN" --plain add "feat/prune-e2e" --create --no-cache 2>/dev/null) || true
+if [[ -d "$PRUNE_DIR" ]]; then
+    echo 'ignored-output/' >> "$WORK/.git/info/exclude"
+    mkdir -p "$PRUNE_DIR/ignored-output"
+    echo 'build output' > "$PRUNE_DIR/ignored-output/result.txt"
+    if output=$("$GROVE_BIN" --plain prune --dry-run 2>/dev/null) &&
+       echo "$output" | grep -q 'candidate' && [[ -f "$PRUNE_DIR/ignored-output/result.txt" ]]; then
+        pass "grove prune --dry-run preserves candidates"
+    else
+        fail "grove prune --dry-run" "${output:-}"
+    fi
+    if output=$("$GROVE_BIN" --plain prune --yes 2>/dev/null) &&
+       echo "$output" | grep -q 'removed' && [[ ! -d "$PRUNE_DIR" ]] &&
+       git show-ref --verify --quiet refs/heads/feat/prune-e2e; then
+        pass "grove prune --yes removes ignored content and retains branch"
+    else
+        fail "grove prune --yes" "${output:-}"
+    fi
+else
+    fail "grove prune fixture creation"
+fi
+
 echo ""
 echo "--- Results: $PASS passed, $FAIL failed ---"
 [[ $FAIL -eq 0 ]] || exit 1

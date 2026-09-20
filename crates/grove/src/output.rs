@@ -37,20 +37,25 @@ fn merged_plain_value(state: MergeState) -> &'static str {
         MergeState::Merged => "yes",
         MergeState::Unmerged => "no",
         MergeState::NotApplicable => "-",
+        MergeState::Unknown => "N/A",
     }
 }
 
 pub fn format_list_entry_plain(entry: &WorktreeEntry) -> String {
+    let values = match &entry.status {
+        Ok(s) => [s.staged, s.modified, s.untracked, s.ahead, s.behind].map(|n| n.to_string()),
+        Err(_) => std::array::from_fn(|_| "N/A".to_string()),
+    };
     format!(
         "{}\t{}\t{}\tstaged={}\tmodified={}\tuntracked={}\tahead={}\tbehind={}\tmerged={}",
         entry.wt.branch,
         entry.wt.path.display(),
-        entry.wt.commit,
-        entry.status.staged,
-        entry.status.modified,
-        entry.status.untracked,
-        entry.status.ahead,
-        entry.status.behind,
+        &entry.wt.commit[..7.min(entry.wt.commit.len())],
+        values[0],
+        values[1],
+        values[2],
+        values[3],
+        values[4],
         merged_plain_value(entry.merged),
     )
 }
@@ -94,7 +99,13 @@ pub fn print_list_pretty(entries: &[WorktreeEntry]) {
         // Pad plain text, then apply ANSI styles — avoids color codes breaking alignment
         let branch_col = style(pad_str(&entry.wt.branch, max_branch, Alignment::Left, None)).cyan();
         let dir_col = pad_str(&display_dir, max_dir, Alignment::Left, None);
-        let commit_col = style(pad_str(&entry.wt.commit, 7, Alignment::Left, None)).dim();
+        let commit_col = style(pad_str(
+            &entry.wt.commit[..7.min(entry.wt.commit.len())],
+            7,
+            Alignment::Left,
+            None,
+        ))
+        .dim();
         let merged_col = match entry.merged {
             MergeState::Merged => {
                 style(pad_str("merged", max_merged, Alignment::Left, None)).green()
@@ -102,11 +113,15 @@ pub fn print_list_pretty(entries: &[WorktreeEntry]) {
             MergeState::Unmerged => {
                 style(pad_str("unmerged", max_merged, Alignment::Left, None)).yellow()
             }
+            MergeState::Unknown => style(pad_str("N/A", max_merged, Alignment::Left, None)).red(),
             MergeState::NotApplicable => {
                 style(pad_str("-", max_merged, Alignment::Left, None)).dim()
             }
         };
-        let status_col = format_status_human(&entry.status);
+        let status_col = match &entry.status {
+            Ok(status) => format_status_human(status),
+            Err(_) => style("N/A").red().to_string(),
+        };
 
         println!("{marker} {branch_col}  {dir_col}  {commit_col}  {merged_col}  {status_col}");
     }
@@ -136,4 +151,47 @@ pub fn warn(msg: &str) {
 
 pub fn error(msg: &str) {
     eprintln!("{}", style(msg).red());
+}
+
+fn prune_row(entry: &grove_core::prune::PruneEntry) -> String {
+    // Escape control characters so each TSV record remains one physical line.
+    fn escape(value: &str) -> String {
+        value
+            .replace('\\', "\\\\")
+            .replace('\t', "\\t")
+            .replace('\n', "\\n")
+            .replace('\r', "\\r")
+    }
+    format!(
+        "{}\t{}\t{}\t{}",
+        escape(&entry.wt.branch),
+        escape(&entry.wt.path.to_string_lossy()),
+        entry.state.as_str(),
+        escape(&entry.reason)
+    )
+}
+
+pub fn preview_prune(plan: &grove_core::prune::PrunePlan) {
+    eprintln!("BRANCH\tDIR\tRESULT\tREASON");
+    for entry in &plan.entries {
+        eprintln!("{}", prune_row(entry));
+    }
+}
+
+pub fn print_prune(plan: &grove_core::prune::PrunePlan, plain: bool) {
+    use grove_core::prune::PruneState;
+    if !plain {
+        println!("BRANCH\tDIR\tRESULT\tREASON");
+    }
+    for entry in &plan.entries {
+        println!("{}", prune_row(entry));
+    }
+    let count = |state| plan.entries.iter().filter(|e| e.state == state).count();
+    info(&format!(
+        "Prune: {} candidate, {} removed, {} skipped, {} failed",
+        count(PruneState::Candidate),
+        count(PruneState::Removed),
+        count(PruneState::Skipped),
+        count(PruneState::Failed)
+    ));
 }
