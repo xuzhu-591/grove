@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0]
+
+### Features
+
+- Add `grove prune` to preview and remove merged, clean worktrees after refreshing the main worktree. Supports `--dry-run`, `--yes`, and plain TSV output.
+- Preserve branches, the current and main worktrees, locked/detached/dirty worktrees, and worktrees with ongoing Git operations. Ignored files are removed with eligible worktrees; external symlink targets are retained.
+- Revalidate the base, worktree identity, HEAD, and status before removal; report each skipped or failed item.
+
+### Bug Fixes
+
+- Parse Git porcelain v2 status correctly, including staged/unstaged changes, renames, conflicts, and unusual filenames.
+- Show `N/A` and diagnostics when status or merge checks fail instead of claiming clean or unmerged.
+- Display the updated commit after automatically fast-forwarding the main worktree; reject missing upstreams as a refresh failure.
+- Check real commit references and Git exit status in `remove`'s unpushed-commit check.
+- Bind integration tests to Cargo's current test binary instead of potentially stale build artifacts.
+
 ## [0.1.7]
 
 ### Performance

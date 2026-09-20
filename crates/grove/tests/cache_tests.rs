@@ -72,18 +72,11 @@ rules = ["node_modules"]
 
     let wt_dir = stdout.trim().to_string();
 
-    let grove_bin = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .unwrap()
-        .parent()
-        .unwrap()
-        .join("target")
-        .join("debug")
-        .join("grove");
+    let grove_bin = std::path::Path::new(env!("CARGO_BIN_EXE_grove"));
 
     let home = repo.temp_dir.path().join("home");
     let wt_base = repo.temp_dir.path().join("grove_worktrees");
-    let output = std::process::Command::new(&grove_bin)
+    let output = std::process::Command::new(grove_bin)
         .args(["--plain", "cache", "unlink"])
         .current_dir(&wt_dir)
         .env("HOME", &home)

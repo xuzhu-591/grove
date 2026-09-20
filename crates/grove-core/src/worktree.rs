@@ -16,11 +16,13 @@ pub enum MergeState {
     Unmerged,
     /// Main worktree or detached HEAD — merge status does not apply.
     NotApplicable,
+    Unknown,
 }
 
 pub struct WorktreeEntry {
     pub wt: GitWorktree,
-    pub status: WorktreeStatus,
+    pub status: Result<WorktreeStatus, String>,
+    pub merge_error: Option<String>,
     pub is_main: bool,
     pub merged: MergeState,
 }
@@ -55,7 +57,7 @@ pub enum MainWorktreeSync {
 /// user's main worktree in a conflict state.
 ///
 /// `wts` must already be parsed with `git::parse_worktree_list`; the caller
-/// reuses one parse for both the sync and the listing.
+/// must reread the worktree list after synchronization to obtain updated HEADs.
 pub fn sync_main_before_list(wts: &[GitWorktree], cwd: &Path) -> GroveResult<MainWorktreeSync> {
     if let Err(error) = git::fetch_all(cwd) {
         return Ok(MainWorktreeSync::FetchFailed {
@@ -66,7 +68,33 @@ pub fn sync_main_before_list(wts: &[GitWorktree], cwd: &Path) -> GroveResult<Mai
     let main = wts
         .first()
         .ok_or_else(|| GroveError::GitError("no worktrees found".into()))?;
-    let status = git::parse_status(&main.path)?;
+    let checked_status = (|| {
+        if main.bare || main.branch == "(detached)" {
+            return Err(GroveError::GitError(
+                "main worktree has no branch upstream".into(),
+            ));
+        }
+        let upstream = git::upstream(&main.path)?
+            .ok_or_else(|| GroveError::GitError("main worktree has no branch upstream".into()))?;
+        // A configured but deleted upstream has no branch.ab record in status.
+        // It must not be mistaken for an up-to-date branch.
+        git::resolve_commit(&main.path, &upstream)?;
+        if git::operation_in_progress(&main.path)? {
+            return Err(GroveError::GitError(
+                "main worktree has a Git operation in progress".into(),
+            ));
+        }
+        git::parse_status(&main.path)
+    })();
+    let status = match checked_status {
+        Ok(status) => status,
+        Err(error) => {
+            return Ok(MainWorktreeSync::UpdateFailed {
+                branch: main.branch.clone(),
+                error: error.to_string(),
+            })
+        }
+    };
 
     if status.behind == 0 {
         return Ok(MainWorktreeSync::UpToDate);
@@ -105,9 +133,9 @@ pub fn list_all(wts: &[GitWorktree], cwd: &Path) -> GroveResult<Vec<WorktreeEntr
         .map(|w| w.branch.clone())
         .filter(|b| b != "(detached)" && !b.is_empty());
 
-    let merged_branches: Vec<String> = match main_branch.as_deref() {
-        Some(base) => git::merged_branches(cwd, base).unwrap_or_default(),
-        None => Vec::new(),
+    let merged_branches = match main_branch.as_deref() {
+        Some(base) => git::merged_branches(cwd, &format!("refs/heads/{base}")),
+        None => Err(GroveError::GitError("main worktree has no branch".into())),
     };
 
     // `git status` per worktree dominates `grove list`; run them concurrently
@@ -119,14 +147,17 @@ pub fn list_all(wts: &[GitWorktree], cwd: &Path) -> GroveResult<Vec<WorktreeEntr
         let is_main = i == 0;
         let merged = if is_main || wt.branch == "(detached)" || wt.branch.is_empty() {
             MergeState::NotApplicable
-        } else if merged_branches.contains(&wt.branch) {
-            MergeState::Merged
         } else {
-            MergeState::Unmerged
+            match &merged_branches {
+                Ok(branches) if branches.contains(&wt.branch) => MergeState::Merged,
+                Ok(_) => MergeState::Unmerged,
+                Err(_) => MergeState::Unknown,
+            }
         };
         entries.push(WorktreeEntry {
             wt: wt.clone(),
             status,
+            merge_error: merged_branches.as_ref().err().map(ToString::to_string),
             is_main,
             merged,
         });
@@ -136,12 +167,12 @@ pub fn list_all(wts: &[GitWorktree], cwd: &Path) -> GroveResult<Vec<WorktreeEntr
 
 /// Run `git status` for every worktree concurrently, returning results in
 /// worktree order. Falls back to sequential execution for a single worktree.
-fn statuses_in_parallel(wts: &[GitWorktree]) -> Vec<WorktreeStatus> {
+fn statuses_in_parallel(wts: &[GitWorktree]) -> Vec<Result<WorktreeStatus, String>> {
     let len = wts.len();
     if len <= 1 {
         return wts
             .iter()
-            .map(|wt| git::parse_status(&wt.path).unwrap_or_default())
+            .map(|wt| git::parse_status(&wt.path).map_err(|e| e.to_string()))
             .collect();
     }
 
@@ -158,7 +189,7 @@ fn statuses_in_parallel(wts: &[GitWorktree]) -> Vec<WorktreeStatus> {
                 s.spawn(move || {
                     chunk
                         .iter()
-                        .map(|wt| git::parse_status(&wt.path).unwrap_or_default())
+                        .map(|wt| git::parse_status(&wt.path).map_err(|e| e.to_string()))
                         .collect::<Vec<_>>()
                 })
             })
