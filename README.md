@@ -85,15 +85,38 @@ branch	/path/to/worktree	commit	staged=N	modified=N	untracked=N	ahead=N	behind=N
 
 | Command | Behavior |
 |---------|----------|
-| `grove prune` | Show candidates and skipped worktrees, then confirm removal |
+| `grove prune` | Show removal candidates and a skip summary, then confirm removal |
 | `grove prune --dry-run` | Show candidates without deleting worktrees |
 | `grove prune --yes` | Remove eligible worktrees without a confirmation prompt |
+| `grove prune --dry-run --verbose` | Preview with each skipped worktree and its reason |
 | `grove --plain prune --dry-run` | Preview in TSV format |
 | `grove --plain prune --yes` | Remove and report results in TSV format |
 
+Human output puts removal candidates first, with aligned columns when they fit and stacked branch/path rows on narrow terminals. Paths under your home directory use `~`; a shared directory prefix is shown once. Long branch names, paths, and errors wrap without truncation. Skips are grouped by reason; add `--verbose` (`-v`) to expand them. Execution results show removed/skipped/failed counts, and always include failed worktrees with their full error. An interrupted cleanup labels remaining candidates as "Not attempted".
+
+```text
+Prune · main @ 1234567
+
+Ready to remove (2)
+  Directory: ~/code/worktrees/project/
+  BRANCH       DIRECTORY
+  feat/search  feat-search
+  feat/export  feat-export
+
+Skipped (3)
+    2  uncommitted or untracked changes
+    1  main worktree
+  Show skipped worktrees: --verbose
+
+Ignored files will be deleted too.
+Local and remote branches are retained.
+```
+
+`--verbose` only affects human output; plain TSV continues to include every worktree in the original order.
+
 Prune refreshes remote refs and safely fast-forwards the main worktree before evaluating candidates, just like `list`. Even `--dry-run` can update the main worktree; it only disables deletion. A failed refresh, missing upstream, dirty main worktree that needs updating, or diverged main branch stops cleanup.
 
-A branch is considered merged when its HEAD is an ancestor of (or equal to) the main worktree's current branch commit. This is a local Git ancestry check, not a pull-request status check: squash/rebase merges may not qualify, and commits present only on the local main branch can qualify. The exact base branch and full commit are printed before cleanup.
+A branch is considered merged when its HEAD is an ancestor of (or equal to) the main worktree's current branch commit. This is a local Git ancestry check, not a pull-request status check: squash/rebase merges may not qualify, and commits present only on the local main branch can qualify. Human output shows the base branch and short commit; plain-mode diagnostics retain the full commit.
 
 Prune skips the main/current worktree, locked or detached worktrees, missing or invalid worktrees, unmerged branches, worktrees with Git operations in progress, and worktrees with staged, modified, conflicting, or untracked files. It also skips a worktree that contains another registered worktree. Candidate identity, HEAD, status, and the base are rechecked before removal.
 

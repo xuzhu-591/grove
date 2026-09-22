@@ -49,6 +49,10 @@ pub enum Commands {
         /// Remove eligible worktrees without interactive confirmation.
         #[arg(long, short = 'y')]
         yes: bool,
+
+        /// Show each skipped worktree and its reason.
+        #[arg(long, short = 'v')]
+        verbose: bool,
     },
 
     Cache {

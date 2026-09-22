@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1]
+
+### Improvements
+
+- Make `prune` previews show removal candidates first and group skipped worktrees by reason; add `--verbose` / `-v` for individual skip details.
+- Align human-readable tables, shorten home paths and shared directory prefixes, and use stacked, wrapped rows in narrow terminals without truncating names or paths.
+- Highlight removal results and always show failed worktrees with complete errors; distinguish unattempted candidates after interrupted cleanup.
+- Preserve plain TSV output, cleanup eligibility, confirmation behavior, and existing list behavior. Update Zsh completion for the new flag.
+
 ## [0.2.0]
 
 ### Features
