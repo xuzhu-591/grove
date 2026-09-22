@@ -53,6 +53,8 @@ _grove() {
     if (( CURRENT == 2 )); then
         _describe 'command' commands
         _values 'flags' $global_flags
+    elif (( CURRENT >= 3 )) && [[ "${words[2]}" == "prune" ]]; then
+        _values 'flags' '--dry-run' '--yes' '--verbose'
     elif (( CURRENT == 3 )); then
         case "${words[2]}" in
             switch|cd|remove|rm)
@@ -68,9 +70,6 @@ _grove() {
                 flags=('--create' '--remote' '--no-cache')
                 _values 'branch' $branches
                 _values 'flags' $flags
-                ;;
-            prune)
-                _values 'flags' '--dry-run' '--yes'
                 ;;
             cache)
                 local -a cache_flags=('--status' '--unlink')

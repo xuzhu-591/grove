@@ -329,3 +329,52 @@ fn prune_reports_git_refusal_and_continues_with_other_candidates() {
     assert!(blocked.exists());
     assert!(!clean.exists());
 }
+
+#[test]
+fn human_preview_groups_skips_and_verbose_expands_without_changing_plain_output() {
+    let repo = TestRepo::new();
+    let clean = add(&repo, "feat/candidate");
+    let dirty = add(&repo, "feat/dirty");
+    std::fs::write(dirty.join("local.txt"), "keep").unwrap();
+    let (code, human, err) = repo.run_grove(&["prune", "--dry-run"]);
+    assert_eq!(code, 0, "{err}");
+    assert!(human.contains("Ready to remove (1)"), "{human}");
+    assert!(human.contains("feat/candidate"));
+    assert!(human.contains("Skipped (2)"));
+    assert!(!human.contains("feat/dirty"));
+    assert!(!human.contains('\t'));
+    let (code, verbose, err) = repo.run_grove(&["prune", "--dry-run", "--verbose"]);
+    assert_eq!(code, 0, "{err}");
+    assert!(verbose.contains("feat/dirty"));
+    assert!(verbose.contains("uncommitted or untracked changes"));
+    let (code, plain, err) = repo.run_grove(&["--plain", "prune", "--dry-run"]);
+    assert_eq!(code, 0, "{err}");
+    let (code, plain_verbose, err) =
+        repo.run_grove(&["--plain", "prune", "--dry-run", "--verbose"]);
+    assert_eq!(code, 0, "{err}");
+    assert_eq!(plain, plain_verbose);
+    assert_eq!(plain.lines().count(), 3);
+    assert!(plain.lines().all(|l| l.split('\t').count() == 4));
+    assert!(plain.contains("\tcandidate\tmerged and clean; ignored files will be removed"));
+    assert!(clean.exists());
+    assert!(dirty.join("local.txt").exists());
+}
+
+#[test]
+fn human_execution_shows_results_and_empty_preview_is_explicit() {
+    let repo = TestRepo::new();
+    let path = add(&repo, "feat/done");
+    let (code, result, err) = repo.run_grove(&["prune", "--yes"]);
+    assert_eq!(code, 0, "{err}");
+    assert!(
+        result.contains("Removed 1 · Skipped 1 · Failed 0"),
+        "{result}"
+    );
+    assert!(result.contains("feat/done"));
+    assert!(!path.exists());
+    let (code, preview, err) = repo.run_grove(&["prune", "--dry-run"]);
+    assert_eq!(code, 0, "{err}");
+    assert!(preview.contains("Nothing to prune."));
+    assert!(!preview.contains("Ready to remove"));
+    assert!(!preview.contains("Ignored files"));
+}

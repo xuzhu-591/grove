@@ -1,6 +1,7 @@
 mod cli;
 mod interactive;
 mod output;
+mod prune_output;
 
 use clap::Parser;
 use cli::{CacheAction, Cli, Commands};
@@ -25,7 +26,11 @@ fn main() -> anyhow::Result<()> {
         } => cmd_add(cli.plain, branch, create, remote, no_cache, &cwd),
         Commands::Switch { branch } => cmd_switch(cli.plain, branch, &cwd),
         Commands::Remove { branch, force } => cmd_remove(cli.plain, branch, force, &cwd),
-        Commands::Prune { dry_run, yes } => cmd_prune(cli.plain, dry_run, yes, &cwd),
+        Commands::Prune {
+            dry_run,
+            yes,
+            verbose,
+        } => cmd_prune(cli.plain, dry_run, yes, verbose, &cwd),
         Commands::Cache { action } => cmd_cache(cli.plain, action, &cwd),
     }
 }
@@ -268,7 +273,13 @@ fn cmd_cache(plain: bool, action: Option<CacheAction>, cwd: &Path) -> anyhow::Re
     Ok(())
 }
 
-fn cmd_prune(plain: bool, dry_run: bool, yes: bool, cwd: &Path) -> anyhow::Result<()> {
+fn cmd_prune(
+    plain: bool,
+    dry_run: bool,
+    yes: bool,
+    verbose: bool,
+    cwd: &Path,
+) -> anyhow::Result<()> {
     use grove_core::prune::{self, PruneState};
     grove_core::git::ensure_git_repo()?;
     if !dry_run
@@ -278,17 +289,23 @@ fn cmd_prune(plain: bool, dry_run: bool, yes: bool, cwd: &Path) -> anyhow::Resul
         anyhow::bail!("use --dry-run to preview or --yes to prune non-interactively");
     }
     let mut plan = prune::prepare(cwd)?;
-    output::info(&format!(
-        "Prune base: {} ({})",
-        plan.base.branch, plan.base.commit
-    ));
-    output::warn("Ignored files inside removed worktrees are deleted too. Local and remote branches are retained.");
+    if plain {
+        output::info(&format!(
+            "Prune base: {} ({})",
+            plan.base.branch, plan.base.commit
+        ));
+        output::warn("Ignored files inside removed worktrees are deleted too. Local and remote branches are retained.");
+    }
     if dry_run {
-        output::print_prune(&plan, plain);
+        if plain {
+            output::print_prune_plain(&plan);
+        } else {
+            prune_output::print(&plan, verbose, prune_output::Phase::Preview, false);
+        }
         return Ok(());
     }
     if !yes {
-        output::preview_prune(&plan);
+        prune_output::print(&plan, verbose, prune_output::Phase::Preview, true);
         let count = plan
             .entries
             .iter()
@@ -308,7 +325,11 @@ fn cmd_prune(plain: bool, dry_run: bool, yes: bool, cwd: &Path) -> anyhow::Resul
         }
     }
     let result = prune::execute(&mut plan);
-    output::print_prune(&plan, plain);
+    if plain {
+        output::print_prune_plain(&plan);
+    } else {
+        prune_output::print(&plan, verbose, prune_output::Phase::Result, false);
+    }
     result?;
     if plan.entries.iter().any(|e| e.state == PruneState::Failed) {
         anyhow::bail!("some worktrees could not be removed");

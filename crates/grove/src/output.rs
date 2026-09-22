@@ -171,18 +171,8 @@ fn prune_row(entry: &grove_core::prune::PruneEntry) -> String {
     )
 }
 
-pub fn preview_prune(plan: &grove_core::prune::PrunePlan) {
-    eprintln!("BRANCH\tDIR\tRESULT\tREASON");
-    for entry in &plan.entries {
-        eprintln!("{}", prune_row(entry));
-    }
-}
-
-pub fn print_prune(plan: &grove_core::prune::PrunePlan, plain: bool) {
+pub fn print_prune_plain(plan: &grove_core::prune::PrunePlan) {
     use grove_core::prune::PruneState;
-    if !plain {
-        println!("BRANCH\tDIR\tRESULT\tREASON");
-    }
     for entry in &plan.entries {
         println!("{}", prune_row(entry));
     }
